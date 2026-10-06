@@ -1,0 +1,32 @@
+site_name: Adnan Ali
+site_description: Research, publications, and technical research notes by Adnan Ali
+site_author: Adnan Ali
+
+theme:
+  name: material
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Research: research.md
+  - Publications: publications.md
+  - Research Notes & Tutorials:
+      - Overview: notes/index.md
+      - 3D Gaussian Splatting: notes/3dgs/index.md
+      - Graph Learning: notes/graph-learning/index.md
+      - Research Computing: notes/research-computing/index.md
+      - Chinese Learning: notes/chinese-learning/index.md
+  - About: about.md
