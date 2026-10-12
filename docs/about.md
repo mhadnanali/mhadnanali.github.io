@@ -1,6 +1,6 @@
 # About
 
-I am **Adnan Ali, Ph.D.**, currently working as a **Postdoctoral Researcher at Jinan University, China**. My research interests span machine learning, representation learning, graph learning, and 3D scene representation.
+I am **Adnan Ali, Ph.D.**. My research interests span machine learning, representation learning, graph learning, and 3D scene representation.
 
 I received my Ph.D. in Computer Science and Technology from the **University of Science and Technology of China (USTC)**. My doctoral research focused on graph contrastive learning for node representation and classification, with particular emphasis on data augmentation, negative sample selection, robustness, and adaptive learning strategies.
 

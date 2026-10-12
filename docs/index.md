@@ -1,6 +1,6 @@
 # Adnan Ali, Ph.D.
 
-### Postdoctoral Researcher at Jinan University, China
+### Researcher
 
 **Graph Learning · Representation Learning · 3D Scene Representation**
 
@@ -81,7 +81,7 @@ My research publications cover graph contrastive learning, graph representation 
 
 ## About Me
 
-I received my Ph.D. in Computer Science and Technology from the **University of Science and Technology of China (USTC)** and currently work as a **Postdoctoral Researcher at Jinan University, China**.
+I received my Ph.D. in Computer Science and Technology from the **University of Science and Technology of China (USTC)**.
 
 Beyond research, I am continuing to improve my Mandarin Chinese and maintain this website as both an academic profile and an evolving record of what I learn.
 
