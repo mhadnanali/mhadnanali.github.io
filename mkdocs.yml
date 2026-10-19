@@ -18,6 +18,12 @@ markdown_extensions:
   - admonition
   - attr_list
   - md_in_html
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
   - Home: index.md
@@ -25,7 +31,10 @@ nav:
   - Publications: publications.md
   - Research Notes & Tutorials:
       - Overview: notes/index.md
-      - 3D Gaussian Splatting: notes/3dgs/index.md
+      - Computer Vision Fundamentals: notes/cv-fundamentals.md
+      - 3D Gaussian Splatting:
+          - Overview: notes/3dgs/index.md
+          - Fundamentals: notes/3dgs/fundamentals.md
       - Graph Learning: notes/graph-learning/index.md
       - Research Computing: notes/research-computing/index.md
       - Chinese Learning: notes/chinese-learning/index.md

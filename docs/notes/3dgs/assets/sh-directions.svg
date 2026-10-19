@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="528.12pt" height="227.166375pt" viewBox="0 0 528.12 227.166375" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-14T11:23:40.412158</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 227.166375 
+L 528.12 227.166375 
+L 528.12 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 259.875 123.391875 
+C 264.647462 123.391875 269.2251 121.495756 272.59974 118.121115 
+C 275.974381 114.746475 277.8705 110.168837 277.8705 105.396375 
+C 277.8705 100.623913 275.974381 96.046275 272.59974 92.671635 
+C 269.2251 89.296994 264.647462 87.400875 259.875 87.400875 
+C 255.102538 87.400875 250.5249 89.296994 247.15026 92.671635 
+C 243.775619 96.046275 241.8795 100.623913 241.8795 105.396375 
+C 241.8795 110.168837 243.775619 114.746475 247.15026 118.121115 
+C 250.5249 121.495756 255.102538 123.391875 259.875 123.391875 
+z
+" clip-path="url(#pefaf04792b)" style="fill: #e19742; fill-opacity: 0.25; stroke: #e19742; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 261.846409 105.048762 
+Q 294.909872 99.218782 325.771238 93.77709 
+" clip-path="url(#pefaf04792b)" style="fill: none; stroke: #3478b7; stroke-width: 2; stroke-linecap: round"/>
+    <path d="M 321.484711 92.502067 
+L 325.771238 93.77709 
+L 322.179304 96.441298 
+z
+" clip-path="url(#pefaf04792b)" style="fill: #3478b7; stroke: #3478b7; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 260.559663 103.515278 
+Q 272.042484 71.966489 282.760523 42.518916 
+" clip-path="url(#pefaf04792b)" style="fill: none; stroke: #3f9878; stroke-width: 2; stroke-linecap: round"/>
+    <path d="M 279.513058 45.593646 
+L 282.760523 42.518916 
+L 283.271828 46.961727 
+z
+" clip-path="url(#pefaf04792b)" style="fill: #3f9878; stroke: #3f9878; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 258.235204 104.248177 
+Q 230.733386 84.991197 205.063248 67.016773 
+" clip-path="url(#pefaf04792b)" style="fill: none; stroke: #9268a8; stroke-width: 2; stroke-linecap: round"/>
+    <path d="M 207.192703 70.949383 
+L 205.063248 67.016773 
+L 209.487009 67.672775 
+z
+" clip-path="url(#pefaf04792b)" style="fill: #9268a8; stroke: #9268a8; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 258.141372 106.397286 
+Q 229.06585 123.184046 201.92682 138.852772 
+" clip-path="url(#pefaf04792b)" style="fill: none; stroke: #3478b7; stroke-width: 2; stroke-linecap: round"/>
+    <path d="M 206.390922 138.584823 
+L 201.92682 138.852772 
+L 204.390922 135.120721 
+z
+" clip-path="url(#pefaf04792b)" style="fill: #3478b7; stroke: #3478b7; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 260.559663 107.277472 
+Q 272.042484 138.826261 282.760523 168.273834 
+" clip-path="url(#pefaf04792b)" style="fill: none; stroke: #e19742; stroke-width: 2; stroke-linecap: round"/>
+    <path d="M 283.271828 163.831023 
+L 282.760523 168.273834 
+L 279.513058 165.199104 
+z
+" clip-path="url(#pefaf04792b)" style="fill: #e19742; stroke: #e19742; stroke-width: 2; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="205.24775" transform="rotate(-0 264.06 205.24775)">View direction changes the color evaluated from fixed SH coefficients</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="22.078125" transform="rotate(-0 264.06 22.078125)">Spherical harmonics encode directional appearance, not extra spatial points</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pefaf04792b">
+   <rect x="12.96" y="13.326375" width="502.2" height="200.88"/>
+  </clipPath>
+ </defs>
+</svg>

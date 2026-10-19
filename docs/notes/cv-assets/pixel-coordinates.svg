@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280" role="img" aria-label="Image grid: u grows to the right, v grows downward, with a highlighted pixel at coordinates four, two">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#3478a5"/></marker>
+</defs>
+<rect x="1" y="1" width="698" height="278" rx="10" fill="#fafbfd" stroke="#d8e0e8"/>
+<text x="35" y="31" font-family="Arial,sans-serif" font-size="16" font-weight="600" fill="#253549">A digital image is a grid of measurements</text>
+<g transform="translate(70 66)" stroke="#b8c5d0" stroke-width="1.1">
+  <rect width="280" height="160" rx="1" fill="#eef3f8"/>
+  <path d="M40 0V160 M80 0V160 M120 0V160 M160 0V160 M200 0V160 M240 0V160 M0 40H280 M0 80H280 M0 120H280"/>
+  <rect x="160" y="80" width="40" height="40" fill="#f7bc65" fill-opacity=".9" stroke="#c67822" stroke-width="2"/>
+  <circle cx="180" cy="100" r="5" fill="#a75b13" stroke="none"/>
+</g>
+<circle cx="70" cy="66" r="3" fill="#3478a5"/>
+<path d="M70 66H366" stroke="#3478a5" stroke-width="2.2" marker-end="url(#arrow)"/>
+<path d="M70 66V242" stroke="#3478a5" stroke-width="2.2" marker-end="url(#arrow)"/>
+<g fill="#255a80" font-family="Arial,sans-serif" font-size="15">
+<text x="373" y="71">u (right)</text><text x="85" y="250">v (down)</text><text x="48" y="58" font-size="12">(0,0)</text>
+</g>
+<g font-family="Arial,sans-serif" fill="#253549">
+<text x="417" y="100" font-size="18" font-weight="600">Highlighted pixel</text>
+<text x="417" y="130" font-size="23" fill="#ad6821">(u, v) = (4, 2)</text>
+<text x="417" y="168" font-size="15">The pixel gives an image</text>
+<text x="417" y="191" font-size="15">location and an observed</text>
+<text x="417" y="214" font-size="15">color/intensity value.</text>
+<text x="417" y="248" font-size="14" fill="#637487">It does not give 3D depth.</text>
+</g>
+</svg>

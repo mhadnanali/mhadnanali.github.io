@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="528.12pt" height="205.875pt" viewBox="0 0 528.12 205.875" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-14T11:23:40.383788</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 205.875 
+L 528.12 205.875 
+L 528.12 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 123.771822 109.215 
+Q 139.555204 109.215 153.549732 109.215 
+" clip-path="url(#p0a64232e00)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 149.549732 107.215 
+L 153.549732 109.215 
+L 149.549732 111.215 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 259.784322 109.215 
+Q 275.567704 109.215 289.562232 109.215 
+" clip-path="url(#p0a64232e00)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 285.562232 107.215 
+L 289.562232 109.215 
+L 285.562232 111.215 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 395.792735 109.215 
+Q 405.303203 109.215 413.024818 109.215 
+" clip-path="url(#p0a64232e00)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 409.024818 107.215 
+L 413.024818 109.215 
+L 409.024818 111.215 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 21.33 140.6025 
+L 121.77 140.6025 
+L 121.77 75.735 
+L 21.33 75.735 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #3478b7; fill-opacity: 0.07; stroke: #3478b7; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 157.3425 140.6025 
+L 257.7825 140.6025 
+L 257.7825 75.735 
+L 157.3425 75.735 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #3f9878; fill-opacity: 0.07; stroke: #3f9878; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 293.355 140.6025 
+L 393.795 140.6025 
+L 393.795 75.735 
+L 293.355 75.735 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #e19742; fill-opacity: 0.07; stroke: #e19742; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 416.8125 140.6025 
+L 506.79 140.6025 
+L 506.79 75.735 
+L 416.8125 75.735 
+z
+" clip-path="url(#p0a64232e00)" style="fill: #9268a8; fill-opacity: 0.07; stroke: #9268a8; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(26.173438 105.329219)">Trained Gaussians</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(40.610156 116.527031)">(in memory)</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(190.166406 105.329219)">PLY file</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(161.840625 116.527031)">(stored attributes)</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(297.533594 105.329219)">Gaussian renderer</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(296.220313 116.527031)">+ selected camera</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(425.494219 105.329219)">Rendered RGB</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(424.718438 116.527031)">image / viewer</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="41.38125" transform="rotate(-0 264.06 41.38125)">Representation, stored model and rendered image are different objects</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="264.06" y="170.288437" transform="rotate(-0 264.06 170.288437)">A viewer projects the Gaussian model; the PLY itself is not an RGB image</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p0a64232e00">
+   <rect x="12.96" y="12.96" width="502.2" height="179.955"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -10,6 +10,16 @@ I document these experiences primarily for my own future reference and reproduci
 
     These pages are based mainly on tools, experiments, and problems I encounter during my own research work. They are not intended to replace official documentation.
 
+## Computer Vision Fundamentals
+
+A concise introduction to image coordinates, camera geometry, perspective projection, and multi-view reconstruction for researchers familiar with machine learning.
+
+Includes diagrams and an interactive pinhole camera experiment.
+
+[Open Computer Vision Fundamentals →](cv-fundamentals.md)
+
+---
+
 ## 3D Gaussian Splatting
 
 Practical notes about:

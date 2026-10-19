@@ -1,20 +1,19 @@
 # 3D Gaussian Splatting
 
-This section contains practical notes from my work with **3D Gaussian Splatting (3DGS)**.
+This section contains practical notes from my work with **3D Gaussian Splatting (3DGS)**, including installation, scene preparation, COLMAP preprocessing, training, visualization, and experimentation with custom images.
 
-The notes document the complete workflow as I work through it, including installation, scene preparation, training, rendering, visualization, evaluation, and experimentation with custom data.
+## Begin with the fundamentals
 
-## Planned Notes
+- **[Computer Vision Fundamentals](../cv-fundamentals.md)** — light, images, cameras, multi-view geometry, COLMAP, NeRF, rendering, and common vocabulary.
+- **[3D Gaussian Splatting Fundamentals](fundamentals.md)** — Gaussian geometry, initialization, rasterization, compositing, gradient-based training, densification, and PLY output.
 
-- Installing 3D Gaussian Splatting on Windows
-- Understanding the 3DGS project structure
-- Training the Tanks and Temples dataset
-- Understanding 3DGS output files
-- Visualizing a trained scene with SIBR
-- Fixing SIBR CUDA runtime problems
-- Preparing your own images with COLMAP
-- Training 3DGS on a custom scene
+Both pages include reproducible diagrams and interactive browser experiments. They are concise references intended to be revisited during research.
+
+## Further practical notes (to be added over time)
+
+- Installing and running 3DGS on Windows
+- Understanding camera input and COLMAP output
+- Training on the Tanks and Temples dataset and custom images
+- Understanding PLY attributes and SIBR/SuperSplat visualization
 - Evaluating reconstruction quality
-- Moving toward semantic 3D Gaussian Splatting
-
-New pages will be added as I encounter and document these topics during my research.
+- Exploring Feature 3DGS and semantic extensions
