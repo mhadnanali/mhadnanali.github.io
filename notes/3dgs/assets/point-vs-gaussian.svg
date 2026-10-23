@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title description">
+<title id="title">An ordinary 3D point compared with a 3D Gaussian</title>
+<desc id="description">A point denotes only a location. A Gaussian has a center and continuous influence over a surrounding region; the Gaussian is shown as a two-dimensional schematic.</desc>
+<defs>
+  <radialGradient id="gaussian" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#C47C31" stop-opacity=".9"/>
+    <stop offset=".45" stop-color="#E6A65F" stop-opacity=".48"/>
+    <stop offset="1" stop-color="#E6A65F" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="900" height="300" rx="16" fill="#FFFFFF"/>
+<rect x="10" y="10" width="430" height="280" rx="14" fill="#F7F9FC" stroke="#E3E9F1"/>
+<rect x="460" y="10" width="430" height="280" rx="14" fill="#F7F9FC" stroke="#E3E9F1"/>
+<g stroke="#BFCAD8" stroke-width="1.4">
+  <path d="M80 220 H372 M225 250 V60"/>
+  <path d="M530 220 H822 M675 250 V60"/>
+</g>
+<g fill="#63728A" font-family="Arial, sans-serif" font-size="15">
+  <text x="377" y="224">X</text><text x="211" y="52">Y</text>
+  <text x="827" y="224">X</text><text x="661" y="52">Y</text>
+</g>
+<circle cx="225" cy="150" r="6" fill="#C47C31"/>
+<ellipse cx="675" cy="150" rx="124" ry="54" transform="rotate(-28 675 150)" fill="url(#gaussian)"/>
+<ellipse cx="675" cy="150" rx="77" ry="34" transform="rotate(-28 675 150)" stroke="#B9762F" stroke-width="1.8" stroke-dasharray="5 5" fill="none"/>
+<circle cx="675" cy="150" r="5" fill="#C47C31"/>
+<g fill="#25324A" font-family="Arial, sans-serif" text-anchor="middle">
+  <text x="225" y="40" font-size="21" font-weight="bold">Ordinary 3D point</text>
+  <text x="675" y="40" font-size="21" font-weight="bold">3D Gaussian</text>
+  <text x="225" y="273" font-size="15">Position, no intrinsic extent</text>
+  <text x="675" y="273" font-size="15">Center + spatial distribution</text>
+</g>
+<text x="450" y="297" text-anchor="middle" fill="#5C6980" font-family="Arial, sans-serif" font-size="11">Schematic 2D visualization; an actual 3D Gaussian has ellipsoidal equal-value surfaces.</text>
+</svg>

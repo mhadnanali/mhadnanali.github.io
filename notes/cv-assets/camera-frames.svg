@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="450.63pt" height="242.136pt" viewBox="0 0 450.63 242.136" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-14T11:23:39.964446</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 242.136 
+L 450.63 242.136 
+L 450.63 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 103.762076 173.1915 
+Q 134.580869 173.1915 163.610808 173.1915 
+" clip-path="url(#p7f8359dad7)" style="fill: none; stroke: #3478b7; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 159.610808 171.1915 
+L 163.610808 173.1915 
+L 159.610808 175.1915 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #3478b7; stroke: #3478b7; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 101.763 171.196312 
+Q 101.763 133.619358 101.763 97.831259 
+" clip-path="url(#p7f8359dad7)" style="fill: none; stroke: #3478b7; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 99.763 101.831259 
+L 101.763 97.831259 
+L 103.763 101.831259 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #3478b7; stroke: #3478b7; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 273.645958 150.0255 
+Q 309.291447 150.0255 343.148081 150.0255 
+" clip-path="url(#p7f8359dad7)" style="fill: none; stroke: #3f9878; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 339.148081 148.0255 
+L 343.148081 150.0255 
+L 339.148081 152.0255 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #3f9878; stroke: #3f9878; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 271.647 148.021239 
+Q 271.647 109.48436 271.647 72.736336 
+" clip-path="url(#p7f8359dad7)" style="fill: none; stroke: #3f9878; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 269.647 76.736336 
+L 271.647 72.736336 
+L 273.647 76.736336 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #3f9878; stroke: #3f9878; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 368.172 57.3615 
+C 369.195949 57.3615 370.178098 56.954681 370.902139 56.230639 
+C 371.626181 55.506598 372.033 54.524449 372.033 53.5005 
+C 372.033 52.476551 371.626181 51.494402 370.902139 50.770361 
+C 370.178098 50.046319 369.195949 49.6395 368.172 49.6395 
+C 367.148051 49.6395 366.165902 50.046319 365.441861 50.770361 
+C 364.717819 51.494402 364.311 52.476551 364.311 53.5005 
+C 364.311 54.524449 364.717819 55.506598 365.441861 56.230639 
+C 366.165902 56.954681 367.148051 57.3615 368.172 57.3615 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #e19742; stroke: #e19742; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 273.063886 148.608614 
+Q 319.911192 101.761308 365.493586 56.178914 
+" clip-path="url(#p7f8359dad7)" style="fill: none; stroke: #e19742; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 361.250946 57.593127 
+L 365.493586 56.178914 
+L 364.079373 60.421554 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #e19742; stroke: #e19742; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 103.746051 172.921084 
+Q 186.706326 161.608319 267.89415 150.537252 
+" clip-path="url(#p7f8359dad7)" style="fill: none; stroke-dasharray: 5.92,2.56; stroke-dashoffset: 0; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 263.660603 149.096045 
+L 267.89415 150.537252 
+L 264.201056 153.059365 
+z
+" clip-path="url(#p7f8359dad7)" style="fill: #64748b; stroke-dasharray: 5.92,2.56; stroke-dashoffset: 0; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="173.1915" y="176.833237" transform="rotate(-0 173.1915 176.833237)">Xw</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="97.902" y="90.732937" transform="rotate(-0 97.902 90.732937)">Zw</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="354.6585" y="152.895038" transform="rotate(-0 354.6585 152.895038)">Xc</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="268.5582" y="65.636437" transform="rotate(-0 268.5582 65.636437)">Zc</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="372.033" y="42.746375" transform="rotate(-0 372.033 42.746375)">World point P</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="105.624" y="201.047375" transform="rotate(-0 105.624 201.047375)">World coordinate frame</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="285.1605" y="179.811875" transform="rotate(-0 285.1605 179.811875)">Camera coordinate frame</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="229.176" y="29.508813" transform="rotate(-0 229.176 29.508813)">Same 3D point, different coordinates in each frame</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p7f8359dad7">
+   <rect x="12.96" y="12.96" width="424.71" height="216.216"/>
+  </clipPath>
+ </defs>
+</svg>

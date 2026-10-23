@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="528.12pt" height="230.985pt" viewBox="0 0 528.12 230.985" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-14T11:23:40.363612</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 230.985 
+L 528.12 230.985 
+L 528.12 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="PathCollection_1">
+    <defs>
+     <path id="me18f376f05" d="M 0 4.1833 
+C 1.109424 4.1833 2.173559 3.742521 2.95804 2.95804 
+C 3.742521 2.173559 4.1833 1.109424 4.1833 0 
+C 4.1833 -1.109424 3.742521 -2.173559 2.95804 -2.95804 
+C 2.173559 -3.742521 1.109424 -4.1833 0 -4.1833 
+C -1.109424 -4.1833 -2.173559 -3.742521 -2.95804 -2.95804 
+C -3.742521 -2.173559 -4.1833 -1.109424 -4.1833 0 
+C -4.1833 1.109424 -3.742521 2.173559 -2.95804 2.95804 
+C -2.173559 3.742521 -1.109424 4.1833 0 4.1833 
+z
+" style="stroke: #e19742"/>
+    </defs>
+    <g clip-path="url(#pae6845391d)">
+     <use xlink:href="#me18f376f05" x="264.06" y="71.55" style="fill: #e19742; stroke: #e19742"/>
+    </g>
+   </g>
+   <g id="patch_2">
+    <path d="M 92.475 195.0075 
+L 109.215 195.0075 
+L 100.845 179.523 
+z
+" clip-path="url(#pae6845391d)" style="fill: #3478b7; stroke: #3478b7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 102.491196 183.405326 
+Q 182.453406 128.046873 261.036757 73.643014 
+" clip-path="url(#pae6845391d)" style="fill: none; stroke: #3f9878; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 256.609568 74.27547 
+L 261.036757 73.643014 
+L 258.886408 77.564239 
+z
+" clip-path="url(#pae6845391d)" style="fill: #3f9878; stroke: #3f9878; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 418.905 195.0075 
+L 435.645 195.0075 
+L 427.275 179.523 
+z
+" clip-path="url(#pae6845391d)" style="fill: #3478b7; stroke: #3478b7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 425.628804 183.405326 
+Q 345.666594 128.046873 267.083243 73.643014 
+" clip-path="url(#pae6845391d)" style="fill: none; stroke: #3f9878; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 269.233592 77.564239 
+L 267.083243 73.643014 
+L 271.510432 74.27547 
+z
+" clip-path="url(#pae6845391d)" style="fill: #3f9878; stroke: #3f9878; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="53.660313" transform="rotate(-0 264.06 53.660313)">Shared 3D Gaussian</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="100.845" y="209.484875" transform="rotate(-0 100.845 209.484875)">Camera A</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="427.275" y="209.484875" transform="rotate(-0 427.275 209.484875)">Camera B</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(205.306172 154.786922)">Same learned parameters</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(198.027422 164.864953)">used for both rendered views</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="30.91875" transform="rotate(-0 264.06 30.91875)">Multiple image views constrain a shared 3D representation</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pae6845391d">
+   <rect x="12.96" y="12.96" width="502.2" height="205.065"/>
+  </clipPath>
+ </defs>
+</svg>

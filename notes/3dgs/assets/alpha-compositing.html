@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#243247}body{margin:0;padding:15px;background:#fff}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.pane{border:1px solid #d6deeb;border-radius:10px;padding:12px}.title{font-weight:650;font-size:14px;margin-bottom:7px}.muted{color:#64748b;font-size:12px}label{display:flex;justify-content:space-between;font-size:13px;margin-top:11px}input[type=range]{width:100%;accent-color:#3478b7}.result{min-height:108px;border:1px solid #d6deeb;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:background .1s;font-weight:bold}table{border-collapse:collapse;width:100%;font-size:12px;margin-top:10px}th,td{border-bottom:1px solid #e2e8f0;padding:5px;text-align:left}button{background:#f2f5fa;color:#263448;border:1px solid #ccd5e2;border-radius:6px;padding:6px 10px;cursor:pointer;margin-top:10px}@media(max-width:590px){.grid{grid-template-columns:1fr}} </style></head><body>
+<div class="grid"><div class="pane"><div class="title">Three overlapping splats (front to back)</div><div class="muted">Each slider sets the <em>effective alpha at one selected pixel</em> — the product of primitive opacity and its Gaussian footprint.</div>
+<label for="a">Red, front <output id="va">0.60</output></label><input id="a" type="range" min="0" max="1" value="0.60" step="0.01">
+<label for="b">Green, middle <output id="vb">0.45</output></label><input id="b" type="range" min="0" max="1" value="0.45" step="0.01">
+<label for="c">Blue, back <output id="vc">0.35</output></label><input id="c" type="range" min="0" max="1" value="0.35" step="0.01">
+<button id="reset">Reset</button></div><div class="pane"><div class="title">Composited pixel on white background</div><div class="result" id="pixel"><span id="rgb"></span></div>
+<table><thead><tr><th>Layer</th><th>Incoming T</th><th>Weight T × α</th></tr></thead><tbody id="rows"></tbody></table>
+<div class="muted" id="bg">Remaining transmittance:</div></div></div>
+<script>
+const ids=['a','b','c'], colors=[[232,82,77],[59,165,108],[63,113,216]];
+const get=id=>document.getElementById(id);
+function draw(){const a=ids.map(id=>Number(get(id).value));ids.forEach((id,i)=>get('v'+id).textContent=a[i].toFixed(2));let T=1, rgb=[0,0,0],rows='';
+ a.forEach((alpha,i)=>{const w=T*alpha;colors[i].forEach((v,k)=>rgb[k]+=w*v);rows+=`<tr><td>${['Red','Green','Blue'][i]}</td><td>${T.toFixed(3)}</td><td>${w.toFixed(3)}</td></tr>`;T*=1-alpha;});rgb=rgb.map(v=>Math.round(v+T*255));get('pixel').style.background=`rgb(${rgb.join(',')})`;get('rgb').textContent=`RGB (${rgb.join(', ')})`;get('rgb').style.color=rgb.reduce((a,b)=>a+b,0)<375?'white':'#243247';get('rows').innerHTML=rows;get('bg').textContent=`Remaining background transmittance: ${T.toFixed(3)}`;}
+ids.forEach(id=>get(id).addEventListener('input',draw));get('reset').onclick=()=>{[.60,.45,.35].forEach((v,i)=>get(ids[i]).value=v);draw()};draw();
+</script></body></html>

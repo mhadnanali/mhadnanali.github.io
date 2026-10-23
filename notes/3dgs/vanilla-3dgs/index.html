@@ -1,0 +1,2703 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Research, publications, and technical research notes by Adnan Ali">
+      
+      
+        <meta name="author" content="Adnan Ali">
+      
+      
+      
+        <link rel="prev" href="../fundamentals/">
+      
+      
+        <link rel="next" href="../feature-3dgs/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Vanilla 3DGS - Adnan Ali</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vanilla-3d-gaussian-splatting-from-initialization-to-a-trained-scene" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Adnan Ali" class="md-header__button md-logo" aria-label="Adnan Ali" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Adnan Ali
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Vanilla 3DGS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../research/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Research
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../publications/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Publications
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Research Notes & Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Adnan Ali" class="md-nav__button md-logo" aria-label="Adnan Ali" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Adnan Ali
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../publications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes & Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research Notes & Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cv-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Vision Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Gaussian Splatting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3D Gaussian Splatting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla 3DGS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-complete-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The complete pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The complete pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-concrete-indoor-scene-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A concrete indoor-scene example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-from-colmap-points-to-trainable-gaussians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. From COLMAP points to trainable Gaussians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. From COLMAP points to trainable Gaussians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-exactly-gets-initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What exactly gets initialized?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-gaussian-parameters-and-3d-covariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Gaussian parameters and 3D covariance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Gaussian parameters and 3D covariance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stored-parameters-versus-activated-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored parameters versus activated values
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-projecting-a-3d-gaussian-to-2d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Projecting a 3D Gaussian to 2D
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Projecting a 3D Gaussian to 2D">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-project-the-gaussian-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Project the Gaussian center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-project-its-shape-not-just-its-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Project its shape, not just its center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-turn-the-2d-covariance-into-a-pixel-contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Turn the 2D covariance into a pixel contribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-move-a-gaussian-relative-to-a-camera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Move a Gaussian relative to a camera
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-spherical-harmonics-view-dependent-appearance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Spherical harmonics: view-dependent appearance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Spherical harmonics: view-dependent appearance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-first-order-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked first-order example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-experiment-view-direction-and-apparent-color" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive experiment: view direction and apparent color
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tile-based-rasterization-how-the-gpu-finds-the-relevant-gaussians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Tile-based rasterization: how the GPU finds the relevant Gaussians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Tile-based rasterization: how the GPU finds the relevant Gaussians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-actual-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The actual steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-experiment-tile-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive experiment: tile coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numerical-tile-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numerical tile example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-visibility-and-alpha-compositing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Visibility and alpha compositing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Visibility and alpha compositing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-example-red-in-front-of-blue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: red in front of blue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-interactive-compositing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: interactive compositing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-rgb-reconstruction-loss-and-backpropagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. RGB reconstruction loss and backpropagation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. RGB reconstruction loss and backpropagation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-what-is-compared-with-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1. What is compared with what?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-interactive-lab-compare-a-reference-image-with-a-rendering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2. Interactive lab: Compare a reference image with a rendering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.2. Interactive lab: Compare a reference image with a rendering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-first-loss-mean-absolute-rgb-error-l1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The first loss: Mean absolute RGB error (L1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-second-loss-structural-similarity-ssim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The second loss: Structural similarity (SSIM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-combining-l1-and-ssim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3. Combining L1 and SSIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-how-a-pixels-error-reaches-a-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4. How a pixel's error reaches a Gaussian
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature-3dgs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comparison.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla vs. Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-computing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Computing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chinese-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-complete-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The complete pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The complete pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-concrete-indoor-scene-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A concrete indoor-scene example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-from-colmap-points-to-trainable-gaussians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. From COLMAP points to trainable Gaussians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. From COLMAP points to trainable Gaussians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-exactly-gets-initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What exactly gets initialized?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-gaussian-parameters-and-3d-covariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Gaussian parameters and 3D covariance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Gaussian parameters and 3D covariance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stored-parameters-versus-activated-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored parameters versus activated values
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-projecting-a-3d-gaussian-to-2d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Projecting a 3D Gaussian to 2D
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Projecting a 3D Gaussian to 2D">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-project-the-gaussian-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Project the Gaussian center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-project-its-shape-not-just-its-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Project its shape, not just its center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-turn-the-2d-covariance-into-a-pixel-contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Turn the 2D covariance into a pixel contribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-move-a-gaussian-relative-to-a-camera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Move a Gaussian relative to a camera
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-spherical-harmonics-view-dependent-appearance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Spherical harmonics: view-dependent appearance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Spherical harmonics: view-dependent appearance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-first-order-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked first-order example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-experiment-view-direction-and-apparent-color" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive experiment: view direction and apparent color
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tile-based-rasterization-how-the-gpu-finds-the-relevant-gaussians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Tile-based rasterization: how the GPU finds the relevant Gaussians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Tile-based rasterization: how the GPU finds the relevant Gaussians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-actual-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The actual steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-experiment-tile-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive experiment: tile coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numerical-tile-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numerical tile example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-visibility-and-alpha-compositing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Visibility and alpha compositing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Visibility and alpha compositing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worked-example-red-in-front-of-blue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: red in front of blue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-interactive-compositing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: interactive compositing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-rgb-reconstruction-loss-and-backpropagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. RGB reconstruction loss and backpropagation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. RGB reconstruction loss and backpropagation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-what-is-compared-with-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1. What is compared with what?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-interactive-lab-compare-a-reference-image-with-a-rendering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2. Interactive lab: Compare a reference image with a rendering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.2. Interactive lab: Compare a reference image with a rendering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-first-loss-mean-absolute-rgb-error-l1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The first loss: Mean absolute RGB error (L1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-second-loss-structural-similarity-ssim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The second loss: Structural similarity (SSIM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-combining-l1-and-ssim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3. Combining L1 and SSIM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-how-a-pixels-error-reaches-a-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4. How a pixel's error reaches a Gaussian
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="vanilla-3d-gaussian-splatting-from-initialization-to-a-trained-scene">Vanilla 3D Gaussian Splatting — From Initialization to a Trained Scene</h1>
+<p><em>An implementation-aware, visual, mathematical, and interactive tutorial using an indoor-scene reconstruction.</em></p>
+<div class="admonition info">
+<p class="admonition-title">Before you start</p>
+<p><strong>Prerequisites:</strong> <a href="../../cv-fundamentals/">Computer Vision Fundamentals</a> explains cameras, COLMAP, radiance, and general CV vocabulary. <a href="../fundamentals/">3DGS Fundamentals</a> introduces Gaussian primitives, opacity, covariance, and splatting. This page explains <strong>how the original Vanilla 3DGS algorithm actually works</strong>, without re-teaching the prerequisites.</p>
+<p><strong>Audience:</strong> ML practitioners learning 3D reconstruction. Equations are accompanied by operational explanations and interactive exercises. The examples use the <a href="https://github.com/graphdeco-inria/gaussian-splatting">official Inria 3DGS implementation</a>; defaults can differ across versions and forks.</p>
+</div>
+<p><strong>Jump to:</strong> <a href="#1-the-complete-pipeline">Pipeline</a> · <a href="#2-from-colmap-points-to-trainable-gaussians">Initialization</a> · <a href="#3-gaussian-parameters-and-3d-covariance">Gaussian parameters</a> · <a href="#4-projecting-a-3d-gaussian-to-2d">Projection</a> · <a href="#5-spherical-harmonics-view-dependent-appearance">SH color</a> · <a href="#6-tile-based-rasterization-how-the-gpu-finds-the-relevant-gaussians">Tiles</a> · <a href="#7-visibility-and-alpha-compositing">Compositing</a> · <a href="#8-rgb-reconstruction-loss-and-backpropagation">Loss</a> · <a href="#9-adaptive-density-control-clone-split-or-prune">Densification</a> · <a href="#11-the-trained-model-understanding-the-ply-file">PLY</a> · <a href="#12-experiments-with-a-real-trained-scene">Experiments</a>.</p>
+<hr />
+<h2 id="1-the-complete-pipeline">1. The complete pipeline</h2>
+<p><img alt="The end-to-end 3DGS training and rendering pipeline" src="../assets/full-pipeline.svg" /></p>
+<p><strong>At training time:</strong></p>
+<ol>
+<li>Estimate camera intrinsics, poses, and sparse points with COLMAP (or another compatible reconstruction method).</li>
+<li>Create an initial trainable 3D Gaussian for each seed point.</li>
+<li>Select a training camera and <strong>render</strong> its predicted RGB image from all relevant Gaussians.</li>
+<li>Compare the rendering with that camera's <strong>fixed reference photograph</strong>.</li>
+<li>Backpropagate the image loss through the differentiable rasterizer; update Gaussian parameters with an optimizer.</li>
+<li>Periodically <strong>clone, split, and prune</strong> Gaussians according to prescribed density-control rules.</li>
+<li>Save a set of trained Gaussians; later, supply a camera to render another view.</li>
+</ol>
+<p><strong>The key mental model:</strong> a Gaussian is a persistent 3D primitive. An image is a temporary result computed from thousands of such primitives for one camera. Training adjusts the <strong>primitives</strong>, not independent pixels.</p>
+<p><img alt="Gaussian representation, pixel formation, and 3DGS training" src="../assets/training-cycle.svg" /></p>
+<h3 id="a-concrete-indoor-scene-example">A concrete indoor-scene example</h3>
+<p>For the indoor scene used throughout these notes, the sparse COLMAP reconstruction provided <strong>38,558 initial points</strong>, and the trained 30,000-iteration Vanilla 3DGS PLY contains <strong>637,141 Gaussians</strong>. These are real counts from this specific experiment, not universal benchmarks. The number grew because densification can create extra primitives during training.</p>
+<div class="admonition note">
+<p class="admonition-title">Iteration is not epoch</p>
+<p>One <strong>training iteration</strong> selects a camera view and updates the scene. An <strong>epoch</strong> normally means a pass through a dataset. A 30,000-iteration run is not 30,000 epochs.</p>
+</div>
+<h2 id="2-from-colmap-points-to-trainable-gaussians">2. From COLMAP points to trainable Gaussians</h2>
+<p><img alt="Sparse input points initializing trainable Gaussians" src="../assets/point-to-gaussians.svg" /></p>
+<p>COLMAP provides <strong>camera calibration/poses</strong>, <strong>registered photographs</strong>, and <strong>sparse 3D points</strong>. The 3DGS model is constructed <strong>after</strong> that reconstruction. It does not inherit a ready-made set of optimized Gaussians from COLMAP.</p>
+<h3 id="what-exactly-gets-initialized">What exactly gets initialized?</h3>
+<table>
+<thead>
+<tr>
+<th>Gaussian attribute</th>
+<th>Typical official initialization</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Center <span class="arithmatex">\(\boldsymbol\mu\)</span></td>
+<td>A sparse COLMAP 3D point</td>
+<td>Put initial primitives in plausible scene locations</td>
+</tr>
+<tr>
+<td>SH color (degree 0)</td>
+<td>Transform the seed point's RGB color to the constant SH coefficient</td>
+<td>Start with approximate observed appearance</td>
+</tr>
+<tr>
+<td>Higher-order SH color</td>
+<td>Zeros</td>
+<td>Let training discover view-dependent color</td>
+</tr>
+<tr>
+<td>Three scales</td>
+<td>Isotropic initial spread estimated from neighbor-point distances</td>
+<td>Give seed points finite extent</td>
+</tr>
+<tr>
+<td>Rotation</td>
+<td>Identity quaternion</td>
+<td>Begin without an arbitrary orientation</td>
+</tr>
+<tr>
+<td>Activated opacity</td>
+<td><span class="arithmatex">\(0.1\)</span> (stored as logit)</td>
+<td>Allow compositing and opacity learning</td>
+</tr>
+</tbody>
+</table>
+<p>These values are <strong>starting points</strong>, not final properties. Subsequent optimization can move the centers, flatten or elongate the Gaussians, rotate them, and alter opacity and color.</p>
+<p>The reference implementation computes approximate squared nearest-neighbor distances with <code>simple-knn</code>, clamps small values, and initializes each log-scale using <span class="arithmatex">\(\log\sqrt{d_i^2}\)</span>. Its initial rotation is <span class="arithmatex">\((1,0,0,0)\)</span>, and the initial opacity parameter is <span class="arithmatex">\(\operatorname{logit}(0.1)\)</span>. <a href="https://github.com/graphdeco-inria/gaussian-splatting/blob/main/scene/gaussian_model.py">Source: <code>scene/gaussian_model.py</code></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Not one Gaussian per photograph pixel</p>
+<p>Seed Gaussians correspond to <strong>3D sparse points</strong>, not the pixels of any particular image. A single persistent Gaussian can be observed at different screen coordinates in many cameras.</p>
+</div>
+<h2 id="3-gaussian-parameters-and-3d-covariance">3. Gaussian parameters and 3D covariance</h2>
+<p>A trained Gaussian has a center <span class="arithmatex">\(\boldsymbol\mu\)</span>, three scale parameters, a rotation quaternion, opacity, and SH appearance coefficients. These are <strong>different trainable quantities</strong> with different effects on the rendering.</p>
+<h3 id="stored-parameters-versus-activated-values">Stored parameters versus activated values</h3>
+<table>
+<thead>
+<tr>
+<th>Stored in PLY</th>
+<th>Conversion for rendering</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+<td>Used directly</td>
+<td>World-space Gaussian center</td>
+</tr>
+<tr>
+<td><code>scale_0</code>, <code>scale_1</code>, <code>scale_2</code></td>
+<td><span class="arithmatex">\(s_k=\exp(\tilde s_k)\)</span></td>
+<td>Positive directional standard deviations</td>
+</tr>
+<tr>
+<td><code>rot_0</code> ... <code>rot_3</code></td>
+<td>Normalize quaternion <span class="arithmatex">\(q/\lVert q\rVert\)</span></td>
+<td>Ellipsoid orientation</td>
+</tr>
+<tr>
+<td><code>opacity</code></td>
+<td><span class="arithmatex">\(o=\operatorname{sigmoid}(\tilde o)\)</span></td>
+<td>Base opacity in <span class="arithmatex">\((0,1)\)</span></td>
+</tr>
+<tr>
+<td><code>f_dc_*</code>, <code>f_rest_*</code></td>
+<td>Evaluate spherical harmonics</td>
+<td>View-dependent RGB appearance</td>
+</tr>
+</tbody>
+</table>
+<p>Let <span class="arithmatex">\(R(q)\)</span> denote the rotation matrix of the normalized quaternion. Then</p>
+<div class="arithmatex">\[
+\boxed{\boldsymbol\Sigma_{3D}=R(q)\operatorname{diag}(s_x^2,s_y^2,s_z^2)R(q)^\top.}
+\]</div>
+<p>A spatial Gaussian's influence at location <span class="arithmatex">\(\mathbf x\)</span> is often visualized using</p>
+<div class="arithmatex">\[
+G(\mathbf x)=\exp\!\left[-\frac12(\mathbf x-\boldsymbol\mu)^\top\boldsymbol\Sigma_{3D}^{-1}(\mathbf x-\boldsymbol\mu)\right].
+\]</div>
+<p>Its ellipsoidal level surfaces are <strong>not hard physical boundaries</strong>. The three activated scales control thickness and stretching in local directions; rotation controls those directions in world space; opacity controls the strength of the subsequent splat.</p>
+<p><img alt="Isotropic, stretched, and rotated Gaussians" src="../assets/isotropic-anisotropic.svg" /></p>
+<p><strong>Practical mental picture:</strong> a broad, thin Gaussian can approximate part of a chair seat; a narrow, elongated Gaussian can approximate a leg. These are scene approximations, not object labels or physically rigid pieces.</p>
+<h2 id="4-projecting-a-3d-gaussian-to-2d">4. Projecting a 3D Gaussian to 2D</h2>
+<p><img alt="World-space 3D Gaussian and its camera-dependent image footprint" src="../assets/gaussian-projection.svg" /></p>
+<p>This is the bridge from the <strong>3D representation</strong> to the <strong>2D image</strong>. We calculate a screen-space center and a screen-space shape for a Gaussian at a selected camera.</p>
+<h3 id="41-project-the-gaussian-center">4.1 Project the Gaussian center</h3>
+<p>After applying the world-to-camera transform, let the center be <span class="arithmatex">\(\boldsymbol\mu_c=(X,Y,Z)^\top\)</span>. Under an ideal pinhole camera,</p>
+<div class="arithmatex">\[
+\mathbf m_{2D}=\begin{bmatrix}u\\v\end{bmatrix}=
+\begin{bmatrix}f_x X/Z+c_x\\ f_yY/Z+c_y\end{bmatrix}.
+\]</div>
+<p>For example, <span class="arithmatex">\(f_x=600\)</span>, <span class="arithmatex">\(X=1\)</span>, <span class="arithmatex">\(Z=5\)</span>, <span class="arithmatex">\(c_x=320\)</span> gives <span class="arithmatex">\(u=440\)</span> pixels. That is the projected <strong>center</strong>, not the complete footprint. Camera conventions and intrinsic assumptions are explained in <a href="../../cv-fundamentals/">CV Fundamentals</a>.</p>
+<h3 id="42-project-its-shape-not-just-its-center">4.2 Project its shape, not just its center</h3>
+<p>Let <span class="arithmatex">\(W\)</span> be the rotational part of the world-to-camera transform and <span class="arithmatex">\(J\)</span> the Jacobian of the perspective projection evaluated at <span class="arithmatex">\(\boldsymbol\mu_c\)</span>:</p>
+<div class="arithmatex">\[
+J=\begin{bmatrix}
+\frac{f_x}{Z} &amp; 0 &amp; -\frac{f_x X}{Z^2}\\
+0 &amp; \frac{f_y}{Z} &amp; -\frac{f_y Y}{Z^2}
+\end{bmatrix}.
+\]</div>
+<p>A first-order approximation to the projected <span class="arithmatex">\(2\times2\)</span> covariance is</p>
+<div class="arithmatex">\[
+\boxed{\boldsymbol\Sigma_{2D}\approx JW\boldsymbol\Sigma_{3D}W^\top J^\top.}
+\]</div>
+<p>The rasterizer also handles practical filtering and numerical details; the reference implementation adds a small screen-space low-pass term to the covariance. <strong>The resulting footprint depends on the camera</strong>: a Gaussian can look long from one angle and nearly circular from another.</p>
+<h3 id="43-turn-the-2d-covariance-into-a-pixel-contribution">4.3 Turn the 2D covariance into a pixel contribution</h3>
+<p>Write the difference between pixel center <span class="arithmatex">\(\mathbf p\)</span> and projected center as <span class="arithmatex">\(\boldsymbol\delta=\mathbf p-\mathbf m_{2D}\)</span>. The footprint weight is approximately</p>
+<div class="arithmatex">\[
+w(\mathbf p)=\exp\!\left(-\frac12\boldsymbol\delta^\top\boldsymbol\Sigma_{2D}^{-1}\boldsymbol\delta\right),
+\qquad
+\alpha(\mathbf p)=\min\{0.99,\;o\,w(\mathbf p)\}.
+\]</div>
+<p>The real rasterizer also culls extremely small contributions. The <strong>same Gaussian</strong> can influence several adjacent pixels with different effective alpha values.</p>
+<p><img alt="One Gaussian's influence decreases across neighboring pixels" src="../assets/pixel-footprint-contribution.svg" /></p>
+<h3 id="try-it-move-a-gaussian-relative-to-a-camera">Try it: Move a Gaussian relative to a camera</h3>
+<iframe src="../assets/projection-explorer.html" title="Gaussian projection and footprint experiment" loading="lazy" style="width:100%;height:490px;border:1px solid #d8dee8;border-radius:10px;"></iframe>
+
+<p><a href="../assets/projection-explorer.html">Open projection explorer separately</a>.</p>
+<p><em>The explorer is pedagogical rather than a reproduction of every CUDA covariance/clamping detail.</em></p>
+<h2 id="5-spherical-harmonics-view-dependent-appearance">5. Spherical harmonics: view-dependent appearance</h2>
+<p><img alt="SH-based directional appearance" src="../assets/sh-directions.svg" /></p>
+<p>A Gaussian has <strong>one location, scale, rotation, and set of SH coefficients</strong>; those stored parameters do not change merely because we move the camera. Yet the <strong>color evaluated from its SH coefficients can change</strong> with the viewing direction.</p>
+<p>For a unit direction <span class="arithmatex">\(\mathbf d=(d_x,d_y,d_z)\)</span> pointing <strong>from the camera toward the Gaussian</strong>, the degree-3 SH color uses 16 real basis functions for each RGB channel:</p>
+<div class="arithmatex">\[
+\boxed{\mathbf c(\mathbf d)=\max\!\left(\mathbf 0,\;\frac12\mathbf 1+
+\sum_{k=0}^{15}Y_k(\mathbf d)\,\mathbf a_k\right).}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(Y_k\)</span> is a fixed direction-dependent basis function.</li>
+<li><span class="arithmatex">\(\mathbf a_k\in\mathbb R^3\)</span> is a learned coefficient for R, G, and B.</li>
+<li>Degree 0 uses <strong>one coefficient per channel</strong> (the constant component).</li>
+<li>Degree 3 uses <strong>16 coefficients per channel</strong>, or <strong>48 appearance values per Gaussian</strong>.</li>
+</ul>
+<p>The constant coefficient is learned from point RGB at initialization; the remaining 45 coefficients start at zero. The official trainer starts with active degree 0 and increases the active SH degree at intervals of 1,000 iterations, until the configured maximum (typically 3). <a href="https://github.com/graphdeco-inria/gaussian-splatting/blob/main/train.py">Source: <code>train.py</code></a>.</p>
+<h3 id="worked-first-order-example">Worked first-order example</h3>
+<p>For one color channel and just two illustrative basis terms, imagine</p>
+<div class="arithmatex">\[c(\mathbf d)=0.5 + a_0 Y_0 + a_1Y_1(\mathbf d).\]</div>
+<p>Moving the camera changes <span class="arithmatex">\(Y_1(\mathbf d)\)</span> while <span class="arithmatex">\(a_0\)</span> and <span class="arithmatex">\(a_1\)</span> remain fixed. This is how a trained Gaussian can change its apparent color across viewpoints <strong>without storing separate RGB values for every camera</strong>.</p>
+<h3 id="interactive-experiment-view-direction-and-apparent-color">Interactive experiment: view direction and apparent color</h3>
+<div class="v3-extra-lab" id="v3-sh-lab">
+  <div class="v3-extra-head">A one-channel first-order SH teaching model</div>
+  <p>Rotate the viewing direction. The plotted color intensity changes from a fixed set of illustrative coefficients; the Gaussian's parameters do not change.</p>
+  <label for="v3-sh-angle">Viewing angle: <output id="v3-sh-angle-label">0°</output></label>
+  <input id="v3-sh-angle" type="range" min="0" max="360" step="5" value="0" style="width:100%">
+  <div class="v3-extra-flex">
+    <div class="v3-color-sample" id="v3-sh-swatch"></div>
+    <div><strong id="v3-sh-value">—</strong><div class="v3-extra-muted">Toy expression: intensity = clamp(0.55 + 0.30 cos(angle), 0, 1).</div></div>
+  </div>
+  <p class="v3-extra-note">This shows **directional dependence**, not the actual learned coefficients in your PLY. Use the real-data notebook below to inspect trained SH values.</p>
+</div>
+
+<div class="admonition important">
+<p class="admonition-title">Color is not opacity</p>
+<p>SH supplies a Gaussian's RGB value for the current camera direction. The projected spatial footprint and opacity determine <strong>how strongly that color enters each pixel</strong>, after accounting for nearer Gaussians.</p>
+</div>
+<h2 id="6-tile-based-rasterization-how-the-gpu-finds-the-relevant-gaussians">6. Tile-based rasterization: how the GPU finds the relevant Gaussians</h2>
+<p>Imagine an image of size <span class="arithmatex">\(64\times64\)</span> pixels. The reference rasterizer processes it as a grid of <strong><span class="arithmatex">\(16\times16\)</span>-pixel tiles</strong>: there are <span class="arithmatex">\(4\times4=16\)</span> tiles. For a full-resolution image, there can be many more tiles.</p>
+<p><img alt="Camera-dependent visibility and Gaussian coverage" src="../assets/camera-dependent-visibility.svg" /></p>
+<p>A naive renderer would test <strong>every Gaussian against every pixel</strong>. The tile-based rasterizer avoids most unnecessary tests.</p>
+<h3 id="the-actual-steps">The actual steps</h3>
+<ol>
+<li><strong>Project</strong> the Gaussian center and covariance to the current camera, estimate a bounded screen-space footprint, and cull irrelevant Gaussians.</li>
+<li><strong>Find its overlapping tile rectangle.</strong> If its footprint bounds overlap tiles T5 and T6, both tiles record the Gaussian's ID.</li>
+<li><strong>Emit references, not new Gaussians.</strong> A single Gaussian may appear in several tile lists; this is not densification.</li>
+<li><strong>Sort by tile ID and camera depth.</strong> The code constructs a combined sort key containing the tile and the Gaussian-center depth.</li>
+<li><strong>Create a list range for each tile</strong>, then have the pixel-processing GPU threads read that tile's ordered Gaussian references.</li>
+<li><strong>For each pixel</strong>, evaluate spatial weights and alpha, and blend contributions front to back.</li>
+</ol>
+<p>The depth ordering uses Gaussian-center depth, which is an approximation rather than an independent exact surface ordering at each pixel. Relevant reference CUDA functions include <code>duplicateWithKeys</code>, <code>identifyTileRanges</code>, and <code>renderCUDA</code> in the <a href="https://github.com/graphdeco-inria/diff-gaussian-rasterization">differentiable rasterizer</a>.</p>
+<h3 id="interactive-experiment-tile-coverage">Interactive experiment: tile coverage</h3>
+<div class="v3-extra-lab" id="v3-tiles-lab">
+  <div class="v3-extra-head">Move the Gaussian's screen-space footprint over the tile grid</div>
+  <p>The blue tiles receive a **reference to this Gaussian** because its conservative bounding rectangle overlaps them.</p>
+  <div class="v3-tile-layout">
+    <svg id="v3-tiles-svg" viewBox="0 0 320 320" role="img" aria-label="Interactive four by four image tile grid" style="width:100%;max-width:350px;background:var(--md-default-bg-color,#fff)"></svg>
+    <div class="v3-tile-controls">
+      <label for="v3-tile-x">Gaussian center x: <output id="v3-tile-x-label">25</output> px</label>
+      <input id="v3-tile-x" type="range" min="0" max="64" step="1" value="25">
+      <label for="v3-tile-y">Gaussian center y: <output id="v3-tile-y-label">25</output> px</label>
+      <input id="v3-tile-y" type="range" min="0" max="64" step="1" value="25">
+      <label for="v3-tile-r">Bounding radius: <output id="v3-tile-r-label">13</output> px</label>
+      <input id="v3-tile-r" type="range" min="2" max="28" step="1" value="13">
+      <div class="v3-extra-result"><strong id="v3-tile-count">—</strong><div id="v3-tile-list">—</div></div>
+      <button type="button" id="v3-tile-reset">Reset</button>
+    </div>
+  </div>
+  <p class="v3-extra-note">This diagram uses a circular outline for visibility and a square bounding box for tile assignment. An actual 2D Gaussian can be elliptical; the CUDA implementation computes conservative pixel bounds using its projected covariance.</p>
+</div>
+
+<h3 id="numerical-tile-example">Numerical tile example</h3>
+<p>Suppose Gaussian <strong>G7</strong> projects to <span class="arithmatex">\((25,25)\)</span> with a 13-pixel bounding radius. Its rectangle spans approximately pixels 12–38 horizontally and vertically, crossing tile columns 0, 1, and 2 and tile rows 0, 1, and 2. Thus G7 appears in <strong>nine tile lists</strong>. There is still only <strong>one Gaussian G7 in the 3D scene</strong>.</p>
+<p>Now tile T5 might contain G7 (depth 2), G12 (depth 5), and G4 (depth 8). The rasterizer sorts the references in that order for the tile. It does <strong>not</strong> sort by a semantic label or by Gaussian color.</p>
+<h2 id="7-visibility-and-alpha-compositing">7. Visibility and alpha compositing</h2>
+<p>Tile sorting brings each pixel a candidate list. The <strong>pixel</strong> then determines each Gaussian's actual opacity at its location and combines the colors in front-to-back order.</p>
+<p>For pixel <span class="arithmatex">\(\mathbf p\)</span>, let <span class="arithmatex">\(\alpha_i(\mathbf p)\)</span> be Gaussian <span class="arithmatex">\(i\)</span>'s effective alpha, <span class="arithmatex">\(\mathbf c_i\)</span> its evaluated SH color, and <span class="arithmatex">\(T_i\)</span> the transmittance remaining before that Gaussian:</p>
+<div class="arithmatex">\[
+T_1=1,\qquad T_i(\mathbf p)=\prod_{j&lt;i}(1-\alpha_j(\mathbf p)).
+\]</div>
+<p>Then the rendered RGB value, including remaining background, is</p>
+<div class="arithmatex">\[
+\boxed{\hat{\mathbf C}(\mathbf p)=
+\sum_{i=1}^{N}T_i(\mathbf p)\alpha_i(\mathbf p)\mathbf c_i
++T_{N+1}(\mathbf p)\mathbf c_{\mathrm{bg}}.}
+\]</div>
+<h3 id="worked-example-red-in-front-of-blue">Worked example: red in front of blue</h3>
+<p>A near red Gaussian has <span class="arithmatex">\(\alpha_1=0.6\)</span> and <span class="arithmatex">\(\mathbf c_1=(1,0,0)\)</span>. A farther blue one has <span class="arithmatex">\(\alpha_2=0.5\)</span> and <span class="arithmatex">\(\mathbf c_2=(0,0,1)\)</span>. With a black background,</p>
+<div class="arithmatex">\[
+\hat{\mathbf C}=0.6(1,0,0)+(1-0.6)\cdot0.5(0,0,1)=(0.6,0,0.2).
+\]</div>
+<p>Why is the blue contribution only 0.2? The front Gaussian leaves transmittance <span class="arithmatex">\(T_2=1-0.6=0.4\)</span>, so its effective contribution is <span class="arithmatex">\(0.4\times0.5=0.2\)</span>. Rear objects cannot contribute at full strength through an already opaque foreground.</p>
+<p><img alt="How three overlapping alpha layers combine at one pixel" src="../assets/alpha-layers.svg" /></p>
+<h3 id="try-it-interactive-compositing">Try it: interactive compositing</h3>
+<p><iframe src="../assets/alpha-compositing.html" title="Interactive front-to-back Gaussian alpha compositing" loading="lazy" style="width:100%;height:515px;border:1px solid #d8dee8;border-radius:10px;"></iframe></p>
+<p><a href="../assets/alpha-compositing.html">Open the compositing explorer separately</a>.</p>
+<p><strong>Distinguish these three:</strong> an SH color is an RGB value evaluated from a direction; <strong>base opacity</strong> is a learned Gaussian parameter; <strong>effective alpha</strong> varies by pixel due to the Gaussian's projected footprint. They are combined through <strong>transmittance</strong>.</p>
+<hr />
+<h2 id="8-rgb-reconstruction-loss-and-backpropagation">8. RGB reconstruction loss and backpropagation</h2>
+<p>This section integrates our formerly separate <strong>Vanilla 3DGS Loss Function</strong> tutorial, including both of its interactive labs. Readers can follow the loss calculation without switching pages.</p>
+<div class="admonition info">
+<p class="admonition-title">Core training objective</p>
+<p>The baseline Vanilla 3DGS RGB objective combines <strong>L1 image reconstruction</strong> and <strong>SSIM structural similarity</strong>. The default mixing weight is <span class="arithmatex">\(\lambda=0.2\)</span>. Some newer repository versions additionally support <strong>optional depth regularization</strong>, which is separate from the basic RGB objective and only applies when configured and valid depth supervision is available.</p>
+</div>
+<h3 id="81-what-is-compared-with-what">8.1. What is compared with what?</h3>
+<p>Imagine a photograph of a chair in an indoor room. COLMAP has estimated the camera pose of that photograph. We use <strong>that same camera</strong> to render the current Gaussian scene.</p>
+<p><img alt="RGB reconstruction and optimization pipeline in Vanilla 3DGS" src="../assets/rgb-loss-pipeline-paper.svg" /></p>
+<p><em>Figure: Vanilla 3DGS RGB reconstruction training pipeline. A rendered image is compared with the reference photograph from the same camera viewpoint. The loss is backpropagated through the differentiable renderer to update Gaussian parameters.</em></p>
+<p>Let the original photograph be \(I_v\) and the rendered photograph be \(\hat I_v\) for camera view \(v\). They have the <strong>same image dimensions</strong>, and pixel \((x,y)\) of one corresponds to pixel \((x,y)\) of the other.</p>
+<ul>
+<li><strong>Original image \(I_v\):</strong> fixed training target; its RGB values are not updated.</li>
+<li><strong>Rendered image \(\hat I_v\):</strong> computed from the current trainable Gaussian scene and camera.</li>
+<li><strong>Pixelwise difference:</strong> measures a mismatch in image space, not a distance between 3D points.</li>
+</ul>
+<p>The renderer is a function of the Gaussian parameters \(\theta\) and the known camera \(\mathcal C_v\):</p>
+<div class="v3dgs-equation">\[\hat I_v=\mathcal R(\theta,\mathcal C_v)\]</div>
+
+<p>Each Gaussian has a 3D mean (position), a covariance (shape and orientation), an opacity parameter, and view-dependent color parameters represented with spherical harmonics. Their combined projections and alpha compositing produce the rendered RGB image.</p>
+<h3 id="82-interactive-lab-compare-a-reference-image-with-a-rendering">8.2. Interactive lab: Compare a reference image with a rendering</h3>
+<p>In this miniature <em>illustrative indoor scene</em>, a chair has the wrong brightness and horizontal position in the rendered image. Move the controls and observe <strong>three images</strong>: the fixed reference, the current rendering, and a pixelwise error visualization.</p>
+<p><strong>Important:</strong> This lab draws a small synthetic image to illustrate the RGB comparison. It is <strong>not</strong> a full 3D Gaussian rasterizer. The loss functions, however, are computed from the actual image arrays, including a windowed SSIM calculation.</p>
+<div class="v3dgs-lab" id="v3dgs-image-lab">
+  <div class="v3dgs-kicker">Interactive experiment A · RGB reconstruction</div>
+  <div class="v3dgs-heading">A small indoor photograph</div>
+  <p class="v3dgs-muted">The original is fixed. Change the simulated rendering to see how two standard loss components respond. Click any pixel to inspect its RGB values.</p>
+  <div class="v3dgs-visuals">
+    <div class="v3dgs-view"><div class="v3dgs-view-title">Reference image</div><canvas id="v3dgs-reference" width="32" height="24" aria-label="Original synthetic indoor room image"></canvas><small>Fixed training target</small></div>
+    <div class="v3dgs-view"><div class="v3dgs-view-title">Rendered image</div><canvas id="v3dgs-rendered" width="32" height="24" aria-label="Editable rendering of indoor room"></canvas><small>Current Gaussian scene (analogy)</small></div>
+    <div class="v3dgs-view"><div class="v3dgs-view-title">Absolute difference</div><canvas id="v3dgs-difference" width="32" height="24" aria-label="Heatmap of per pixel RGB error"></canvas><small>Brighter red = larger RGB error</small></div>
+  </div>
+  <div class="v3dgs-controls">
+    <div class="v3dgs-control"><label for="v3dgs-chair-light">Rendered chair brightness <output id="v3dgs-chair-value">65%</output></label><input id="v3dgs-chair-light" type="range" min="20" max="160" step="5" value="65"></div>
+    <div class="v3dgs-control"><label for="v3dgs-chair-shift">Rendered chair horizontal offset <output id="v3dgs-shift-value">+2 px</output></label><input id="v3dgs-chair-shift" type="range" min="-5" max="5" step="1" value="2"></div>
+    <div class="v3dgs-control"><label for="v3dgs-lambda">SSIM loss weight (λ) <output id="v3dgs-lambda-value">0.20</output></label><input id="v3dgs-lambda" type="range" min="0" max="1" step="0.05" value="0.2"></div>
+  </div>
+  <div class="v3dgs-metrics" role="status" aria-live="polite">
+    <div class="v3dgs-metric"><span>Mean RGB L1</span><strong id="v3dgs-l1">—</strong></div>
+    <div class="v3dgs-metric"><span>1 − SSIM</span><strong id="v3dgs-dssim">—</strong></div>
+    <div class="v3dgs-metric"><span>Combined loss</span><strong id="v3dgs-total">—</strong></div>
+  </div>
+  <div class="v3dgs-readout" id="v3dgs-pixel-readout">Select a pixel on one of the images to compare its RGB values.</div>
+  <div class="v3dgs-actions"><button type="button" id="v3dgs-match">Match the reference chair</button><button type="button" class="v3dgs-secondary" id="v3dgs-reset-image">Reset experiment</button></div>
+  <p class="v3dgs-footnote">All RGB values are normalized to [0, 1] for loss calculation. SSIM uses 11×11 Gaussian-weighted neighborhoods (σ = 1.5), constants C₁ = 0.01² and C₂ = 0.03², and zero-padding as in the original software SSIM implementation. This tiny test image is only for learning, so numerical SSIM values are not representative of a full-resolution dataset.</p>
+  <noscript><p class="v3dgs-noscript">Enable JavaScript to use the interactive comparison. The mathematical explanation below remains available without JavaScript.</p></noscript>
+</div>
+
+<h4 id="the-first-loss-mean-absolute-rgb-error-l1">The first loss: Mean absolute RGB error (L1)</h4>
+<p>For RGB images of height \(H\) and width \(W\), <strong>mean L1</strong> is:</p>
+<div class="v3dgs-equation">\[\mathcal L_{\mathrm{RGB}\text{-}L1}=\frac{1}{3HW}\sum_{y=1}^{H}\sum_{x=1}^{W}\sum_{c\in\{R,G,B\}}\left|I_v(y,x,c)-\hat I_v(y,x,c)\right|\]</div>
+
+<p>The images are normalized to \([0,1]\). For example, for a single RGB pixel:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Channel</th>
+<th style="text-align: right;">Original (0–255)</th>
+<th style="text-align: right;">Rendered (0–255)</th>
+<th style="text-align: right;">Absolute error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Red</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td style="text-align: left;">Green</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">20</td>
+</tr>
+</tbody>
+</table>
+<p>Its mean absolute channel error is \((30+20+20)/(3\times255)\approx0.0915\) after normalization. Real training averages this error across <strong>every pixel</strong> in the selected training image.</p>
+<p>L1 is easy to interpret, but independently matching color values does not fully express whether the image has the right <strong>local patterns and structure</strong>. That motivates the second term.</p>
+<h4 id="the-second-loss-structural-similarity-ssim">The second loss: Structural similarity (SSIM)</h4>
+<p>SSIM compares <strong>local neighborhoods</strong> of corresponding images. In each local window it uses brightness statistics, contrast statistics, and covariance (how pixel variations agree).</p>
+<p>For two local image windows \(x\) and \(y\):</p>
+<div class="v3dgs-equation">\[\operatorname{SSIM}(x,y)=\frac{(2\mu_x\mu_y+C_1)(2\sigma_{xy}+C_2)}{(\mu_x^2+\mu_y^2+C_1)(\sigma_x^2+\sigma_y^2+C_2)}\]</div>
+
+<p>where \(\mu_x,\mu_y\) are local means; \(\sigma_x^2,\sigma_y^2\) are local variances; \(\sigma_{xy}\) is local covariance. The original 3DGS loss utility uses an <strong>11×11 Gaussian window</strong> with \(\sigma=1.5\), \(C_1=0.01^2\), \(C_2=0.03^2\), and averages the SSIM map over image pixels and channels.</p>
+<ul>
+<li>A perfect match has <strong>SSIM = 1</strong>, hence <strong>1 − SSIM = 0</strong>.</li>
+<li>Blurred edges, displaced structures, or incorrect local contrast usually decrease SSIM.</li>
+<li>The training objective therefore minimizes <strong>\(1-\operatorname{SSIM}\)</strong> rather than maximizing SSIM directly.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Explore the distinction</p>
+<p>In the image lab, first set the chair brightness to <strong>100%</strong> but leave its horizontal position offset. Then set the offset to <strong>0</strong>. Watch how a structural misalignment affects both L1 and SSIM even when the chair's RGB values are otherwise correct.</p>
+</div>
+<h3 id="83-combining-l1-and-ssim">8.3. Combining L1 and SSIM</h3>
+<p>The <strong>core RGB reconstruction objective</strong> in original vanilla 3DGS is:</p>
+<div class="v3dgs-equation">\[\boxed{\mathcal L_{\mathrm{RGB}}=(1-\lambda)\,\mathcal L_{\mathrm{RGB}\text{-}L1}+\lambda\,\bigl(1-\operatorname{SSIM}(\hat I_v,I_v)\bigr)}\]</div>
+
+<p>With the default \(\lambda=0.2\):</p>
+<div class="v3dgs-equation">\[\boxed{\mathcal L_{\mathrm{RGB}}=0.8\,\mathcal L_{\mathrm{RGB}\text{-}L1}+0.2\,(1-\operatorname{SSIM})}\]</div>
+
+<p>You can adjust \(\lambda\) in the interactive lab. <strong>The combined loss is a scalar</strong>, but it was computed from many individual image differences. Its derivative with respect to all trainable Gaussians is obtained using automatic differentiation through the renderer.</p>
+<div class="admonition note">
+<p class="admonition-title">Scope of the equation</p>
+<p>This page explains the original <strong>RGB photometric objective</strong>. More recent versions of the official implementation can <strong>optionally add inverse-depth regularization</strong> when suitable depth supervision is available. That extra term is not part of the simple two-term RGB objective explained here.</p>
+</div>
+<h3 id="84-how-a-pixels-error-reaches-a-gaussian">8.4. How a pixel's error reaches a Gaussian</h3>
+<p>A pixel itself is <strong>not</strong> a trainable variable. The pixel value results from projected Gaussian footprints, their colors, visibility, and front-to-back alpha compositing.</p>
+<p>For a pixel \(p\), the renderer can be written schematically as:</p>
+<div class="v3dgs-equation">\[\hat{\mathbf C}(p)=\sum_{i=1}^{N}T_i(p)\,\alpha_i(p)\,\mathbf c_i(p)+T_{N+1}(p)\,\mathbf c_{\mathrm{bg}},\qquad T_i(p)=\prod_{j<i}\bigl(1-\alpha_j(p)\bigr)\]</div>
+
+Here, Gaussians are ordered front-to-back **for that camera view**; \\(\alpha_i(p)\\) is the effective pixel opacity (learned opacity multiplied by the 2D Gaussian footprint); \\(T_i(p)\\) is accumulated transmittance; \\(\mathbf c_i(p)\\) is the Gaussian's possibly view-dependent RGB color.
+
+For one grayscale pixel with just **two** front-to-back Gaussians, this reduces to:
+
+<div class="v3dgs-equation">\[\hat C=\alpha_1c_1+(1-\alpha_1)\alpha_2c_2+(1-\alpha_1)(1-\alpha_2)c_{\mathrm{bg}}\]</div>
+
+In the next interactive lab, each color is one grayscale number. The background is fixed at 0.10, and we use a target pixel of 0.75. Move the sliders to see how a *single pixel error* depends on multiple Gaussian parameters.
+
+<div class="v3dgs-lab" id="v3dgs-splat-lab">
+  <div class="v3dgs-kicker">Interactive experiment B · Backpropagation intuition</div>
+  <div class="v3dgs-heading">One pixel produced by two Gaussians</div>
+  <p class="v3dgs-muted">Gaussian 1 is in front of Gaussian 2. Adjust their effective pixel opacities and grayscale colors. The target is fixed at 0.75.</p>
+  <div class="v3dgs-splat-layout">
+    <div class="v3dgs-controls" style="grid-template-columns:1fr;margin:0">
+      <div class="v3dgs-control"><label for="v3dgs-a1">G₁ effective opacity (α₁) <output id="v3dgs-a1-val">0.60</output></label><input id="v3dgs-a1" type="range" min="0" max="1" step="0.01" value="0.6"></div>
+      <div class="v3dgs-control"><label for="v3dgs-c1">G₁ grayscale color (c₁) <output id="v3dgs-c1-val">0.45</output></label><input id="v3dgs-c1" type="range" min="0" max="1" step="0.01" value="0.45"></div>
+      <div class="v3dgs-control"><label for="v3dgs-a2">G₂ effective opacity (α₂) <output id="v3dgs-a2-val">0.50</output></label><input id="v3dgs-a2" type="range" min="0" max="1" step="0.01" value="0.5"></div>
+      <div class="v3dgs-control"><label for="v3dgs-c2">G₂ grayscale color (c₂) <output id="v3dgs-c2-val">0.90</output></label><input id="v3dgs-c2" type="range" min="0" max="1" step="0.01" value="0.9"></div>
+    </div>
+    <div class="v3dgs-splat-pixel">
+      <div class="v3dgs-kicker">Target grayscale</div><div style="background:rgb(191,191,191)" class="v3dgs-pixelbox"></div>
+      <div class="v3dgs-kicker">Rendered grayscale</div><div id="v3dgs-splat-result" class="v3dgs-pixelbox" style="background:rgb(120,120,120)"></div>
+      <div style="font-size:.86rem">Rendered: <strong id="v3dgs-predicted">0.470</strong><br>L1: <strong id="v3dgs-pixel-loss">0.280</strong></div>
+      <div class="v3dgs-mini-bar"><div id="v3dgs-matchbar" style="width:72%"></div></div>
+    </div>
+  </div>
+  <div class="v3dgs-readout">
+    <div><strong>Contributions to the rendered pixel</strong></div>
+    <div id="v3dgs-contributions">G₁: 0.270 + G₂: 0.180 + background: 0.020 = 0.470</div>
+    <div style="margin-top:7px"><strong>L1 gradients, holding opacities fixed</strong></div>
+    <div id="v3dgs-gradients">∂L/∂c₁ = −0.600; ∂L/∂c₂ = −0.200</div>
+  </div>
+  <div class="v3dgs-actions"><button type="button" id="v3dgs-step">Apply one toy SGD step (colors only)</button><button type="button" class="v3dgs-secondary" id="v3dgs-reset-splats">Reset</button></div>
+  <p class="v3dgs-footnote">This applies an illustrative SGD step with learning rate 0.2 to two grayscale color values using one-pixel L1 gradients. Actual 3DGS uses many RGB pixels, view-dependent colors, full rasterizer derivatives, parameter-specific learning rates, and Adam-style optimization. It does not use this toy update rule.</p>
+</div>
+
+#### Why the two Gaussian colors receive different gradients
+
+In the simplified two-Gaussian pixel:
+
+<div class="v3dgs-equation">\[\frac{\partial\hat C}{\partial c_1}=\alpha_1,\qquad\frac{\partial\hat C}{\partial c_2}=(1-\alpha_1)\alpha_2\]</div>
+
+For the single-pixel L1 loss \\(L=|\hat C-C_{\mathrm{target}}|\\), away from an exact match:
+
+<div class="v3dgs-equation">\[\frac{\partial L}{\partial c_i}=\operatorname{sign}(\hat C-C_{\mathrm{target}})\frac{\partial\hat C}{\partial c_i}\]</div>
+
+This is the **chain rule**. The pixel error affects both Gaussians but in proportion to how strongly their color values influence the rendered pixel.
+
+In a full image, a Gaussian may contribute to hundreds of pixels. Its total gradient accumulates the derivatives from **all relevant pixel losses**. Position, covariance, and opacity also receive gradients through their effect on projected footprints and compositing weights.
+
+**No Gaussian is assigned permanently to one pixel.** The same 3D Gaussian projects into different image regions for different camera viewpoints.
+
+### 8.5. End-to-end training through the loss
+
+1. **Select a known training camera** and its original photograph. Camera parameters come from the reconstruction (such as COLMAP).
+2. **Project visible 3D Gaussians** into that camera view. Their 3D positions/covariances determine screen-space footprints and the visibility order.
+3. **Rasterize and alpha-composite** the Gaussians into a rendered RGB image \\(\hat I_v\\).
+4. **Compute loss:** mean RGB L1 and local SSIM against the original image \\(I_v\\), weighted 0.8 and 0.2 by default.
+5. **Backpropagate:** automatic differentiation computes \\(\nabla_\theta\mathcal L\\) through the rendering computation.
+6. **Update Gaussian parameters:** the optimizer uses those gradients to change the learned parameters, subject to their learning rates and optimizer states.
+7. **Repeat from other camera views.** Many distinct observations constrain the same shared 3D scene.
+
+A mathematical summary is:
+
+<div class="v3dgs-equation">\[\theta\longrightarrow\hat I_v=\mathcal R(\theta,\mathcal C_v)\longrightarrow\mathcal L(\hat I_v,I_v)\longrightarrow\nabla_{\theta}\mathcal L\longrightarrow\theta_{\mathrm{updated}}\]</div>
+
+The toy examples use gradient descent for transparency. In real training, vanilla 3DGS uses adaptive optimization (typically Adam). The optimizer's update depends not only on the current gradient but also on its accumulated optimizer statistics.
+
+#### Densification is a separate operation
+
+Gradient descent changes attributes of existing Gaussians. **Densification** can additionally clone or split Gaussians where reconstruction would benefit from more representation capacity, while pruning removes unhelpful Gaussians. These are part of the broader training algorithm, but **they are not additional terms in the core RGB loss equation**.
+
+### 8.6. Frequently confused ideas
+
+| Question | Correct mental model |
+|---|---|
+| Is loss computed in 3D? | The **RGB loss is evaluated in 2D image space**; gradients then update 3D scene parameters. |
+| Does each pixel have one Gaussian? | No. A pixel can combine several Gaussians, and each Gaussian may cover many pixels. |
+| Does the model directly change pixel colors? | No. It changes the **Gaussian parameters** that produce those pixels when rendered. |
+| Is the original image updated? | No. It is the fixed ground-truth target for that training view. |
+| Are L1 and SSIM separate training passes? | No. They contribute to **one combined differentiable loss** for the rendered image. |
+| Is PSNR another training loss in vanilla 3DGS? | Normally **no**. PSNR is primarily a reconstruction-quality evaluation metric. |
+| Does one low-loss training image prove a correct 3D reconstruction? | No. Accurate **novel views and held-out camera views** are needed to judge whether the shared scene generalizes. |
+
+### 8.7. Check your understanding
+
+<details><summary><strong>Question 1.</strong> If a rendered chair pixel is too dark, which parameter is updated: the pixel or the Gaussians?</summary>
+<p>The **Gaussians**. Backpropagation computes how their colors, opacities, projected positions, and other trainable parameters affect that pixel and the rest of the image.</p>
+</details>
+
+<details><summary><strong>Question 2.</strong> Why can one Gaussian receive gradients from several different pixels?</summary>
+<p>Because the Gaussian's projected footprint contributes to a <strong>region</strong> of the image. Its parameter changes can alter all those pixels simultaneously.</p>
+</details>
+
+<details><summary><strong>Question 3.</strong> If the chair's color is correct but its rendered silhouette is displaced, should the loss already be zero?</summary>
+<p>No. Corresponding image locations still have different RGB values. L1 detects the mismatch, and SSIM also responds to displaced local structure.</p>
+</details>
+
+
+---
+
+## 9. Adaptive density control: clone, split, or prune
+
+![Cloning, splitting, and removing Gaussian primitives](assets/densification.svg)
+
+**Who makes the decision?** The authors programmed explicit heuristics in the training code. Adam does not autonomously decide how many Gaussians the scene should contain. The optimizer updates existing numerical parameters, while a **periodic density-control procedure** can alter the population of Gaussians.
+
+### 9.1 The statistic behind the decision
+
+For Gaussian $i$ in a sampled camera, the renderer exposes its projected center $(u_i,v_i)$. Backpropagation produces the gradient of the loss with respect to that projected center:
+
+$$
+g_i^{(v)}=\left\lVert\left(\frac{\partial\mathcal L_v}{\partial u_i},
+\frac{\partial\mathcal L_v}{\partial v_i}\right)\right\rVert_2.
+$$
+
+The code accumulates those magnitudes for visible Gaussians across training views and uses the average
+
+$$
+\bar g_i=\frac{\sum_{v\in\mathcal V_i}g_i^{(v)}}{|\mathcal V_i|}.
+$$
+
+A large $\bar g_i$ says that the image loss is **sensitive to changes in this Gaussian's projected position**. It does not mean the Gaussian belongs to an incorrectly segmented object or necessarily has the largest RGB loss by itself.
+
+### 9.2 The clone/split decision rules
+
+For illustration, let $E$ be the scene extent estimated from the cameras and let $s_{\max,i}$ be the Gaussian's largest activated scale. With reference defaults,
+
+- Screen-space gradient threshold: $\tau_g=0.0002$.
+- Small-versus-large scale boundary: $s_{\mathrm{cut}}=0.01E$.
+- Low-opacity pruning threshold: $o_{\mathrm{min}}=0.005$.
+
+The main conditions are:
+
+| Condition | Action | Does the original remain? |
+|---|---|---|
+| $\bar g_i\geq\tau_g$ and $s_{\max,i}\leq 0.01E$ | **Clone**: add one copy of the small Gaussian | Yes |
+| $\bar g_i\geq\tau_g$ and $s_{\max,i}>0.01E$ | **Split**: create two smaller Gaussians near the parent | No, parent is removed |
+| Activated opacity $o_i<0.005$ | **Prune**: delete Gaussian | No |
+| Otherwise | **Keep** and optimize the existing Gaussian | Yes |
+
+**The real routine is staged, not a single `if/elif` statement.** It runs cloning and splitting passes and then evaluates pruning for the resulting population. It may additionally remove Gaussians that are too large in screen or world space after a size threshold is enabled. The simulation below deliberately shows the main simplified decision.
+
+### Interactive density-control simulator
+
+<div class="v3-extra-lab" id="v3-dense-lab">
+  <div class="v3-extra-head">Would the algorithm retain, clone, split, or prune this Gaussian?</div>
+  <p>Illustrative scene extent <strong>E = 10 world units</strong>. The small/large boundary is therefore <strong>0.1</strong>. Adjust the quantities used by the reference heuristics.</p>
+  <label for="v3-dense-grad">Mean position-gradient magnitude: <output id="v3-dense-grad-label">0.00035</output></label>
+  <input type="range" id="v3-dense-grad" min="0" max="0.0006" step="0.00001" value="0.00035">
+  <label for="v3-dense-size">Maximum activated scale: <output id="v3-dense-size-label">0.060</output></label>
+  <input type="range" id="v3-dense-size" min="0.01" max="0.30" step="0.005" value="0.06">
+  <label for="v3-dense-opacity">Activated opacity: <output id="v3-dense-opacity-label">0.800</output></label>
+  <input type="range" id="v3-dense-opacity" min="0" max="1" step="0.001" value="0.8">
+  <div class="v3-extra-result"><strong id="v3-dense-decision">—</strong><p id="v3-dense-explanation">—</p></div>
+  <button type="button" id="v3-dense-reset">Reset</button>
+  <p class="v3-extra-note">Pruning and size checks in the real code can override a clone/split example. This simulator is a teaching aid, not a preview of the exact training trajectory.</p>
+</div>
+
+### 9.3 What happens during cloning, splitting, and pruning?
+
+**Clone:** one additional Gaussian begins with the same position, SH coefficients, shape, opacity, and rotation as the chosen small Gaussian. The old Gaussian remains. Each subsequently has independently optimized parameters.
+
+**Split:** the reference code samples two offsets using the parent's activated scale and rotation; it creates two child Gaussians nearby and removes the parent. For the usual two-way split it sets each child's activated scale to approximately the parent's scale divided by $0.8\times2=1.6$. Copied appearance and opacity attributes can then be refined separately.
+
+**Prune:** the code deletes the selected Gaussian's parameter rows, updates the optimizer parameter tensors/state accordingly, and no longer renders it. Other Gaussians may still explain the same image region.
+
+**Merge:** a merge/combine operation is **not** part of this standard Vanilla 3DGS density-control routine. When a large Gaussian is split, it is *replaced*, not merged.
+
+### 9.4 When do these rules run?
+
+For a typical reference 30,000-iteration configuration:
+
+| Default | Value | Meaning |
+|---|---:|---|
+| `densify_from_iter` | 500 | Densification checks begin after this iteration |
+| `densification_interval` | 100 | Check periodically while enabled |
+| `densify_until_iter` | 15,000 | Densification ends before this iteration |
+| `densify_grad_threshold` | 0.0002 | Threshold on averaged view-space position-gradient magnitude |
+| `opacity_reset_interval` | 3,000 | Periodic opacity reset |
+| `percent_dense` | 0.01 | Scale threshold as a fraction of scene extent |
+
+The opacity reset is **not pruning**: it caps activated opacities at 0.01, after which training can increase them again. When size pruning is enabled in the reference code, Gaussians that are too large on screen (more than 20 pixels of recorded radius) or in world space (largest scale more than 0.1 times scene extent) may also be removed.
+
+Your model's growth from **38,558 initial Gaussians** to **637,141** is the result of this population-management process together with optimization—not because the method creates one Gaussian for every pixel.
+
+## 10. Inside one optimization iteration
+
+To understand the exact division of labor, track one iteration from beginning to end:
+
+
+<pre><code class="language-text">Choose a registered camera and its original RGB image
+         ↓
+Compute Gaussian position, covariance, SH color, opacity
+         ↓
+Project → assign Gaussians to image tiles → sort references
+         ↓
+For each pixel, blend relevant Gaussians front to back
+         ↓
+Render RGB image at the chosen camera viewpoint
+         ↓
+Compare with the fixed original photograph (L1 + SSIM)
+         ↓
+Backpropagate through the renderer
+         ↓
+Accumulate position-gradient statistics for density control
+         ↓
+When scheduled: clone / split / prune and reset opacity
+         ↓
+Optimizer step on the current trainable Gaussian parameters
+         ↓
+Repeat for another training camera
+</code></pre>
+
+
+The update paths are related but different:
+
+- **Gradient descent / Adam:** adjusts numerical values on the current Gaussian parameter tensors.
+- **Adaptive density control:** adds or deletes parameter rows according to rules and their accumulated statistics.
+- **Tile rasterization:** efficiently computes pixels and gradients from the current collection without changing how many Gaussians exist.
+
+### Interactive full-pipeline review
+
+<iframe src="../assets/3dgs_pipeline_explorer.html" title="Guided five-stage training pipeline explorer" loading="lazy" style="width:100%;height:860px;border:1px solid #d8dee8;border-radius:10px;"></iframe>
+
+[Open the full pipeline explorer separately](assets/3dgs_pipeline_explorer.html).
+
+*The pipeline visualization is a guided numerical model, not the full CUDA implementation.*
+
+## 11. The trained model: understanding the PLY file
+
+![Trained PLY representation and resulting camera renderings](assets/ply-render-view.svg)
+
+A trained standard degree-3 Vanilla PLY includes **62 floating-point fields** per Gaussian in the reference format:
+
+| Field group | Number | What it is |
+|---|---:|---|
+| `x`, `y`, `z` | 3 | 3D Gaussian center |
+| `nx`, `ny`, `nz` | 3 | Normal placeholders (zeros in the official export) |
+| `f_dc_0` ... `f_dc_2` | 3 | Constant SH color coefficients |
+| `f_rest_0` ... `f_rest_44` | 45 | Higher-order SH color coefficients |
+| `opacity` | 1 | Stored opacity logit |
+| `scale_0` ... `scale_2` | 3 | Stored log-scales |
+| `rot_0` ... `rot_3` | 4 | Stored quaternion (normalized for rendering) |
+| **Total** | **62** | **59 meaningful trained values + 3 placeholders** |
+
+**The model PLY is not a checkpoint with optimizer state**. In the reference training pipeline, a separate checkpoint can also retain the optimizer and other training state. And a conventional point-cloud viewer may not know how to interpret the SH coefficients and Gaussian-specific scale/opacity conventions.
+
+## 12. Experiments with a real trained scene
+
+This section uses your **actual trained PLY**. Python notebook cells are optional: the rest of the page is understandable without running them. The scripts `scripts/inspect_gaussians.py`, `scripts/inspect_colmap.py`, and `scripts/generate_figures.py` can also live in the website repository's root `scripts/` directory; they are not required by the browser page.
+
+### 12.1 Count and inspect the trained Gaussians
+
+
+<pre><code class="language-python">from plyfile import PlyData
+import numpy as np
+
+ply_path = r&quot;3dgs_outputs_no sam/my_first_scene/point_cloud/iteration_30000/point_cloud.ply&quot;
+ply = PlyData.read(ply_path)
+vtx = ply[&quot;vertex&quot;].data
+
+print(&quot;Trained Gaussians:&quot;, len(vtx))  # Indoor example: 637141
+print(&quot;Stored properties:&quot;, len(vtx.dtype.names))
+print(vtx.dtype.names)
+
+idx = 0
+center = np.array([vtx[k][idx] for k in (&quot;x&quot;, &quot;y&quot;, &quot;z&quot;)])
+scales = np.exp([vtx[f&quot;scale_{k}&quot;][idx] for k in range(3)])
+opacity = 1 / (1 + np.exp(-float(vtx[&quot;opacity&quot;][idx])))
+q = np.array([vtx[f&quot;rot_{k}&quot;][idx] for k in range(4)])
+q /= np.linalg.norm(q)
+
+print(&quot;Gaussian&quot;, idx)
+print(&quot;Center:&quot;, center)
+print(&quot;Activated scales:&quot;, scales)
+print(&quot;Activated opacity:&quot;, opacity)
+print(&quot;Normalized quaternion (w,x,y,z):&quot;, q)
+</code></pre>
+
+
+Notice that different Gaussians can have dramatically different **scales, thicknesses, and opacities**, even though they were all initialized from the same reconstruction strategy.
+
+### 12.2 Draw one Gaussian's ellipsoid
+
+Use $\boldsymbol\mu$, $R$, and activated scales from the previous cell. Every point $\mathbf u$ on a unit sphere can be mapped to an ellipsoid surface by
+
+$$
+\mathbf x=\boldsymbol\mu+R\operatorname{diag}(s_x,s_y,s_z)\mathbf u.
+$$
+
+This is a one-standard-deviation **level surface** of the Gaussian distribution; plotting it provides a shape visualization, not a complete rasterized image. The plot can use `matplotlib` or `plotly`. A Gaussian may look very thin, stretched, or tilted depending on its scales and orientation.
+
+### 12.3 Show a Gaussian projected into the camera image
+
+The official model directory often contains `cameras.json`. The path used in this example is:
+
+
+<pre><code class="language-python">cameras_json_path = r&quot;3dgs_outputs_no sam/my_first_scene/cameras.json&quot;
+</code></pre>
+
+
+Given a camera center $\mathbf C$ and camera-to-world rotation $R_{cw}$, the camera-space center is $\boldsymbol\mu_c=R_{cw}^\top(\boldsymbol\mu-\mathbf C)$. Then use the projection and Jacobian from [Section 4](#4-projecting-a-3d-gaussian-to-2d) to display its 2D covariance ellipse. Try several Gaussians in the **same camera**, then one Gaussian in **several cameras**.
+
+!!! warning "Visible center is not guaranteed visible surface"
+    A projected center inside the image only means it is inside the camera's image bounds; another foreground Gaussian may still occlude it. A 2D ellipse plot does not reproduce full visibility or compositing.
+
+### 12.4 Evaluate learned degree-3 SH coefficients
+
+This compact notebook example reads one Gaussian's complete stored appearance representation. It evaluates **all 16 degree-3 basis functions** using the official repository's helper rather than copying SH formulas by hand:
+
+
+<pre><code class="language-python">import numpy as np
+import torch
+from utils.sh_utils import eval_sh   # Run in the original Gaussian-Splatting repo environment
+
+idx = 0
+sh_dc = np.array([vtx[f&quot;f_dc_{k}&quot;][idx] for k in range(3)])
+sh_rest = np.array([vtx[f&quot;f_rest_{k}&quot;][idx] for k in range(45)]).reshape(3, 15)
+sh = np.concatenate((sh_dc[:, None], sh_rest), axis=1)  # (3, 16)
+
+# Illustrative unit camera-to-Gaussian direction (replace with real camera direction)
+direction = np.array([0.0, 0.0, 1.0])
+color = eval_sh(3, torch.tensor(sh, dtype=torch.float32),
+                torch.tensor(direction, dtype=torch.float32))
+rgb = torch.clamp_min(color + 0.5, 0.0).numpy()
+print(&quot;Direction-dependent RGB:&quot;, rgb)
+</code></pre>
+
+
+If you run this notebook **outside** the `gaussian-splatting` repository, `utils.sh_utils` may not be on `PYTHONPATH`. Run it from the official repo or import that helper explicitly. To compare viewpoints, compute each camera-to-Gaussian direction as $\mathbf d=(\boldsymbol\mu-\mathbf C)/\lVert\boldsymbol\mu-\mathbf C\rVert$.
+
+### 12.5 What to look for, beyond one Gaussian
+
+1. Try Gaussian indices 0, 100, 1,000, and 50,000; compare activated scales and opacity.
+2. Draw one Gaussian in 3D; inspect its projection into different cameras.
+3. Compare SH degree 0 against degree 3 for different viewing directions.
+4. Render a complete RGB image with the official renderer and inspect which structures still show artifacts.
+
+**Do not confuse per-Gaussian appearance with final rendered pixel RGB**: the latter is an ordered composition of many contributions.
+
+## 13. Limitations and common misconceptions
+
+| Tempting assumption | More precise interpretation |
+|---|---|
+| "Each Gaussian is one pixel." | Each 3D primitive can influence many pixels and appears in many views. |
+| "A Gaussian is a little solid ellipsoid." | An ellipsoid is a visualization of a continuous influence function. |
+| "Its opacity is the alpha of all its pixels." | Pixel alpha also depends on projected footprint weight. |
+| "Sorting happens once for all cameras." | The relevant tile lists and depth order change with camera. |
+| "Training directly modifies the rendered image." | The image is recomputed from modified Gaussian parameters. |
+| "Adam chooses to clone or split." | Explicit density-control heuristics manage primitive counts. |
+| "Splitting combines several Gaussians." | Splitting replaces one large Gaussian with smaller primitives; there is no default merge step. |
+| "A PLY file is equivalent to a PNG or OBJ mesh." | A Gaussian PLY stores trainable scene attributes, including SH and transformed parameters. |
+| "High PSNR proves the geometry is correct." | RGB quality alone cannot guarantee accurate geometry or unseen views. |
+| "The model knows what the chair is." | Vanilla 3DGS learns appearance and spatial representation; it does not directly produce object-instance semantics. |
+
+### Check yourself
+
+<details><summary><strong>1.</strong> If one Gaussian overlaps six tiles, how many Gaussians does the scene gain?</summary>
+<p><strong>Zero.</strong> Tile overlap creates six references to the same primitive for image rendering, not six new trainable primitives.</p>
+</details>
+
+<details><summary><strong>2.</strong> A Gaussian has a high average projected-position gradient but is small. What will the main densification rule do?</summary>
+<p>It can <strong>clone</strong> the Gaussian. The original remains; the new copy adds representation capacity for later optimization.</p>
+</details>
+
+<details><summary><strong>3.</strong> Why does the same trained Gaussian produce different colors when the camera moves?</summary>
+<p>Its SH coefficients stay fixed, but the <strong>viewing direction</strong> changes, changing the values of the directional SH basis functions.</p>
+</details>
+
+<details><summary><strong>4.</strong> If the foreground effective alpha is 0.8, what fraction of the background contribution can pass through?</summary>
+<p>The foreground leaves <strong>0.2 transmittance</strong>. Additional farther Gaussians may reduce it further before the background is included.</p>
+</details>
+
+## Primary sources
+
+- Kerbl et al., [*3D Gaussian Splatting for Real-Time Radiance Field Rendering*](https://arxiv.org/abs/2308.04079), ACM TOG 2023.
+- Official [3DGS repository](https://github.com/graphdeco-inria/gaussian-splatting): [`train.py`](https://github.com/graphdeco-inria/gaussian-splatting/blob/main/train.py), [`scene/gaussian_model.py`](https://github.com/graphdeco-inria/gaussian-splatting/blob/main/scene/gaussian_model.py), [`utils/sh_utils.py`](https://github.com/graphdeco-inria/gaussian-splatting/blob/main/utils/sh_utils.py).
+- Official [differentiable Gaussian rasterizer](https://github.com/graphdeco-inria/diff-gaussian-rasterization): [`cuda_rasterizer/rasterizer_impl.cu`](https://github.com/graphdeco-inria/diff-gaussian-rasterization/blob/main/cuda_rasterizer/rasterizer_impl.cu), [`cuda_rasterizer/forward.cu`](https://github.com/graphdeco-inria/diff-gaussian-rasterization/blob/main/cuda_rasterizer/forward.cu).
+- Zwicker et al. (2002), [*EWA Splatting*](https://doi.org/10.1109/TVCG.2002.1031354), for the underlying footprint-filtering ideas.
+
+---
+
+**Next reading:** [3DGS Fundamentals](fundamentals.md) if you want the concise mental picture again, or the forthcoming **Feature 3DGS** chapter for 2D-to-3D feature distillation. The separate comparison chapter will follow once both method chapters are complete.
+
+
+<style>
+.v3dgs-lab{--v3-ink:var(--md-default-fg-color,#243247);--v3-muted:var(--md-default-fg-color--light,#64748b);--v3-line:var(--md-default-fg-color--lighter,#d1d9e4);--v3-bg:var(--md-default-bg-color,#fff);--v3-soft:var(--md-code-bg-color,#f4f7fa);--v3-blue:#3279bc;--v3-green:#27866e;color:var(--v3-ink);border:1px solid var(--v3-line);border-radius:16px;padding:18px;margin:22px 0 26px;background:var(--v3-bg)}
+.v3dgs-lab *{box-sizing:border-box}.v3dgs-heading{font-size:1.12rem;font-weight:700;margin:0 0 8px}.v3dgs-kicker{font-size:.73rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--v3-muted)}.v3dgs-muted{font-size:.81rem;color:var(--v3-muted);margin:4px 0 12px}.v3dgs-visuals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}.v3dgs-view{min-width:0}.v3dgs-view-title{font-size:.81rem;font-weight:700;margin:0 0 6px}.v3dgs-view canvas{display:block;width:100%;height:auto;image-rendering:pixelated;background:#999;border-radius:7px;border:1px solid var(--v3-line);cursor:crosshair;aspect-ratio:4/3}.v3dgs-view small{display:block;color:var(--v3-muted);font-size:.7rem;margin-top:5px}.v3dgs-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}.v3dgs-control label{display:flex;justify-content:space-between;font-size:.79rem;font-weight:650;gap:10px}.v3dgs-control input[type=range]{width:100%;accent-color:var(--v3-blue);margin:8px 0}.v3dgs-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}.v3dgs-metric{padding:11px 12px;border:1px solid var(--v3-line);border-radius:10px;background:var(--v3-soft)}.v3dgs-metric span{display:block;color:var(--v3-muted);font-size:.76rem}.v3dgs-metric strong{display:block;font-size:1.19rem;font-variant-numeric:tabular-nums;margin-top:3px}.v3dgs-readout{background:var(--v3-soft);border-radius:9px;padding:12px;font-size:.83rem;line-height:1.6}.v3dgs-readout code{white-space:normal}.v3dgs-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:13px}.v3dgs-actions button{font:inherit;font-size:.82rem;font-weight:650;padding:8px 13px;color:#fff;background:var(--v3-blue);border:0;border-radius:7px;cursor:pointer}.v3dgs-actions button.v3dgs-secondary{background:transparent;color:var(--v3-ink);border:1px solid var(--v3-line)}.v3dgs-actions button:focus-visible,.v3dgs-control input:focus-visible{outline:2px solid var(--v3-blue);outline-offset:3px}.v3dgs-swatch{display:inline-block;width:15px;height:15px;border:1px solid #777;vertical-align:middle;border-radius:3px;margin-right:3px}.v3dgs-splat-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}.v3dgs-splat-pixel{border-radius:12px;padding:13px;background:var(--v3-soft);text-align:center}.v3dgs-pixelbox{margin:6px auto 12px;width:112px;height:96px;border:1px solid #888;border-radius:8px}.v3dgs-formula{overflow:auto;padding:10px 12px;background:var(--v3-soft);border-radius:9px;text-align:center;margin:10px 0}.v3dgs-mini-bar{background:#bbb7;border-radius:99px;height:11px;overflow:hidden;margin:7px 0 12px}.v3dgs-mini-bar>div{height:100%;background:var(--v3-green);transition:width .12s}.v3dgs-footnote{font-size:.75rem;color:var(--v3-muted);margin:10px 0 0}.v3dgs-noscript{background:var(--v3-soft);padding:10px;border-radius:8px}@media(max-width:700px){.v3dgs-visuals{gap:6px}.v3dgs-view-title{font-size:.7rem}.v3dgs-controls,.v3dgs-splat-layout{grid-template-columns:1fr}.v3dgs-metrics{gap:6px}.v3dgs-metric{padding:8px}.v3dgs-metric strong{font-size:1rem}.v3dgs-metric span{font-size:.66rem}}@media(max-width:450px){.v3dgs-lab{padding:11px}.v3dgs-metrics{grid-template-columns:1fr 1fr}.v3dgs-view small{display:none}}
+</style>
+
+<style>
+.v3-extra-lab{--v3p-bg:var(--md-default-bg-color,#fff);--v3p-fg:var(--md-default-fg-color,#253246);--v3p-soft:var(--md-code-bg-color,#f2f5f9);--v3p-border:var(--md-default-fg-color--lightest,#cbd5e1);border:1px solid var(--v3p-border);border-radius:15px;padding:18px;margin:20px 0 25px;color:var(--v3p-fg);background:var(--v3p-bg)}
+.v3-extra-lab *{box-sizing:border-box}.v3-extra-lab p{font-size:.86rem;line-height:1.55;margin:8px 0}.v3-extra-head{font-weight:700;font-size:1.08rem;margin-bottom:6px}.v3-extra-lab>label,.v3-tile-controls>label{display:block;font-weight:600;font-size:.8rem;margin-top:12px}.v3-extra-lab input[type=range]{width:100%;margin:7px 0;accent-color:#397cba}.v3-extra-lab output{font-variant-numeric:tabular-nums}.v3-extra-result{padding:12px;border-radius:10px;background:var(--v3p-soft);margin-top:15px}.v3-extra-result strong{font-size:1.1rem}.v3-extra-result div,.v3-extra-result p{font-size:.79rem;margin:4px 0}.v3-extra-note{font-size:.72rem!important;opacity:.75;margin-top:15px!important}.v3-extra-flex{display:flex;align-items:center;gap:20px;padding:15px;background:var(--v3p-soft);border-radius:10px}.v3-color-sample{width:78px;height:78px;border-radius:10px;border:1px solid #64748b88;flex:0 0 78px}.v3-tile-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}.v3-tile-controls{min-width:0}.v3-extra-lab button{border:1px solid var(--v3p-border);background:var(--v3p-soft);border-radius:7px;color:var(--v3p-fg);padding:7px 13px;cursor:pointer;font:inherit;font-size:.8rem;margin-top:10px}.v3-extra-lab button:focus-visible{outline:2px solid #397cba;outline-offset:3px}@media(max-width:680px){.v3-tile-layout{grid-template-columns:1fr}.v3-extra-lab{padding:12px}}
+</style>
+
+<script>
+(function(){
+  'use strict';
+  const byId = id => document.getElementById(id);
+  const imageLab = byId('v3dgs-image-lab');
+  const splatLab = byId('v3dgs-splat-lab');
+  if (!imageLab || !splatLab || imageLab.dataset.initialized) return;
+  imageLab.dataset.initialized = '1';
+  const clamp = (v,lo=0,hi=1) => Math.max(lo, Math.min(hi, v));
+  const W=32,H=24,N=W*H*3;
+  const bg = (x,y) => {
+    if (y>=18) return [0.58+(x/32)*0.035,0.53+(x/32)*0.025,0.46];
+    if (x>=2&&x<=9&&y>=3&&y<=11) {
+      if (x===2||x===9||y===3||y===11) return [0.37,0.4,0.43];
+      return [0.71+(y/24)*0.05,0.84,0.92];
+    }
+    return [0.80-(y/24)*0.07,0.80-(y/24)*0.06,0.77-(y/24)*0.04];
+  };
+  function isChair(x,y,shift){
+    const u=x-shift;
+    return (u>=12&&u<=19&&y>=8&&y<=15) ||
+           (u>=11&&u<=21&&y>=15&&y<=17) ||
+           ((u===12||u===19)&&y>=18&&y<=22);
+  }
+  function pixelScene(x,y,chairLight,shift){
+    let result=bg(x,y);
+    // Fixed baseboard: the scene is the same except for the chair.
+    if (y===17 && !(x>=2&&x<=9)) result=[0.46,0.42,0.37];
+    if(isChair(x,y,shift)){
+      const factor=chairLight;
+      const highlight=y===15 ? 1.18 : 1;
+      result=[clamp(0.44*factor*highlight),clamp(0.33*factor*highlight),clamp(0.24*factor*highlight)];
+    }
+    return result;
+  }
+  const ref = new Float64Array(N), render = new Float64Array(N);
+  function idx(x,y,c){return 3*(y*W+x)+c;}
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    const color=pixelScene(x,y,1,0);
+    for(let c=0;c<3;c++) ref[idx(x,y,c)]=color[c];
+  }
+  function fillCanvas(canvas,data,diff){
+    const ctx=canvas.getContext('2d'); if (!ctx) return;
+    const img=ctx.createImageData(W,H);
+    for(let i=0;i<N;i+=3){
+      if(diff){
+        const d=(Math.abs(data[i]-ref[i])+Math.abs(data[i+1]-ref[i+1])+Math.abs(data[i+2]-ref[i+2]))/3;
+        const strength=clamp(d*3.0);
+        img.data[i/3*4]=Math.round(249*strength+236*(1-strength));
+        img.data[i/3*4+1]=Math.round(74*strength+242*(1-strength));
+        img.data[i/3*4+2]=Math.round(66*strength+247*(1-strength));
+      }else{
+        for(let c=0;c<3;c++)img.data[i/3*4+c]=Math.round(255*clamp(data[i+c]));
+      }
+      img.data[i/3*4+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+  }
+  const refCanvas=byId('v3dgs-reference'),renderCanvas=byId('v3dgs-rendered'),diffCanvas=byId('v3dgs-difference');
+  const brightness=byId('v3dgs-chair-light'),shift=byId('v3dgs-chair-shift'),lambda=byId('v3dgs-lambda');
+  fillCanvas(refCanvas,ref,false);
+  let selected=[16,12];
+  const kernel=[];
+  for(let k=-5;k<=5;k++)kernel.push(Math.exp(-0.5*(k/1.5)**2));
+  const norm=kernel.reduce((a,b)=>a+b,0);
+  for(let k=0;k<11;k++)kernel[k]/=norm;
+  function ssim(a,b){
+    const C1=0.01*0.01,C2=0.03*0.03;
+    let sum=0;
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++)for(let c=0;c<3;c++){
+      let ma=0,mb=0,aa=0,bb=0,ab=0;
+      for(let dy=-5;dy<=5;dy++){
+        const yy=y+dy;
+        if(yy<0||yy>=H)continue;
+        for(let dx=-5;dx<=5;dx++){
+          const xx=x+dx;
+          if(xx<0||xx>=W)continue;
+          const weight=kernel[dy+5]*kernel[dx+5];
+          const j=idx(xx,yy,c),u=a[j],v=b[j];
+          ma+=weight*u;mb+=weight*v;
+          aa+=weight*u*u;bb+=weight*v*v;ab+=weight*u*v;
+        }
+      }
+      const va=Math.max(0,aa-ma*ma),vb=Math.max(0,bb-mb*mb),cov=ab-ma*mb;
+      sum+=((2*ma*mb+C1)*(2*cov+C2))/((ma*ma+mb*mb+C1)*(va+vb+C2));
+    }
+    return sum/N;
+  }
+  function updatePixelInfo(){
+    const [x,y]=selected;
+    const A=[],B=[];
+    for(let c=0;c<3;c++){
+      A.push(Math.round(255*ref[idx(x,y,c)]));
+      B.push(Math.round(255*render[idx(x,y,c)]));
+    }
+    const e=(Math.abs(ref[idx(x,y,0)]-render[idx(x,y,0)])+Math.abs(ref[idx(x,y,1)]-render[idx(x,y,1)])+Math.abs(ref[idx(x,y,2)]-render[idx(x,y,2)]))/3;
+    byId('v3dgs-pixel-readout').textContent=`Selected pixel (${x}, ${y}) · Original RGB: [${A.join(', ')}] · Rendered RGB: [${B.join(', ')}] · Mean normalized L1 for this pixel: ${e.toFixed(4)}. The whole-image L1 averages all pixels, not just this one.`;
+  }
+  function updateImage(){
+    const b=Number(brightness.value)/100,off=Number(shift.value),l=Number(lambda.value);
+    byId('v3dgs-chair-value').textContent=brightness.value+'%';
+    byId('v3dgs-shift-value').textContent=(off>0?'+':'')+off+' px';
+    byId('v3dgs-lambda-value').textContent=l.toFixed(2);
+    let abs=0;
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+      const arr=pixelScene(x,y,b,off);
+      for(let c=0;c<3;c++){
+        const j=idx(x,y,c);
+        render[j]=arr[c];
+        abs+=Math.abs(ref[j]-render[j]);
+      }
+    }
+    fillCanvas(renderCanvas,render,false);fillCanvas(diffCanvas,render,true);
+    const l1=abs/N,dssim=1-ssim(render,ref),total=(1-l)*l1+l*dssim;
+    byId('v3dgs-l1').textContent=l1.toFixed(4);
+    byId('v3dgs-dssim').textContent=dssim.toFixed(4);
+    byId('v3dgs-total').textContent=total.toFixed(4);
+    updatePixelInfo();
+  }
+  for(const canv of [refCanvas,renderCanvas,diffCanvas]) canv.addEventListener('click',e=>{
+    const r=canv.getBoundingClientRect();
+    selected=[Math.min(W-1,Math.max(0,Math.floor((e.clientX-r.left)/r.width*W))),Math.min(H-1,Math.max(0,Math.floor((e.clientY-r.top)/r.height*H)))];
+    updatePixelInfo();
+  });
+  for(const s of [brightness,shift,lambda]) s.addEventListener('input',updateImage);
+  byId('v3dgs-match').addEventListener('click',()=>{brightness.value=100;shift.value=0;updateImage();});
+  byId('v3dgs-reset-image').addEventListener('click',()=>{brightness.value=65;shift.value=2;lambda.value=0.2;selected=[16,12];updateImage();});
+  updateImage();
+
+  // Analytically differentiable toy grayscale compositing, front-to-back.
+  const sliders=['a1','c1','a2','c2'];
+  const initial={a1:0.6,c1:0.45,a2:0.5,c2:0.9};
+  const get=k=>Number(byId('v3dgs-'+k).value);
+  const set=(k,v)=>{byId('v3dgs-'+k).value=clamp(v).toFixed(4);};
+  const target=.75,background=.1,eta=.2;
+  function updateSplat(){
+    const a1=get('a1'),c1=get('c1'),a2=get('a2'),c2=get('c2');
+    for(const k of sliders)byId('v3dgs-'+k+'-val').textContent=get(k).toFixed(2);
+    const p1=a1*c1,p2=(1-a1)*a2*c2,pbg=(1-a1)*(1-a2)*background;
+    const out=p1+p2+pbg,d=Math.abs(out-target),s=Math.sign(out-target);
+    const g1=s*a1,g2=s*(1-a1)*a2;
+    const gray=Math.round(clamp(out)*255);
+    byId('v3dgs-splat-result').style.backgroundColor=`rgb(${gray},${gray},${gray})`;
+    byId('v3dgs-predicted').textContent=out.toFixed(3);
+    byId('v3dgs-pixel-loss').textContent=d.toFixed(3);
+    byId('v3dgs-matchbar').style.width=(Math.max(0,1-d)*100).toFixed(1)+'%';
+    byId('v3dgs-contributions').textContent=`G₁: ${p1.toFixed(3)} + G₂: ${p2.toFixed(3)} + background: ${pbg.toFixed(3)} = ${out.toFixed(3)}`;
+    byId('v3dgs-gradients').textContent=`∂L/∂c₁ = ${g1.toFixed(3)}; ∂L/∂c₂ = ${g2.toFixed(3)}. The foreground Gaussian can block some of G₂'s influence.`;
+    return {g1,g2,c1,c2};
+  }
+  for(const k of sliders)byId('v3dgs-'+k).addEventListener('input',updateSplat);
+  byId('v3dgs-step').addEventListener('click',()=>{const {g1,g2,c1,c2}=updateSplat();set('c1',c1-eta*g1);set('c2',c2-eta*g2);updateSplat();});
+  byId('v3dgs-reset-splats').addEventListener('click',()=>{for(const k of sliders)set(k,initial[k]);updateSplat();});
+  updateSplat();
+})();
+</script>
+
+<script>
+(function(){
+  'use strict';
+  const el=id=>document.getElementById(id);
+  const cap=x=>Math.max(0,Math.min(1,x));
+  // A fixed-coefficient directional SH analogy.
+  if(el('v3-sh-angle')){
+    const angle=el('v3-sh-angle');
+    const update=()=>{
+      const theta=Number(angle.value)*Math.PI/180;
+      const c=cap(0.55+0.30*Math.cos(theta));
+      const value=Math.round(c*255);
+      el('v3-sh-angle-label').textContent=angle.value+'°';
+      el('v3-sh-swatch').style.background=`rgb(${value},${value},${value})`;
+      el('v3-sh-value').textContent=`Intensity: ${c.toFixed(3)}`;
+    };
+    angle.addEventListener('input',update);update();
+  }
+  // 64x64 image, tiled 4x4.  16 pixels -> 70 SVG units for clarity.
+  if(el('v3-tiles-svg')){
+    const NS='http://www.w3.org/2000/svg';
+    const svg=el('v3-tiles-svg');
+    const x=el('v3-tile-x'),y=el('v3-tile-y'),r=el('v3-tile-r');
+    const mk=(tag,attrs={})=>{const node=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))node.setAttribute(k,String(v));return node;};
+    const update=()=>{
+      const a=Number(x.value),b=Number(y.value),rad=Number(r.value);
+      svg.replaceChildren();
+      const origin=19,scale=4.375;
+      const covered=[];
+      for(let row=0;row<4;row++)for(let col=0;col<4;col++){
+        const hit=col*16<a+rad&&(col+1)*16>a-rad&&row*16<b+rad&&(row+1)*16>b-rad;
+        if(hit)covered.push('T'+(row*4+col));
+        svg.appendChild(mk('rect',{x:origin+col*70,y:origin+row*70,width:70,height:70,fill:hit?'#7caee3':'#9aa5b718','fill-opacity':hit?.35:1,stroke:'#66778c','stroke-opacity':.5}));
+        const t=mk('text',{x:origin+col*70+35,y:origin+row*70+35,'text-anchor':'middle','dominant-baseline':'middle','font-size':14,fill:'currentColor'});
+        t.textContent='T'+(row*4+col);svg.appendChild(t);
+      }
+      svg.appendChild(mk('circle',{cx:origin+a*scale,cy:origin+b*scale,r:rad*scale,fill:'#e5a35b','fill-opacity':.20,stroke:'#b56d27','stroke-width':2}));
+      svg.appendChild(mk('rect',{x:origin+(a-rad)*scale,y:origin+(b-rad)*scale,width:rad*2*scale,height:rad*2*scale,fill:'none',stroke:'#b56d27','stroke-width':1.4,'stroke-dasharray':'5 4'}));
+      svg.appendChild(mk('circle',{cx:origin+a*scale,cy:origin+b*scale,r:4,fill:'#b56d27'}));
+      el('v3-tile-x-label').textContent=a;el('v3-tile-y-label').textContent=b;el('v3-tile-r-label').textContent=rad;
+      el('v3-tile-count').textContent=covered.length+' / 16 tiles assigned';
+      el('v3-tile-list').textContent=covered.join(', ')||'None';
+    };
+    [x,y,r].forEach(n=>n.addEventListener('input',update));
+    el('v3-tile-reset').addEventListener('click',()=>{x.value=25;y.value=25;r.value=13;update();});
+    update();
+  }
+  // Isolate primary clone / split / opacity prune rules.
+  if(el('v3-dense-grad')){
+    const g=el('v3-dense-grad'),s=el('v3-dense-size'),o=el('v3-dense-opacity');
+    const update=()=>{
+      const grad=Number(g.value),size=Number(s.value),opacity=Number(o.value);
+      el('v3-dense-grad-label').textContent=grad.toFixed(5);
+      el('v3-dense-size-label').textContent=size.toFixed(3);
+      el('v3-dense-opacity-label').textContent=opacity.toFixed(3);
+      let outcome,explain;
+      if(opacity<.005){outcome='PRUNE';explain='Its activated opacity is below 0.005; the pruning pass removes it.';}
+      else if(grad<.0002){outcome='KEEP';explain='The average projected-position gradient is below 0.0002, so the main densification rule does not add children.';}
+      else if(size<=.1){outcome='CLONE';explain='Large gradient, small primitive: create one additional copy and retain the parent.';}
+      else{outcome='SPLIT';explain='Large gradient, large primitive: sample two smaller children and remove the parent.';}
+      el('v3-dense-decision').textContent=outcome;
+      el('v3-dense-explanation').textContent=explain;
+    };
+    [g,s,o].forEach(n=>n.addEventListener('input',update));
+    el('v3-dense-reset').addEventListener('click',()=>{g.value=.00035;s.value=.06;o.value=.8;update();});
+    update();
+  }
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

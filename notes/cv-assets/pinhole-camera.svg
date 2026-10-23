@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 290" role="img" aria-label="Schematic camera center at left, virtual image plane between center and 3D point, connected by a projection ray">
+<defs><marker id="az" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#3478a5"/></marker></defs>
+<rect x="1" y="1" width="698" height="288" rx="10" fill="#fafbfd" stroke="#d8e0e8"/>
+<text x="28" y="30" font-family="Arial,sans-serif" font-size="16" font-weight="600" fill="#253549">Perspective projection (side view; virtual image plane)</text>
+<path d="M92 229H630" stroke="#b9c4ce" stroke-width="2" marker-end="url(#az)"/>
+<text x="637" y="235" font-family="Arial,sans-serif" font-size="15" fill="#255a80">Z</text>
+<path d="M92 229V50" stroke="#b9c4ce" stroke-width="2" marker-end="url(#az)"/>
+<text x="83" y="43" font-family="Arial,sans-serif" font-size="15" fill="#255a80">X</text>
+<rect x="230" y="58" width="9" height="180" fill="#cde4f4" stroke="#558ca9" stroke-width="1.5"/>
+<path d="M92 229L570 78" stroke="#cc8130" stroke-width="2.5"/>
+<circle cx="92" cy="229" r="6" fill="#2c708e"/>
+<circle cx="570" cy="78" r="6.5" fill="#cc8130"/>
+<circle cx="234.5" cy="184" r="6" fill="#cc8130" stroke="#fff" stroke-width="1.5"/>
+<path d="M92 229L234.5 229" stroke="#2c708e" stroke-dasharray="5,5"/>
+<path d="M234.5 229V184" stroke="#cc8130" stroke-dasharray="5,4"/>
+<g font-family="Arial,sans-serif" fill="#253549">
+<text x="31" y="255" font-size="14">Camera center</text>
+<text x="249" y="70" font-size="14">Virtual image plane</text>
+<text x="582" y="75" font-size="14" font-weight="600">3D point</text>
+<text x="582" y="93" font-size="14">(X, Z)</text>
+<text x="252" y="184" font-size="14" fill="#a65c16">Projection</text>
+<text x="152" y="244" font-size="14" fill="#255a80">f</text>
+<text x="422" y="266" font-size="16" font-weight="600">x = f X / Z</text>
+</g>
+<text x="35" y="278" font-family="Arial,sans-serif" font-size="12" fill="#6c7b88">Schematic cross-section: positive X is drawn upward; distances are not to scale.</text>
+</svg>

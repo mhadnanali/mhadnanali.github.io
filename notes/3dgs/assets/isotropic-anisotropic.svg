@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="528.12pt" height="222.615pt" viewBox="0 0 528.12 222.615" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-14T11:23:40.164966</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 222.615 
+L 528.12 222.615 
+L 528.12 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 96.66 146.88 
+C 106.648875 146.88 116.229976 142.911378 123.293177 135.848177 
+C 130.356378 128.784976 134.325 119.203875 134.325 109.215 
+C 134.325 99.226125 130.356378 89.645024 123.293177 82.581823 
+C 116.229976 75.518622 106.648875 71.55 96.66 71.55 
+C 86.671125 71.55 77.090024 75.518622 70.026823 82.581823 
+C 62.963622 89.645024 58.995 99.226125 58.995 109.215 
+C 58.995 119.203875 62.963622 128.784976 70.026823 135.848177 
+C 77.090024 142.911378 86.671125 146.88 96.66 146.88 
+z
+" clip-path="url(#pd848154de9)" style="fill: #e19742; fill-opacity: 0.14; stroke: #e19742; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 271.646178 130.057852 
+C 286.768827 124.553658 300.4748 117.078026 309.745515 109.277377 
+C 319.016231 101.476729 323.094775 93.987952 321.082897 88.460363 
+C 319.07102 82.932774 311.13298 79.817676 299.01704 79.801133 
+C 286.901099 79.78459 271.596471 82.867954 256.473822 88.372148 
+C 241.351173 93.876342 227.6452 101.351974 218.374485 109.152623 
+C 209.103769 116.953271 205.025225 124.442048 207.037103 129.969637 
+C 209.04898 135.497226 216.98702 138.612324 229.10296 138.628867 
+C 241.218901 138.64541 256.523529 135.562046 271.646178 130.057852 
+z
+" clip-path="url(#pd848154de9)" style="fill: #e19742; fill-opacity: 0.14; stroke: #e19742; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 418.636416 119.975265 
+C 427.55409 130.602934 437.458892 139.662983 446.169407 145.160041 
+C 454.879921 150.657099 461.684973 152.142355 465.085827 149.2887 
+C 468.486681 146.435044 468.205674 139.475465 464.304693 129.942729 
+C 460.403713 120.409993 453.201257 109.082405 444.283584 98.454735 
+C 435.36591 87.827066 425.461108 78.767017 416.750593 73.269959 
+C 408.040079 67.772901 401.235027 66.287645 397.834173 69.1413 
+C 394.433319 71.994956 394.714326 78.954535 398.615307 88.487271 
+C 402.516287 98.020007 409.718743 109.347595 418.636416 119.975265 
+z
+" clip-path="url(#pd848154de9)" style="fill: #e19742; fill-opacity: 0.14; stroke: #e19742; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="96.66" y="181.026875" transform="rotate(-0 96.66 181.026875)">Isotropic</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="181.026875" transform="rotate(-0 264.06 181.026875)">Anisotropic</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="431.46" y="181.026875" transform="rotate(-0 431.46 181.026875)">Rotated anisotropic</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="36.35925" transform="rotate(-0 264.06 36.35925)">Equal-value ellipses are 2D illustrations of 3D covariance</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="264.06" y="56.456437" transform="rotate(-0 264.06 56.456437)">Center is identical; shape/orientation may differ</text>
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="mc898df648d" d="M 0 2.738613 
+C 0.726289 2.738613 1.422928 2.450055 1.936492 1.936492 
+C 2.450055 1.422928 2.738613 0.726289 2.738613 0 
+C 2.738613 -0.726289 2.450055 -1.422928 1.936492 -1.936492 
+C 1.422928 -2.450055 0.726289 -2.738613 0 -2.738613 
+C -0.726289 -2.738613 -1.422928 -2.450055 -1.936492 -1.936492 
+C -2.450055 -1.422928 -2.738613 -0.726289 -2.738613 0 
+C -2.738613 0.726289 -2.450055 1.422928 -1.936492 1.936492 
+C -1.422928 2.450055 -0.726289 2.738613 0 2.738613 
+z
+" style="stroke: #3478b7"/>
+    </defs>
+    <g clip-path="url(#pd848154de9)">
+     <use xlink:href="#mc898df648d" x="96.66" y="109.215" style="fill: #3478b7; stroke: #3478b7"/>
+    </g>
+   </g>
+   <g id="PathCollection_2">
+    <g clip-path="url(#pd848154de9)">
+     <use xlink:href="#mc898df648d" x="264.06" y="109.215" style="fill: #3478b7; stroke: #3478b7"/>
+    </g>
+   </g>
+   <g id="PathCollection_3">
+    <g clip-path="url(#pd848154de9)">
+     <use xlink:href="#mc898df648d" x="431.46" y="109.215" style="fill: #3478b7; stroke: #3478b7"/>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pd848154de9">
+   <rect x="12.96" y="12.96" width="502.2" height="196.695"/>
+  </clipPath>
+ </defs>
+</svg>

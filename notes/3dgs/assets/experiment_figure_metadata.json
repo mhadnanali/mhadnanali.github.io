@@ -1,0 +1,37 @@
+{
+  "important": "ALL outputs derived from user files; no synthetic scene data is inserted into result images",
+  "SAM": {
+    "tensor": "C:\\Users\\adnan\\ResearchData\\my_first_3dgs\\sam_embeddings\\20261004_133414_fmap_CxHxW.pt",
+    "image": "C:\\Users\\adnan\\ResearchData\\my_first_3dgs\\images\\20261004_133414.jpg",
+    "tensor_shape": [
+      256,
+      48,
+      64
+    ],
+    "selected_cell": [
+      24,
+      32
+    ],
+    "PCA_variance_first_3": [
+      0.19720259308815002,
+      0.08612313121557236,
+      0.08242788910865784
+    ],
+    "real_explorer": "real_sam_tensor_explorer.html"
+  },
+  "Gaussians": {
+    "PLY": "C:\\Users\\adnan\\ResearchData\\3DGS_outputs\\my_first_3dgs_sam_30000_debug_off_GPU1_20261022_095222_761993\\model\\point_cloud\\iteration_30000\\point_cloud.ply",
+    "total_gaussians": 662756,
+    "sample_size": 20000,
+    "semantic_channels": 256,
+    "semantic_PCA_variance_first_3": [
+      0.06262418627738953,
+      0.04997621476650238,
+      0.043253835290670395
+    ],
+    "opacity_sample_range": [
+      0.0009115469874814153,
+      1.0
+    ]
+  }
+}

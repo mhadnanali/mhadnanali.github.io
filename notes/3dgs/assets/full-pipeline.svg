@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="528.12pt" height="182.8575pt" viewBox="0 0 528.12 182.8575" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-14T11:23:40.433653</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 182.8575 
+L 528.12 182.8575 
+L 528.12 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 102.841049 90.3825 
+Q 110.886578 90.3825 117.143254 90.3825 
+" clip-path="url(#pcf6224ac7e)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 113.143254 88.3825 
+L 117.143254 90.3825 
+L 113.143254 92.3825 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 204.542986 90.3825 
+Q 212.377979 90.3825 218.424117 90.3825 
+" clip-path="url(#pcf6224ac7e)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 214.424117 88.3825 
+L 218.424117 90.3825 
+L 214.424117 92.3825 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 305.819986 90.3825 
+Q 313.654979 90.3825 319.701117 90.3825 
+" clip-path="url(#pcf6224ac7e)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 315.701117 88.3825 
+L 319.701117 90.3825 
+L 315.701117 92.3825 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 407.090549 90.3825 
+Q 415.136078 90.3825 421.392754 90.3825 
+" clip-path="url(#pcf6224ac7e)" style="fill: none; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+    <path d="M 417.392754 88.3825 
+L 421.392754 90.3825 
+L 417.392754 92.3825 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #64748b; stroke: #64748b; stroke-width: 1.6; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 19.2375 113.4 
+L 100.845 113.4 
+L 100.845 67.365 
+L 19.2375 67.365 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #e19742; fill-opacity: 0.07; stroke: #e19742; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 120.933 113.4 
+L 202.5405 113.4 
+L 202.5405 67.365 
+L 120.933 67.365 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #3478b7; fill-opacity: 0.07; stroke: #3478b7; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 222.21 113.4 
+L 303.8175 113.4 
+L 303.8175 67.365 
+L 222.21 67.365 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #3f9878; fill-opacity: 0.07; stroke: #3f9878; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 323.487 113.4 
+L 405.0945 113.4 
+L 405.0945 67.365 
+L 323.487 67.365 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #9268a8; fill-opacity: 0.07; stroke: #9268a8; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 425.1825 113.4 
+L 506.79 113.4 
+L 506.79 67.365 
+L 425.1825 67.365 
+z
+" clip-path="url(#pcf6224ac7e)" style="fill: #e19742; fill-opacity: 0.07; stroke: #e19742; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="60.04125" y="92.865937" transform="rotate(-0 60.04125 92.865937)">Input images</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(130.716984 87.826922)">COLMAP pose</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(131.270344 97.904953)">+ sparse XYZ</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(244.18125 87.826922)">Initialize</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(240.025078 97.904953)">Gaussians</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(343.069031 87.826922)">Render +</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(344.902078 97.904953)">optimize</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(441.949219 87.826922)">PLY / novel</text>
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; fill: #243247" transform="translate(439.348359 97.904953)">view render</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #243247" x="264.06" y="37.19625" transform="rotate(-0 264.06 37.19625)">Input → cameras &amp; points → trainable representation → rendering</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #64748b" x="264.06" y="145.178437" transform="rotate(-0 264.06 145.178437)">Densification and pruning happen during the optimization loop</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pcf6224ac7e">
+   <rect x="12.96" y="12.96" width="502.2" height="156.9375"/>
+  </clipPath>
+ </defs>
+</svg>

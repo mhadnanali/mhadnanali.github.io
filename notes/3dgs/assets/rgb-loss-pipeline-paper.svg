@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="360" viewBox="0 0 1120 360" role="img" aria-labelledby="figTitle figDesc">
+  <title id="figTitle">RGB reconstruction loss in Vanilla 3D Gaussian Splatting</title>
+  <desc id="figDesc">3D Gaussians are rendered into an RGB image using a fixed camera viewpoint. The rendered image and reference photograph are compared. The resulting loss is backpropagated through the renderer and used to update the Gaussian parameters.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#222"/></marker>
+    <style>
+      .node { fill:#fff; stroke:#303030; stroke-width:1.65; }
+      .soft { fill:#f7f8fa; }
+      .txt { font-family: Georgia, 'Times New Roman', serif; text-anchor:middle; fill:#151515; }
+      .label { font-size:18px; font-weight:bold; }
+      .sub { font-size:15px; }
+      .small { font-size:14px; }
+      .edge { fill:none; stroke:#222; stroke-width:1.7; marker-end:url(#arrow); stroke-linejoin:round; }
+    </style>
+  </defs>
+  <rect width="1120" height="360" fill="#fff" />
+  <text class="txt" x="560" y="34" font-size="24" font-weight="bold">RGB Reconstruction and Optimization in Vanilla 3DGS</text>
+
+  <!-- top reference input -->
+  <rect class="node soft" x="830" y="55" width="235" height="59" rx="6" />
+  <text class="txt label" x="947.5" y="79">Original RGB</text>
+  <text class="txt sub" x="947.5" y="99">photograph (fixed)</text>
+
+  <!-- forward -->
+  <rect class="node" x="55" y="145" width="195" height="66" rx="6" />
+  <text class="txt label" x="152.5" y="172">3D Gaussians</text>
+  <text class="txt sub" x="152.5" y="193">trainable parameters</text>
+  <rect class="node soft" x="305" y="145" width="194" height="66" rx="6" />
+  <text class="txt label" x="402" y="172">Differentiable</text>
+  <text class="txt sub" x="402" y="193">rendering</text>
+  <rect class="node" x="554" y="145" width="210" height="66" rx="6" />
+  <text class="txt label" x="659" y="172">Rendered RGB</text>
+  <text class="txt sub" x="659" y="193">image (prediction)</text>
+  <rect class="node soft" x="830" y="145" width="235" height="66" rx="6" />
+  <text class="txt label" x="947.5" y="172">Image comparison</text>
+  <text class="txt sub" x="947.5" y="193">L1 and SSIM</text>
+
+  <!-- forward arrows -->
+  <path class="edge" d="M250 178 H299" />
+  <path class="edge" d="M499 178 H548" />
+  <path class="edge" d="M764 178 H824" />
+  <path class="edge" d="M947.5 114 V139" />
+  <text class="txt small" x="402" y="130">Known camera viewpoint</text>
+
+  <!-- lower/backward -->
+  <rect class="node soft" x="830" y="261" width="235" height="58" rx="6" />
+  <text class="txt label" x="947.5" y="285">RGB loss</text>
+  <text class="txt sub" x="947.5" y="305">scalar objective</text>
+  <rect class="node" x="554" y="261" width="210" height="58" rx="6" />
+  <text class="txt label" x="659" y="286">Backpropagation</text>
+  <text class="txt sub" x="659" y="305">gradients</text>
+  <rect class="node soft" x="305" y="261" width="194" height="58" rx="6" />
+  <text class="txt label" x="402" y="285">Optimizer</text>
+  <text class="txt sub" x="402" y="305">parameter update</text>
+  <path class="edge" d="M947.5 211 V255" />
+  <path class="edge" d="M830 290 H770" />
+  <path class="edge" d="M554 290 H505" />
+  <!-- loop back to scene params -->
+  <path class="edge" d="M305 290 H152.5 V217" />
+  <text class="txt small" x="179" y="341">Updated scene parameters are used for the next rendering iteration</text>
+</svg>

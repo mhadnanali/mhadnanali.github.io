@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Where does SAM fit in?</title>
+<style>
+:root{--bg:#f7f9fc;--card:#fff;--ink:#18273f;--muted:#627287;--line:#d5deeb;--rgb:#2f6fed;--feat:#8f59d9;--frozen:#ebf5ff;--train:#f6f1ff;--green:#10a37f;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1400px;margin:0 auto;padding:22px}.grid{display:grid;grid-template-columns:320px 1fr 330px;gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+h1{margin:0 0 8px;font-size:34px}.lead{margin:0 0 20px;color:var(--muted);font-size:18px}button{border:1px solid var(--line);background:#fff;padding:10px 12px;border-radius:10px;cursor:pointer}button.active{background:#eef4ff;border-color:#a6c2ff;color:#123a8f}.stack{display:flex;flex-wrap:wrap;gap:8px}.small{font-size:13px;color:var(--muted);line-height:1.5}.stepbtn{width:100%;text-align:left;margin-bottom:8px}.tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#edf3ff;color:#2f6fed;margin-right:6px;margin-bottom:6px}.viz{width:100%;height:auto}.box{cursor:pointer;transition:.15s}.box:hover{filter:brightness(1.04)} .exp{line-height:1.55}.exp h2{margin:0 0 8px;font-size:22px}.kv{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:14px}.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--muted)}.legend span{display:inline-flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%}
+@media (max-width:1100px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Where does SAM fit in?</h1>
+  <p class="lead">Click a pipeline step. This shows exactly where the <b>frozen 2D teacher</b> (SAM) fits relative to the <b>trainable 3D Gaussian scene</b>.</p>
+  <div class="grid">
+    <div class="card">
+      <div style="font-weight:700;margin-bottom:10px">Path visibility</div>
+      <div class="stack" style="margin-bottom:14px">
+        <button id="showBoth" class="active">Show both paths</button>
+        <button id="showRGB">RGB path</button>
+        <button id="showFeature">Feature path</button>
+      </div>
+      <div style="font-weight:700;margin-bottom:10px">Click a step</div>
+      <button class="stepbtn active" data-step="input">1. Input RGB image</button>
+      <button class="stepbtn" data-step="sam">2. Frozen SAM encoder</button>
+      <button class="stepbtn" data-step="samtensor">3. SAM feature tensor (256 × 48 × 64)</button>
+      <button class="stepbtn" data-step="gauss">4. 3D Gaussians + learnable 256-D vectors</button>
+      <button class="stepbtn" data-step="render">5. Rendered feature map from Gaussians</button>
+      <button class="stepbtn" data-step="loss">6. Feature loss</button>
+      <button class="stepbtn" data-step="backprop">7. Backpropagation / optimizer update</button>
+      <div class="small" style="margin-top:12px">
+        <ul>
+          <li>SAM is a <b>2D teacher</b>. It does not become 3D.</li>
+          <li>The Gaussians are the <b>3D student representation</b>.</li>
+          <li>Feature 3DGS learns by making the rendered 2D feature map match the SAM target.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <svg class="viz" viewBox="0 0 980 600">
+        <defs>
+          <marker id="arrBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2f6fed"/></marker>
+          <marker id="arrPurple" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8f59d9"/></marker>
+          <marker id="arrGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#10a37f"/></marker>
+        </defs>
+        <rect width="980" height="600" rx="18" fill="#fff"/>
+        <text x="34" y="42" font-size="30" font-weight="700" fill="#18273f">Feature 3DGS training pipeline</text>
+        <text x="34" y="67" font-size="18" fill="#627287">Frozen SAM teacher on top; trainable 3D Gaussian scene below.</text>
+
+        <text x="75" y="106" font-size="16" font-weight="700" fill="#2f6fed">2D teacher path</text>
+        <text x="75" y="316" font-size="16" font-weight="700" fill="#8f59d9">3D student path</text>
+
+        <g id="inputBox" class="box" data-step="input"><rect x="56" y="120" rx="14" width="175" height="82" fill="#eef4ff" stroke="#9ebeff" stroke-width="2"/><text x="76" y="150" font-size="24" font-weight="700">Input RGB image</text><text x="76" y="176" font-size="14" fill="#627287">One camera view of the scene.</text></g>
+        <g id="samBox" class="box" data-step="sam"><rect x="300" y="120" rx="14" width="178" height="82" fill="#eef4ff" stroke="#9ebeff" stroke-width="2"/><text x="318" y="150" font-size="24" font-weight="700">SAM encoder</text><text x="318" y="176" font-size="14" fill="#627287">Frozen teacher network.</text></g>
+        <g id="tensorBox" class="box" data-step="samtensor"><rect x="548" y="120" rx="14" width="215" height="82" fill="#eef4ff" stroke="#9ebeff" stroke-width="2"/><text x="567" y="150" font-size="24" font-weight="700">Teacher feature tensor</text><text x="567" y="176" font-size="14" fill="#627287">256 × 48 × 64 target features.</text></g>
+
+        <g id="gaussBox" class="box" data-step="gauss"><rect x="56" y="330" rx="14" width="250" height="92" fill="#f6f1ff" stroke="#d5bfff" stroke-width="2"/><text x="76" y="360" font-size="24" font-weight="700">3D Gaussians</text><text x="76" y="385" font-size="14" fill="#627287">Position, scale, rotation, opacity, RGB</text><text x="76" y="404" font-size="14" fill="#627287">plus a learnable 256-D feature vector.</text></g>
+        <g id="renderBox" class="box" data-step="render"><rect x="392" y="330" rx="14" width="205" height="92" fill="#f6f1ff" stroke="#d5bfff" stroke-width="2"/><text x="413" y="360" font-size="24" font-weight="700">Feature rendering</text><text x="413" y="385" font-size="14" fill="#627287">Project Gaussians into the selected</text><text x="413" y="404" font-size="14" fill="#627287">camera and render a 2D feature map.</text></g>
+        <g id="lossBox" class="box" data-step="loss"><rect x="690" y="290" rx="14" width="220" height="96" fill="#f6f9f3" stroke="#bfe3d4" stroke-width="2"/><text x="715" y="322" font-size="24" font-weight="700">Feature loss</text><text x="715" y="346" font-size="14" fill="#627287">Compare rendered features and</text><text x="715" y="365" font-size="14" fill="#627287">SAM target features at the same 2D locations.</text></g>
+        <g id="backBox" class="box" data-step="backprop"><rect x="690" y="438" rx="14" width="220" height="96" fill="#f6f9f3" stroke="#bfe3d4" stroke-width="2"/><text x="712" y="470" font-size="24" font-weight="700">Backprop / update</text><text x="712" y="494" font-size="14" fill="#627287">Gradients update the trainable</text><text x="712" y="513" font-size="14" fill="#627287">Gaussian parameters, especially the feature vectors.</text></g>
+
+        <line id="a1" x1="231" y1="161" x2="300" y2="161" stroke="#2f6fed" stroke-width="4" marker-end="url(#arrBlue)"/>
+        <line id="a2" x1="478" y1="161" x2="548" y2="161" stroke="#2f6fed" stroke-width="4" marker-end="url(#arrBlue)"/>
+        <line id="b1" x1="306" y1="376" x2="392" y2="376" stroke="#8f59d9" stroke-width="4" marker-end="url(#arrPurple)"/>
+        <line id="c1" x1="597" y1="376" x2="690" y2="338" stroke="#10a37f" stroke-width="4" marker-end="url(#arrGreen)"/>
+        <line id="c2" x1="763" y1="202" x2="790" y2="290" stroke="#10a37f" stroke-width="4" marker-end="url(#arrGreen)"/>
+        <line id="d1" x1="800" y1="386" x2="800" y2="438" stroke="#10a37f" stroke-width="4" marker-end="url(#arrGreen)"/>
+        <path id="d2" d="M690 484 C 590 545, 370 545, 250 435" fill="none" stroke="#10a37f" stroke-width="4" marker-end="url(#arrGreen)"/>
+      </svg>
+      <div class="legend">
+        <span><span class="dot" style="background:#2f6fed"></span> frozen 2D teacher path</span>
+        <span><span class="dot" style="background:#8f59d9"></span> trainable 3D student path</span>
+        <span><span class="dot" style="background:#10a37f"></span> comparison + gradient flow</span>
+      </div>
+    </div>
+    <div class="card exp">
+      <div id="tags"></div>
+      <h2 id="title">Input RGB image</h2>
+      <div id="text">Feature 3DGS starts with a normal input photograph from one camera view.</div>
+      <div class="kv" style="margin-top:10px">
+        <b>Belongs to</b><div id="belongs">2D observation</div>
+        <b>Frozen or trainable?</b><div id="status">Not trainable</div>
+        <b>Input</b><div id="inp">Photograph of the scene</div>
+        <b>Output</b><div id="out">Pixels</div>
+      </div>
+      <div id="note" class="small" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+<script>
+const data={
+input:{title:'Input RGB image', text:'Feature 3DGS begins with the same kind of photographs used in Vanilla 3DGS. A camera view is selected, and that image is used both for the standard RGB pipeline and as the input to SAM.', belongs:'2D observation', status:'Not trainable', inp:'One RGB image from a known camera pose', out:'A pixel image', note:'This is the shared starting point for both the RGB reconstruction goal and the feature distillation goal.', tags:['2D','input']},
+sam:{title:'Frozen SAM encoder', text:'SAM processes the 2D image and produces dense 2D features. SAM is used as a teacher. Its weights are fixed during Feature 3DGS training.', belongs:'Teacher side', status:'Frozen', inp:'RGB image', out:'Dense feature tensor', note:'SAM itself is not turned into a 3D model. It remains a 2D teacher network.', tags:['teacher','frozen']},
+samtensor:{title:'Teacher feature tensor', text:'For one image, SAM outputs a tensor of shape 256 × 48 × 64 in your setup. This means 256 feature channels arranged over a 48 × 64 spatial grid.', belongs:'2D teacher target', status:'Frozen', inp:'SAM encoder output', out:'Feature tensor Fteacher', note:'This tensor is the supervision target for the 3D student representation.', tags:['2D features','target']},
+gauss:{title:'3D Gaussians + learnable feature vectors', text:'Each Gaussian already has geometry and RGB parameters. Feature 3DGS adds a trainable 256-D feature vector to each Gaussian.', belongs:'3D student representation', status:'Trainable', inp:'Current Gaussian scene representation', out:'A 3D feature field stored in Gaussians', note:'This is where the 3D memory of semantic/descriptor-like information lives.', tags:['3D','student','trainable']},
+render:{title:'Rendered feature map', text:'Given the selected camera, the Gaussian feature vectors are projected and composited into a 2D rendered feature map. This is the student prediction in the same camera view.', belongs:'Predicted 2D features', status:'Differentiable result of trainable parameters', inp:'3D Gaussians + camera', out:'Rendered 2D feature map', note:'This is analogous to rendering RGB in Vanilla 3DGS, but now what is rendered is a feature map.', tags:['prediction','rendering']},
+loss:{title:'Feature loss', text:'The rendered feature map is compared with the SAM teacher feature tensor at matching 2D locations. The loss measures how different the student prediction is from the teacher target.', belongs:'Training objective', status:'Not stored as a scene parameter', inp:'Rendered features and teacher features', out:'A scalar loss value', note:'In the code path used in your experiment, rendered features are aligned to the teacher resolution and compared directly.', tags:['loss','comparison']},
+backprop:{title:'Backpropagation / optimizer update', text:'Gradients flow back through the differentiable renderer to update the trainable Gaussian parameters — especially the 256-D Gaussian feature vectors, and possibly geometry/opacity when optimized jointly.', belongs:'Optimization step', status:'Updates trainable Gaussian parameters', inp:'Loss gradients', out:'New Gaussian parameter values', note:'This is how multiple 2D teacher observations become one shared 3D feature field.', tags:['gradients','update']}
+};
+const stepBtns=[...document.querySelectorAll('.stepbtn')], boxes=[...document.querySelectorAll('.box')];
+let current='input', mode='both';
+function setCurrent(k){current=k;stepBtns.forEach(b=>b.classList.toggle('active',b.dataset.step===k));boxes.forEach(b=>{const on=b.dataset.step===k;const rect=b.querySelector('rect');rect.setAttribute('stroke-width', on?'4':'2'); if(on){rect.setAttribute('stroke','#ef8b00');} else { rect.setAttribute('stroke', rect.getAttribute('fill')==='#eef4ff' ? '#9ebeff' : rect.getAttribute('fill')==='#f6f1ff' ? '#d5bfff' : '#bfe3d4'; }}); const d=data[k];document.getElementById('title').textContent=d.title;document.getElementById('text').textContent=d.text;document.getElementById('belongs').textContent=d.belongs;document.getElementById('status').textContent=d.status;document.getElementById('inp').textContent=d.inp;document.getElementById('out').textContent=d.out;document.getElementById('note').textContent=d.note;document.getElementById('tags').innerHTML=d.tags.map(t=>`<span class="tag">${t}</span>`).join('');}
+function setMode(m){mode=m;['showBoth','showRGB','showFeature'].forEach(id=>document.getElementById(id).classList.remove('active')); document.getElementById(m==='both'?'showBoth':m==='rgb'?'showRGB':'showFeature').classList.add('active');
+  const rgbIds=['inputBox','samBox','tensorBox','a1','a2']; const featIds=['gaussBox','renderBox','b1']; const compIds=['lossBox','backBox','c1','c2','d1','d2'];
+  const showRGB = m==='both'||m==='rgb'; const showFeat=m==='both'||m==='feature'; const showComp=m==='both'||m==='feature';
+  rgbIds.forEach(id=>document.getElementById(id).style.opacity=showRGB?1:.15);
+  featIds.forEach(id=>document.getElementById(id).style.opacity=showFeat?1:.15);
+  compIds.forEach(id=>document.getElementById(id).style.opacity=showComp?1:.15);
+}
+stepBtns.forEach(b=>b.onclick=()=>setCurrent(b.dataset.step)); boxes.forEach(b=>b.onclick=()=>setCurrent(b.dataset.step));
+document.getElementById('showBoth').onclick=()=>setMode('both'); document.getElementById('showRGB').onclick=()=>setMode('rgb'); document.getElementById('showFeature').onclick=()=>setMode('feature');
+setCurrent('input'); setMode('both');
+</script>
+</body>
+</html>

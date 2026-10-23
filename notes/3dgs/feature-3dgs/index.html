@@ -1,0 +1,2640 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Research, publications, and technical research notes by Adnan Ali">
+      
+      
+        <meta name="author" content="Adnan Ali">
+      
+      
+      
+        <link rel="prev" href="../vanilla-3dgs/">
+      
+      
+        <link rel="next" href="../../graph-learning/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Feature 3DGS - Adnan Ali</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#feature-3d-gaussian-splatting-from-motivation-to-training-and-inference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Adnan Ali" class="md-header__button md-logo" aria-label="Adnan Ali" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Adnan Ali
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Feature 3DGS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../research/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Research
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../publications/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Publications
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Research Notes & Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Adnan Ali" class="md-nav__button md-logo" aria-label="Adnan Ali" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Adnan Ali
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../publications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes & Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research Notes & Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cv-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Vision Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Gaussian Splatting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3D Gaussian Splatting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vanilla-3dgs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-do-we-need-feature-3dgs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why do we need Feature 3DGS?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Why do we need Feature 3DGS?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-path-after-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading path after this section
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-is-new-inside-one-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. What is new inside one Gaussian?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What is new inside one Gaussian?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-explore-one-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — Explore one Gaussian
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-where-does-sam-fit-in-the-frozen-2d-teacher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Where does SAM fit in? — The frozen 2D teacher
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Where does SAM fit in? — The frozen 2D teacher">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-see-exactly-where-sam-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — See exactly where SAM fits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-what-does-256-48-64-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 What does 256 × 48 × 64 mean?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-select-a-channel-and-a-grid-cell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — Select a channel and a grid cell
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-channel-versus-vector-the-two-important-slices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Channel versus vector: the two important slices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-what-is-a-feature-vector-intuitively" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 What is a feature vector, intuitively?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-full-training-idea-first-see-the-entire-learning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The full training idea — first see the entire learning loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. The full training idea — first see the entire learning loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-before-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Before optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-what-happens-during-one-training-iteration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 What happens during one training iteration?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-compare-one-iteration-with-vanilla-3dgs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Compare one iteration with Vanilla 3DGS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-are-features-rendered-alpha-compositing-of-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How are features rendered? — Alpha compositing of vectors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. How are features rendered? — Alpha compositing of vectors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-a-three-channel-teaching-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 A three-channel teaching example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-interactive-lab-change-alpha-depth-order-and-feature-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Interactive lab: change alpha, depth order, and feature values
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-does-the-model-learn-these-vectors-feature-loss-and-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. How does the model learn these vectors? — Feature loss and gradients
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. How does the model learn these vectors? — Feature loss and gradients">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-why-two-gaussians-receive-different-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Why two Gaussians receive different gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-perform-a-gradient-update-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — Perform a gradient update yourself
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-how-do-many-cameras-teach-one-gaussian-multi-view-feature-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. How do many cameras teach one Gaussian? — Multi-view feature distillation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. How do many cameras teach one Gaussian? — Multi-view feature distillation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-what-if-camera-a-and-b-disagree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 What if Camera A and B disagree?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-interactive-two-camera-chair-lesson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Interactive two-camera chair lesson
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-when-does-learning-finish-the-trained-scene-not-a-collection-of-2d-predictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. When does learning finish? — The trained scene, not a collection of 2D predictions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. When does learning finish? — The trained scene, not a collection of 2D predictions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-what-did-the-model-learnand-what-did-it-not-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 What did the model learn—and what did it not learn?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-after-training-what-can-we-do-with-the-learned-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. After training: what can we do with the learned features?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. After training: what can we do with the learned features?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-why-a-descriptor-is-not-a-segmentation-mask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Why a descriptor is not a segmentation mask
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.1 Why a descriptor is not a segmentation mask">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#911-what-does-a-mask-contain-numerically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1.1 What does a mask contain numerically?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-pca-is-a-display-technique-not-an-object-identifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 PCA is a display technique, not an object identifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-now-examine-our-real-experiment-outputs-after-understanding-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Now examine our real experiment — outputs after understanding training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Now examine our real experiment — outputs after understanding training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-start-with-the-photograph-and-its-teacher-feature-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Start with the photograph and its teacher feature visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-look-inside-eight-individual-feature-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Look inside eight individual feature channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-inspect-one-real-vector-and-compare-it-across-the-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Inspect one real vector and compare it across the image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-explore-the-real-teacher-tensor-interactively" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Explore the real teacher tensor interactively
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-inspect-the-actual-learned-3d-gaussian-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Inspect the actual learned 3D Gaussian features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-inspect-actual-gaussian-descriptor-values-and-opacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Inspect actual Gaussian descriptor values and opacity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-reproduce-and-inspect-the-real-data-in-jupyterlab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Reproduce and inspect the real data in JupyterLab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-final-understanding-explain-the-whole-loop-from-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Final understanding — explain the whole loop from memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Final understanding — explain the whole loop from memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-self-check-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five self-check questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references-and-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References and reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comparison.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla vs. Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-computing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Computing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chinese-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-do-we-need-feature-3dgs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why do we need Feature 3DGS?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Why do we need Feature 3DGS?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-path-after-this-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading path after this section
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-is-new-inside-one-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. What is new inside one Gaussian?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What is new inside one Gaussian?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-explore-one-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — Explore one Gaussian
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-where-does-sam-fit-in-the-frozen-2d-teacher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Where does SAM fit in? — The frozen 2D teacher
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Where does SAM fit in? — The frozen 2D teacher">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-see-exactly-where-sam-fits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — See exactly where SAM fits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-what-does-256-48-64-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 What does 256 × 48 × 64 mean?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-select-a-channel-and-a-grid-cell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — Select a channel and a grid cell
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-channel-versus-vector-the-two-important-slices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Channel versus vector: the two important slices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-what-is-a-feature-vector-intuitively" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 What is a feature vector, intuitively?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-full-training-idea-first-see-the-entire-learning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The full training idea — first see the entire learning loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. The full training idea — first see the entire learning loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-before-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Before optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-what-happens-during-one-training-iteration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 What happens during one training iteration?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-compare-one-iteration-with-vanilla-3dgs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Compare one iteration with Vanilla 3DGS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-are-features-rendered-alpha-compositing-of-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How are features rendered? — Alpha compositing of vectors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. How are features rendered? — Alpha compositing of vectors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-a-three-channel-teaching-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 A three-channel teaching example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-interactive-lab-change-alpha-depth-order-and-feature-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Interactive lab: change alpha, depth order, and feature values
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-does-the-model-learn-these-vectors-feature-loss-and-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. How does the model learn these vectors? — Feature loss and gradients
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. How does the model learn these vectors? — Feature loss and gradients">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-why-two-gaussians-receive-different-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Why two Gaussians receive different gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-figure-perform-a-gradient-update-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive figure — Perform a gradient update yourself
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-how-do-many-cameras-teach-one-gaussian-multi-view-feature-distillation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. How do many cameras teach one Gaussian? — Multi-view feature distillation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. How do many cameras teach one Gaussian? — Multi-view feature distillation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-what-if-camera-a-and-b-disagree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 What if Camera A and B disagree?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-interactive-two-camera-chair-lesson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Interactive two-camera chair lesson
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-when-does-learning-finish-the-trained-scene-not-a-collection-of-2d-predictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. When does learning finish? — The trained scene, not a collection of 2D predictions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. When does learning finish? — The trained scene, not a collection of 2D predictions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-what-did-the-model-learnand-what-did-it-not-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 What did the model learn—and what did it not learn?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-after-training-what-can-we-do-with-the-learned-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. After training: what can we do with the learned features?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. After training: what can we do with the learned features?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-why-a-descriptor-is-not-a-segmentation-mask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Why a descriptor is not a segmentation mask
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.1 Why a descriptor is not a segmentation mask">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#911-what-does-a-mask-contain-numerically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1.1 What does a mask contain numerically?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-pca-is-a-display-technique-not-an-object-identifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 PCA is a display technique, not an object identifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-now-examine-our-real-experiment-outputs-after-understanding-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Now examine our real experiment — outputs after understanding training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Now examine our real experiment — outputs after understanding training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-start-with-the-photograph-and-its-teacher-feature-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Start with the photograph and its teacher feature visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-look-inside-eight-individual-feature-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Look inside eight individual feature channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-inspect-one-real-vector-and-compare-it-across-the-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Inspect one real vector and compare it across the image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-explore-the-real-teacher-tensor-interactively" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Explore the real teacher tensor interactively
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-inspect-the-actual-learned-3d-gaussian-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Inspect the actual learned 3D Gaussian features
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-inspect-actual-gaussian-descriptor-values-and-opacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Inspect actual Gaussian descriptor values and opacity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-reproduce-and-inspect-the-real-data-in-jupyterlab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Reproduce and inspect the real data in JupyterLab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-final-understanding-explain-the-whole-loop-from-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Final understanding — explain the whole loop from memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Final understanding — explain the whole loop from memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-self-check-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five self-check questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references-and-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References and reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="feature-3d-gaussian-splatting-from-motivation-to-training-and-inference">Feature 3D Gaussian Splatting — From Motivation to Training and Inference</h1>
+<p><em>An illustrated learning tutorial: understand </em><em>why</em><em> features are needed, </em><em>how</em><em> the model learns them, and </em><em>only then</em><em> examine our real trained scene.</em></p>
+<div class="admonition info">
+<p class="admonition-title">Where to start</p>
+<p><strong>Read Sections 1–9 in order.</strong> They explain the method without relying on experimental outputs. When the training process makes sense, go to <strong>Section 10</strong> to interpret our five real figures, then <strong>Section 11</strong> for JupyterLab experiments. You do <strong>not</strong> need to interpret PCA images before understanding the learning process.</p>
+</div>
+<p><strong>Our running example:</strong> a room with a desk, monitors, and a chair. We want to reconstruct it, then ask a question such as <strong>“Which parts belong to the chair?”</strong> The figures explaining the algorithm use simple, labeled teaching examples; the later experimental figures come from our actual indoor photographs and trained scene.</p>
+<p><strong>Prerequisites:</strong> <a href="../fundamentals/">3DGS Fundamentals</a> and <a href="../vanilla-3dgs/">Vanilla 3DGS</a>. We assume you already know what Gaussian position, scale, rotation, opacity, spherical harmonics, projection, and RGB reconstruction loss mean.</p>
+<h2 id="1-why-do-we-need-feature-3dgs">1. Why do we need Feature 3DGS?</h2>
+<p>Think first about <strong>Vanilla 3DGS</strong>. We give it photographs and camera poses; it trains 3D Gaussians so that their rendering from a training camera resembles the corresponding <strong>RGB photograph</strong>.</p>
+<p>That solves an appearance problem: <em>“What should this scene look like from here?”</em></p>
+<p>But consider a new question: <strong>“Select the chair in this 3D room.”</strong> A Gaussian's RGB color is not a reliable definition of a chair. The chair and monitor might both look dark; one chair could have red upholstery, metal legs, and shadows. Color alone does not encode a reusable descriptor of visual or object-related patterns.</p>
+<p><strong>Our new goal</strong> is to give each Gaussian an additional learned descriptor. When we render a scene, we then obtain not only an RGB image but also a <strong>feature map</strong> useful for downstream analysis.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Vanilla 3DGS</th>
+<th>Feature 3DGS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scene stored as</td>
+<td>3D Gaussians</td>
+<td>3D Gaussians</td>
+</tr>
+<tr>
+<td>Reconstructed output</td>
+<td>RGB image</td>
+<td>RGB image <strong>and</strong> feature map</td>
+</tr>
+<tr>
+<td>Primary supervision</td>
+<td>Reference RGB photograph</td>
+<td>RGB photograph <strong>plus</strong> image-encoder feature target</td>
+</tr>
+<tr>
+<td>Added attribute</td>
+<td>—</td>
+<td>One trainable feature vector per Gaussian</td>
+</tr>
+<tr>
+<td>Semantic meaning</td>
+<td>Not explicitly encoded by RGB alone</td>
+<td>Learned descriptors can support downstream tasks; not automatic class labels</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition important">
+<p class="admonition-title">Answer before moving forward</p>
+<p><strong>Feature 3DGS does not replace the vanilla Gaussian scene. It augments the same scene representation with feature attributes.</strong></p>
+</div>
+<h3 id="reading-path-after-this-section">Reading path after this section</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Question</th>
+<th>Sections</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Motivation</strong></td>
+<td>Why is Vanilla 3DGS insufficient for feature-based scene understanding?</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Representation</strong></td>
+<td>What extra information does a Gaussian learn, and where does SAM come in?</td>
+<td>2–4</td>
+</tr>
+<tr>
+<td><strong>Learning</strong></td>
+<td>How do camera views, rendering, losses, and gradients train those features?</td>
+<td>5–8</td>
+</tr>
+<tr>
+<td><strong>After training</strong></td>
+<td>What is stored, and how might we request a chair mask?</td>
+<td>9</td>
+</tr>
+<tr>
+<td><strong>Real experiment</strong></td>
+<td>What do our saved tensors, trained PLY, and visualizations actually show?</td>
+<td>10–11</td>
+</tr>
+<tr>
+<td><strong>Review</strong></td>
+<td>Can we explain the complete process in our own words?</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-what-is-new-inside-one-gaussian">2. What is new inside one Gaussian?</h2>
+<p>A Vanilla 3DGS Gaussian already has trainable position, anisotropic shape, orientation, opacity, and spherical-harmonic appearance coefficients. Feature 3DGS adds <strong>one more learnable object</strong>: a feature vector.</p>
+<p>For our full-dimensional setup, Gaussian <span class="arithmatex">\(i\)</span> carries</p>
+<div class="arithmatex">\[
+\Theta_i=\{\boldsymbol\mu_i,\mathbf s_i,\mathbf q_i,\alpha_i,\mathbf c_i,\underbrace{\mathbf f_i}_{\text{256 trainable values}}\},
+\qquad \mathbf f_i\in\mathbb R^{256}.
+\]</div>
+<p>A few distinctions are essential:</p>
+<ul>
+<li><span class="arithmatex">\(\mathbf f_i\)</span> belongs to the <strong>3D Gaussian</strong>, not to a particular photograph.</li>
+<li>It has <strong>256 components</strong>; this does <strong>not</strong> mean there are 256 objects or segmentation classes.</li>
+<li>Many Gaussians can cover the same object; there is <strong>no guaranteed one-Gaussian-per-object correspondence</strong>.</li>
+<li>The feature vector's values are learned by optimization. We do not manually write the word <code>chair</code> into the Gaussian.</li>
+</ul>
+<p>Imagine a small Gaussian located on a chair armrest. It keeps its learned feature vector while different cameras view it from different angles. Later, we will see how those images provide training gradients to the <strong>same vector</strong>.</p>
+<p><strong>One question remains:</strong> Where will the model get its feature-learning targets? That is SAM's job.</p>
+<h3 id="interactive-figure-explore-one-gaussian">Interactive figure — Explore one Gaussian</h3>
+<p>Switch between <strong>Vanilla 3DGS</strong> and <strong>Feature 3DGS</strong>, click a Gaussian attribute, and change its scale, rotation, or opacity. In Feature 3DGS mode, inspect the additional <strong>trainable 256-D feature vector</strong>. This is a conceptual Gaussian explorer; its numerical values are illustrative.</p>
+<iframe src="../assets/gaussian_parts_explorer.html" title="Interactive Vanilla versus Feature 3DGS Gaussian attributes" width="100%" height="1480" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe>
+
+<p><a href="../assets/gaussian_parts_explorer.html">Open the interactive Gaussian explorer full-screen</a></p>
+<hr />
+<h2 id="3-where-does-sam-fit-in-the-frozen-2d-teacher">3. Where does SAM fit in? — The frozen 2D teacher</h2>
+<p>In our experiment, <strong>SAM ViT-B</strong> serves as a <strong>pretrained teacher image encoder</strong>. Before Feature 3DGS training, we pass each registered RGB photograph through the SAM image encoder and save its feature tensor. We do <strong>not</strong> ask SAM to optimize the Gaussians or to provide their 3D positions.</p>
+<p>We use the terminology <strong>teacher/student</strong> in the standard ML sense:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Job</th>
+<th>During our Feature 3DGS training</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RGB photograph + camera pose</strong></td>
+<td>Defines the view and RGB reconstruction target</td>
+<td>Fixed observation</td>
+</tr>
+<tr>
+<td><strong>SAM image encoder</strong></td>
+<td>Extracts a 2D feature map from the photograph</td>
+<td><strong>Frozen</strong></td>
+</tr>
+<tr>
+<td><strong>Saved SAM feature map</strong></td>
+<td>Provides the feature-reconstruction target for that view</td>
+<td><strong>Fixed</strong></td>
+</tr>
+<tr>
+<td><strong>3D Gaussians</strong></td>
+<td>Render RGB and features from that camera</td>
+<td><strong>Trainable</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="interactive-figure-see-exactly-where-sam-fits">Interactive figure — See exactly where SAM fits</h3>
+<p>Click the <strong>frozen SAM encoder</strong>, <strong>2D teacher tensor</strong>, <strong>trainable 3D Gaussians</strong>, <strong>feature renderer</strong>, and <strong>loss</strong> in order. The detail panel explains what each step receives, produces, and whether its parameters are frozen or trainable.</p>
+<iframe src="../assets/where_sam_fits_pipeline_explorer.html" title="Interactive SAM teacher and Feature 3DGS student training pipeline" width="100%" height="1470" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe>
+
+<p><a href="../assets/where_sam_fits_pipeline_explorer.html">Open the SAM training-pipeline explorer full-screen</a></p>
+<h3 id="31-what-does-256-48-64-mean">3.1 What does <code>256 × 48 × 64</code> mean?</h3>
+<p>A saved teacher tensor has shape</p>
+<div class="arithmatex">\[
+F_{\mathrm{SAM}}\in\mathbb R^{256\times48\times64}.
+\]</div>
+<p>Read the dimensions as <strong>channels × rows × columns</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th style="text-align: right;">Count</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Feature channels</td>
+<td style="text-align: right;"><strong>256</strong></td>
+<td>Number of components in the descriptor at a location</td>
+</tr>
+<tr>
+<td>Spatial rows</td>
+<td style="text-align: right;"><strong>48</strong></td>
+<td>Grid height</td>
+</tr>
+<tr>
+<td>Spatial columns</td>
+<td style="text-align: right;"><strong>64</strong></td>
+<td>Grid width</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Two ways to inspect a SAM feature tensor: one channel or one grid-cell descriptor" src="../assets/sam_feature_tensor.svg" /></p>
+<p><em>Conceptual explanation.</em> Think of <strong>one grid containing 48 × 64 cells</strong>. At every cell there is a stack of <strong>256 numerical values</strong>. The figure is teaching tensor indexing, not claiming these are 256 separate object masks.</p>
+<h3 id="interactive-figure-select-a-channel-and-a-grid-cell">Interactive figure — Select a channel and a grid cell</h3>
+<p>Move the <strong>channel slider (0–255)</strong> to change the spatial map <span class="arithmatex">\(F[c,:,:]\)</span>. Then click any grid cell to update <span class="arithmatex">\(F[:,r,k]\)</span>, the <strong>256 values at that one location</strong>, and its cosine-similarity visualization. This is an intentionally <em>synthetic</em> tensor to teach the indexing, not a saved SAM result; the <strong>real-tensor explorer</strong> appears later in Section 10.4.</p>
+<iframe src="../assets/sam_tensor_explorer.html" title="Interactive synthetic 256 by 48 by 64 SAM-style feature tensor" width="100%" height="1730" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe>
+
+<p><a href="../assets/sam_tensor_explorer.html">Open the 256-channel tensor explorer full-screen</a></p>
+<h3 id="32-channel-versus-vector-the-two-important-slices">3.2 Channel versus vector: the two important slices</h3>
+<p>For a channel index <span class="arithmatex">\(c\)</span>,</p>
+<div class="arithmatex">\[
+F_{\mathrm{SAM}}[c,:,:]\in\mathbb R^{48\times64}
+\]</div>
+<p>is a <strong>2D map of one feature component</strong> across the photograph. For a particular grid cell <span class="arithmatex">\((r,k)\)</span>,</p>
+<div class="arithmatex">\[
+F_{\mathrm{SAM}}[:,r,k]\in\mathbb R^{256}
+\]</div>
+<p>is the <strong>entire descriptor of that one location</strong>.</p>
+<p>Do not confuse the two:</p>
+<ul>
+<li><em>Choose a channel</em> → inspect that component at <strong>every</strong> spatial location.</li>
+<li><em>Choose a grid cell</em> → inspect <strong>all 256 components</strong> at one location.</li>
+</ul>
+<h3 id="33-what-is-a-feature-vector-intuitively">3.3 What is a feature vector, intuitively?</h3>
+<p>In ordinary RGB, a pixel has three color coordinates <span class="arithmatex">\([R,G,B]\)</span>. A SAM descriptor is instead a point in a 256-dimensional <strong>learned feature space</strong>:</p>
+<div class="arithmatex">\[
+\mathbf t_{r,k}=[t_0,t_1,\ldots,t_{255}].
+\]</div>
+<p>Individual coordinates may be positive or negative and generally do not have human-readable names. A descriptor is <strong>not</strong> an RGB color, <strong>not</strong> a <code>chair</code> label, and <strong>not</strong> a binary mask. Similar descriptors may reflect related visual structures, but similarity alone does not establish object identity.</p>
+<div class="admonition question">
+<p class="admonition-title">Check before training</p>
+<p>What has 256 values here? <strong>A teacher descriptor at one grid cell.</strong> Does SAM copy that vector directly into a certain Gaussian? <strong>No.</strong> We must learn a shared 3D representation by <em>rendering</em> it and comparing predictions against these fixed 2D targets.</p>
+</div>
+<hr />
+<h2 id="4-the-full-training-idea-first-see-the-entire-learning-loop">4. The full training idea — first see the entire learning loop</h2>
+<p>Now that we know <strong>what we want to learn</strong> and <strong>who provides the target</strong>, the rest follows the same learning pattern as Vanilla 3DGS.</p>
+<h3 id="41-before-optimization">4.1 Before optimization</h3>
+<p>We have three things:</p>
+<ol>
+<li><strong>Registered photographs and cameras</strong>, along with sparse COLMAP points used to initialize our 3D Gaussians.</li>
+<li><strong>The fixed RGB targets</strong>: the original photographs.</li>
+<li><strong>The fixed SAM feature targets</strong>: one saved 256 × 48 × 64 teacher tensor per registered image.</li>
+</ol>
+<p>Each Gaussian gets trainable feature parameters in addition to its usual geometry and appearance. The Gaussian feature vectors are <strong>initialized as parameters to optimize</strong>, not filled by looking up one image cell and copying its SAM descriptor.</p>
+<h3 id="42-what-happens-during-one-training-iteration">4.2 What happens during one training iteration?</h3>
+<p>Consider camera <strong>A</strong> looking toward our chair and desk:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What happens</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Select camera A</strong></td>
+<td>Pick a registered training view.</td>
+<td>This fixes the projection and visibility.</td>
+</tr>
+<tr>
+<td><strong>2. Render the scene</strong></td>
+<td>The same 3D Gaussians produce a predicted RGB image <strong>and</strong> a predicted feature map.</td>
+<td>Both outputs come from the current student scene.</td>
+</tr>
+<tr>
+<td><strong>3. Obtain targets</strong></td>
+<td>Read the RGB photograph and its saved, fixed SAM tensor for camera A.</td>
+<td>These are the supervision signals.</td>
+</tr>
+<tr>
+<td><strong>4. Align resolution</strong></td>
+<td>Resize the rendered feature map to the SAM target's spatial size, if needed.</td>
+<td>Comparable tensors must describe aligned locations.</td>
+</tr>
+<tr>
+<td><strong>5. Compute losses</strong></td>
+<td>Compare RGB to RGB and rendered features to SAM features.</td>
+<td>Measures what the student predicted incorrectly.</td>
+</tr>
+<tr>
+<td><strong>6. Backpropagate</strong></td>
+<td>Differentiate the losses through the renderer.</td>
+<td>Produces gradients for participating Gaussian parameters.</td>
+</tr>
+<tr>
+<td><strong>7. Update Gaussians</strong></td>
+<td>Take the optimizer step, with standard Gaussian density-control behavior during training.</td>
+<td>Improves the shared scene representation.</td>
+</tr>
+<tr>
+<td><strong>8. Choose another camera</strong></td>
+<td>Repeat with camera B, C, and other views.</td>
+<td>The same Gaussians learn from different observations.</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Diagram of frozen 2D SAM feature targets supervising learnable Gaussian features through rendering" src="../assets/2d_to_3d_feature_supervision.svg" /></p>
+<p><strong>Read the diagram in two directions:</strong> the frozen teacher branch produces the target; the <strong>3D student branch</strong> produces the prediction. The feature loss connects them. <strong>Only the trainable Gaussian scene is updated</strong>, not the pretrained SAM encoder.</p>
+<h3 id="43-compare-one-iteration-with-vanilla-3dgs">4.3 Compare one iteration with Vanilla 3DGS</h3>
+<table>
+<thead>
+<tr>
+<th>Vanilla 3DGS</th>
+<th>Feature 3DGS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Render RGB from camera A.</td>
+<td>Render <strong>RGB + features</strong> from camera A.</td>
+</tr>
+<tr>
+<td>Compare RGB with photograph.</td>
+<td>Compare RGB with photograph <strong>and</strong> rendered features with saved SAM tensor.</td>
+</tr>
+<tr>
+<td>Backpropagate RGB error.</td>
+<td>Backpropagate <strong>both</strong> reconstruction errors.</td>
+</tr>
+<tr>
+<td>Update scene Gaussians.</td>
+<td>Update scene Gaussians, including feature vectors.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>That is the whole algorithmic idea.</strong> The next sections zoom into how feature rendering, feature loss, and multi-view updates work numerically.</p>
+<hr />
+<h2 id="5-how-are-features-rendered-alpha-compositing-of-vectors">5. How are features rendered? — Alpha compositing of vectors</h2>
+<p>Vanilla 3DGS rasterization computes a Gaussian's contribution based on projected footprint, opacity, depth order, and previously accumulated transparency. The same visibility mechanism can blend <strong>vectors instead of RGB colors</strong>.</p>
+<p>For visible Gaussians sorted front-to-back at location <span class="arithmatex">\(p\)</span>, define</p>
+<div class="arithmatex">\[
+\begin{aligned}
+w_i(p) &amp;= T_i(p)\,a_i(p),\\
+T_i(p)&amp;=\prod_{j&lt;i}\bigl(1-a_j(p)\bigr),\\
+\widehat{\mathbf f}(p)&amp;=\sum_i w_i(p)\,\mathbf f_i,
+\end{aligned}
+\]</div>
+<p>where <span class="arithmatex">\(a_i(p)\)</span> is the <strong>pixel-specific alpha</strong> of Gaussian <span class="arithmatex">\(i\)</span>, <span class="arithmatex">\(T_i\)</span> is the transmittance through nearer Gaussians, and <span class="arithmatex">\(\mathbf f_i\in\mathbb R^{256}\)</span>. Background handling is omitted from this compact expression.</p>
+<h3 id="51-a-three-channel-teaching-example">5.1 A three-channel teaching example</h3>
+<p>To see the arithmetic without writing 256 terms, let each feature vector have <strong>three</strong> components:</p>
+<div class="arithmatex">\[
+\mathbf f_1=[0.20,0.10,0.30],\quad \mathbf f_2=[0.80,0.50,0.20].
+\]</div>
+<p>Assume the first Gaussian has pixel alpha <span class="arithmatex">\(a_1=0.6\)</span> and the second has <span class="arithmatex">\(a_2=0.5\)</span>. Then</p>
+<div class="arithmatex">\[
+w_1=0.6,\qquad w_2=(1-0.6)\times0.5=0.2.
+\]</div>
+<p>The front-to-back blended prediction (zero feature background) is</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\widehat{\mathbf f}&amp;=0.6\mathbf f_1+0.2\mathbf f_2\\
+&amp;=[0.28,\;0.16,\;0.22].
+\end{aligned}
+\]</div>
+<p>Notice: <strong>the weights sum to 0.8, not necessarily 1</strong>. The remaining transmittance is <span class="arithmatex">\(T_\mathrm{end}=0.2\)</span>. Weights in alpha compositing are <em>not</em> automatically normalized like probabilities in a softmax.</p>
+<h3 id="52-interactive-lab-change-alpha-depth-order-and-feature-values">5.2 Interactive lab: change alpha, depth order, and feature values</h3>
+<p>This interactive lab shows exactly how the weights are obtained and how the rendered feature responds. Move the selected pixel, change Gaussian alpha, reverse the depth order, or perform one optimization step. The lab uses a toy three-component descriptor; the real model uses 256 components.</p>
+<p><iframe src="../assets/feature_blending_loss_lab.html" title="Interactive Gaussian feature blending, feature loss and gradient updates" width="100%" height="1040" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe></p>
+<p><a href="../assets/feature_blending_loss_lab.html">Open the feature blending and loss lab full-screen</a></p>
+<hr />
+<h2 id="6-how-does-the-model-learn-these-vectors-feature-loss-and-gradients">6. How does the model learn these vectors? — Feature loss and gradients</h2>
+<p>We already understand an RGB reconstruction loss. Feature supervision simply adds another comparison, but the target now consists of <strong>256-channel vectors at every feature-grid location</strong>, not RGB intensities.</p>
+<p>For view <span class="arithmatex">\(v\)</span>, denote the frozen SAM map by <span class="arithmatex">\(F_{\mathrm{SAM}}^{(v)}\)</span> and the rendered Gaussian feature map by <span class="arithmatex">\(\widehat F^{(v)}\)</span>. An element-wise mean L1 feature loss is</p>
+<div class="arithmatex">\[
+\mathcal L_{\mathrm{feat}}^{(v)}=
+\frac{1}{CHW}\sum_{c=1}^{C}\sum_{r=1}^{H}\sum_{k=1}^{W}
+\left|\widehat F_{c,r,k}^{(v)}-F_{\mathrm{SAM},c,r,k}^{(v)}\right|.
+\]</div>
+<p>Here <span class="arithmatex">\(C=256, H=48, W=64\)</span> for our saved SAM targets. The renderer can initially produce a different spatial size. <strong>The original Feature 3DGS training code bilinearly interpolates the rendered feature map to the teacher map's height and width before computing feature loss.</strong> Matching shapes does not mean these features were computed at RGB-pixel resolution.</p>
+<p>For the original implementation, the combined training objective is</p>
+<div class="arithmatex">\[
+\mathcal L = (1-\lambda)\,\mathcal L_{\mathrm{RGB-L1}}
++\lambda(1-\mathrm{SSIM})
++\mathcal L_{\mathrm{feat}},
+\]</div>
+<p>where the default <span class="arithmatex">\(\lambda=0.2\)</span> controls the RGB SSIM mixture and the feature L1 term has coefficient 1 in the referenced training code. The optional <code>--speedup</code> mode inserts a CNN decoder after feature rasterization; <strong>our full 256-channel SAM training did not enable that module</strong>.</p>
+<h3 id="61-why-two-gaussians-receive-different-gradients">6.1 Why two Gaussians receive different gradients</h3>
+<p>Take the teaching example from Section 5 and the target <span class="arithmatex">\(\mathbf t=[0.8,0.2,0.6]\)</span>. With the prediction <span class="arithmatex">\([0.28,0.16,0.22]\)</span>, the <em>sum</em> of absolute errors is</p>
+<div class="arithmatex">\[
+\left|0.28-0.8\right|+\left|0.16-0.2\right|+\left|0.22-0.6\right|=0.94,
+\]</div>
+<p>or a <strong>mean</strong> absolute error of <span class="arithmatex">\(0.94/3\approx0.3133\)</span>. These are different reductions; training code's <code>l1_loss</code> uses the mean.</p>
+<p>When the weights are temporarily treated as fixed, the gradient for one feature component is proportional to its compositing weight:</p>
+<div class="arithmatex">\[
+\frac{\partial\mathcal L_{\mathrm{feat}}}{\partial f_{i,c}}=
+\frac{w_i}{3}\,\operatorname{sign}(\widehat f_c-t_c).
+\]</div>
+<p>The nearer Gaussian in this example receives a larger direct feature gradient (weight 0.6 versus 0.2). In actual training, the weights themselves depend on trainable Gaussian geometry and opacity, so differentiating the <em>full</em> renderer also propagates gradients through those quantities.</p>
+<p><strong>The SAM target does not move toward the student prediction. The student prediction moves toward the frozen SAM target.</strong></p>
+<h3 id="interactive-figure-perform-a-gradient-update-yourself">Interactive figure — Perform a gradient update yourself</h3>
+<p>In this separate <strong>four-dimensional toy example</strong>, change the two Gaussian rendering weights, inspect the rendered feature and <strong>fixed</strong> teacher vector, then click <strong>Run 1 gradient step</strong> or <strong>Run 10 steps</strong>. Observe the student vectors change and the feature error respond. The target remains unchanged. This lab treats rendering weights as fixed during each update; in the full method they can also depend on trainable Gaussian properties.</p>
+<iframe src="../assets/feature_loss_gradient_lab.html" title="Interactive L1 feature loss and gradients on two Gaussian feature vectors" width="100%" height="1500" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe>
+
+<p><a href="../assets/feature_loss_gradient_lab.html">Open the feature-loss gradient lab full-screen</a></p>
+<hr />
+<h2 id="7-how-do-many-cameras-teach-one-gaussian-multi-view-feature-distillation">7. How do many cameras teach one Gaussian? — Multi-view feature distillation</h2>
+<p>Recall our chair. Camera A sees its front and Camera B sees its side. Because those photographs differ, the corresponding SAM feature maps also differ. But the 3D Gaussian on the chair belongs to <strong>one common scene representation</strong>.</p>
+<p>Let <span class="arithmatex">\(\mathbf f_i\)</span> denote that Gaussian's learned 256-D vector. Its contribution to the losses for both cameras depends on its projection, opacity, and visibility in each view:</p>
+<div class="arithmatex">\[
+\mathcal L_{\mathrm{feat}}=\sum_{v\in\{A,B,\ldots\}}
+\mathcal L_{\mathrm{feat}}^{(v)}.
+\]</div>
+<p>In practice, the training loop samples views across iterations, rather than evaluating all views simultaneously for every optimizer step. The accumulation over views in the expression above describes the overall learning objective.</p>
+<p><strong>The feature vector is not copied from A and then replaced by B.</strong> Instead, both views supply gradients to a <em>shared</em> 3D representation over training.</p>
+<h3 id="71-what-if-camera-a-and-b-disagree">7.1 What if Camera A and B disagree?</h3>
+<p>Their target vectors need not be identical: SAM features can vary with viewpoint, visible context, partial occlusion, and image content. The model optimizes features that help explain those observations through the shared 3D Gaussians. This does <strong>not</strong> guarantee perfect view invariance. Occluded Gaussians typically contribute no gradient from views in which they are not visible.</p>
+<h3 id="72-interactive-two-camera-chair-lesson">7.2 Interactive two-camera chair lesson</h3>
+<p>Train on Camera A only, B only, or alternate between them. Observe the shared Gaussian feature vector and both view-specific losses. This is a <strong>synthetic teaching model</strong>, not a direct 3D correspondence evaluation on our real chair.</p>
+<iframe src="../assets/multiview_feature_distillation_lab.html" title="Interactive two-camera chair feature distillation" width="100%" height="1040" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe>
+
+<p><a href="../assets/multiview_feature_distillation_lab.html">Open the multi-view feature distillation lab full-screen</a></p>
+<div class="admonition question">
+<p class="admonition-title">Thought experiment</p>
+<p>Camera A sees a chair leg, while Camera B cannot see it because the desk occludes it. Should the chair-leg Gaussian necessarily receive a feature gradient from Camera B? <strong>No</strong>: a Gaussian that does not contribute to a rendered feature pixel generally receives no direct pixel-loss gradient from that view.</p>
+</div>
+<hr />
+<h2 id="8-when-does-learning-finish-the-trained-scene-not-a-collection-of-2d-predictions">8. When does learning finish? — The trained scene, not a collection of 2D predictions</h2>
+<p>Training does not store one separate 3D scene for each of our input photographs. It optimizes <strong>one set of Gaussian parameters</strong>, shared across all training views, for the prescribed number of iterations.</p>
+<p>In our experiment we completed <strong>30,000 iterations</strong>. At the end:</p>
+<ul>
+<li>A Gaussian still has position, shape, orientation, opacity, and appearance parameters.</li>
+<li>It also has its <strong>learned 256-D feature vector</strong>.</li>
+<li>The trained feature attributes can be stored in the PLY as <code>semantic_0</code> through <code>semantic_255</code> (in this full-dimensional setup).</li>
+<li>The saved SAM tensors still belong to their respective <strong>2D input photographs</strong>; they are <em>not</em> 3D Gaussians.</li>
+</ul>
+<p>You can now ask the model to render RGB <strong>or features</strong> from a camera. There is no need to rerun the training loop just to produce a feature render from a new viewpoint. For the already learned 3D feature field, rendering uses the trained Gaussian attributes.</p>
+<h3 id="81-what-did-the-model-learnand-what-did-it-not-learn">8.1 What did the model learn—and what did it not learn?</h3>
+<p><strong>Learned:</strong> feature descriptors distributed across persistent 3D Gaussians, trained to reproduce the frozen teacher's features across observed viewpoints.</p>
+<p><strong>Not automatically learned:</strong> a guaranteed <code>chair=1, everything_else=0</code> mask or a verified class label for every Gaussian. A feature representation enables downstream selection, but <strong>a selection or decoding procedure is still required</strong>.</p>
+<hr />
+<h2 id="9-after-training-what-can-we-do-with-the-learned-features">9. After training: what can we do with the learned features?</h2>
+<p>Feature 3DGS makes it possible to render feature embeddings from a trained 3D representation. But to answer “select the chair,” additional inference logic is required.</p>
+<p>For <strong>SAM prompting</strong>, the conceptual sequence is:</p>
+<ol>
+<li>Render the learned feature map for a chosen camera view.</li>
+<li>Provide a <strong>point or bounding-box prompt</strong>, expressed in that view's image coordinates.</li>
+<li>Use SAM-compatible prompt/mask-decoding inference to produce a 2D segmentation mask from the rendered embeddings.</li>
+<li>If the goal is a persistent <strong>3D chair selection</strong>, associate image-space evidence with the contributing 3D Gaussians, taking visibility and inconsistent evidence across views into account.</li>
+</ol>
+<p>The original Feature 3DGS repository includes prompt-based segmentation scripts that consume rendered feature embeddings. Nevertheless, <strong>obtaining a 2D prompted mask is not automatically equivalent to having ground-truth 3D object membership for every Gaussian</strong>.</p>
+<p>We will study and implement the 3D chair-selection step separately. This tutorial establishes exactly which quantities are available and which ones still must be inferred.</p>
+<h3 id="91-why-a-descriptor-is-not-a-segmentation-mask">9.1 Why a descriptor is not a segmentation mask</h3>
+<p>This distinction matters particularly after training, when we want to select an object rather than merely render an embedding.</p>
+<p><img alt="Comparison of numerical feature descriptors and binary segmentation masks" src="../assets/feature_vector_vs_segmentation_mask.svg" /></p>
+<h4 id="911-what-does-a-mask-contain-numerically">9.1.1 What does a mask contain numerically?</h4>
+<p>A <strong>binary segmentation mask</strong> is a 2D array of 0s and 1s. For example,</p>
+<div class="arithmatex">\[
+M=\begin{bmatrix}
+0&amp;0&amp;0&amp;0&amp;0\\
+0&amp;1&amp;1&amp;1&amp;0\\
+0&amp;1&amp;1&amp;1&amp;0\\
+0&amp;0&amp;1&amp;0&amp;0
+\end{bmatrix}.
+\]</div>
+<p>For a selected region, 1 marks membership and 0 marks non-membership. A <strong>soft mask</strong> may instead contain values in <span class="arithmatex">\([0,1]\)</span>, expressing a confidence or a score that can be thresholded.</p>
+<table>
+<thead>
+<tr>
+<th>Representation</th>
+<th>Typical shape</th>
+<th>What values mean</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RGB image</td>
+<td><span class="arithmatex">\(3\times H\times W\)</span></td>
+<td>Three color values at each image pixel</td>
+</tr>
+<tr>
+<td>SAM teacher features</td>
+<td><span class="arithmatex">\(256\times48\times64\)</span></td>
+<td>One 256-D descriptor per feature-grid cell</td>
+</tr>
+<tr>
+<td>Gaussian feature table</td>
+<td><span class="arithmatex">\(N\times256\)</span></td>
+<td>One learned 256-D descriptor for each of <span class="arithmatex">\(N\)</span> 3D Gaussians</td>
+</tr>
+<tr>
+<td>Rendered feature map</td>
+<td><span class="arithmatex">\(256\times H'\times W'\)</span></td>
+<td>Composited descriptors in a camera view, before/after resolution alignment</td>
+</tr>
+<tr>
+<td>PCA display</td>
+<td><span class="arithmatex">\(3\times H'\times W'\)</span></td>
+<td>Three components <strong>shown as colors</strong>, not labels</td>
+</tr>
+<tr>
+<td>Binary mask</td>
+<td><span class="arithmatex">\(1\times H'\times W'\)</span></td>
+<td>Inclusion/exclusion of a selected region</td>
+</tr>
+</tbody>
+</table>
+<p>In SAM itself, the <strong>image encoder's feature map</strong> and a <strong>mask produced by a prompt-conditioned mask decoder</strong> are two different outputs. The Feature 3DGS training experiment distills image-encoder features. It does not directly train each Gaussian to carry a binary “chair” bit.</p>
+<h3 id="92-pca-is-a-display-technique-not-an-object-identifier">9.2 PCA is a <em>display technique</em>, not an object identifier</h3>
+<p>We cannot display 256 dimensions as an ordinary RGB image. PCA may project a collection of descriptors down to three components and map these to display colors. Such colors help examine feature structure, but <strong>a PCA hue is not a class label or a mask value</strong>. Different independently fitted PCAs may use entirely different color orientations.</p>
+<p>We'll use PCA to examine our <strong>actual saved results</strong> next. First you now know what the model learned; only then should you interpret its visualizations.</p>
+<hr />
+<h2 id="10-now-examine-our-real-experiment-outputs-after-understanding-training">10. Now examine our real experiment — outputs <em>after</em> understanding training</h2>
+<p>Everything above described <strong>the learning mechanism</strong> using equations and clearly identified toy exercises. This section changes purpose: it shows what was actually saved or computed from our own indoor room.</p>
+<p><strong>Our setup:</strong> 103 captured photographs, 99 images registered by COLMAP, 38,558 initial COLMAP points, frozen SAM ViT-B image encoder, teacher tensors of shape <strong>256 × 48 × 64</strong>, full 256-D feature learning without the optional <code>--speedup</code> decoder, and <strong>30,000 training iterations</strong>.</p>
+<p>The sample photograph for the teacher-side figures is <code>20261004_133414.jpg</code>, showing the desk, monitors, chair, and room. <strong>Figures 01–03 come from a 2D SAM teacher tensor. Figures 04–05 come from the trained 3D Gaussian PLY.</strong> Both contain 256-dimensional values but refer to different stored representations.</p>
+<h3 id="101-start-with-the-photograph-and-its-teacher-feature-visualization">10.1 Start with the photograph and its teacher feature visualization</h3>
+<p><img alt="Real RGB room photograph beside PCA visualization of its SAM feature map" src="../assets/01_real_rgb_and_sam_pca.svg" /></p>
+<p><em>Real experiment, Figure 01.</em> The left side is the captured RGB scene. The right side shows a PCA-based pseudo-RGB display of the <strong>fixed SAM features</strong> for the same image. Large surfaces and boundaries are still visible, but these colored regions are <strong>not class predictions</strong>. The right image has only 48 × 64 samples, so it is coarser than the photograph. Do not read a particular PCA color as “chair” or “monitor”.</p>
+<p><strong>Question to ask:</strong> Can I find the approximate monitor region in both views? Probably yes. Does that mean all similarly colored locations are monitors? <strong>No.</strong></p>
+<h3 id="102-look-inside-eight-individual-feature-channels">10.2 Look inside eight individual feature channels</h3>
+<p><img alt="Eight real SAM feature-channel spatial maps with individual colorbars" src="../assets/02_real_sam_feature_channels.svg" /></p>
+<p><em>Real experiment, Figure 02.</em> These are <strong>eight 2D maps</strong> extracted from one tensor: <code>F[0,:,:]</code>, <code>F[1,:,:]</code>, <code>F[8,:,:]</code>, <code>F[32,:,:]</code>, <code>F[64,:,:]</code>, <code>F[128,:,:]</code>, <code>F[192,:,:]</code>, and <code>F[255,:,:]</code>.</p>
+<p>Notice that each still spans a spatial grid. Bright and dark patterns differ by channel; negative values are possible. <strong>Each heatmap has its own colorbar scale</strong>—visually equal brightness across two panels need not indicate equal numerical activation.</p>
+<h3 id="103-inspect-one-real-vector-and-compare-it-across-the-image">10.3 Inspect one real vector and compare it across the image</h3>
+<p><img alt="Selected SAM vector at row 24 column 32, cosine-similarity map and all 256 numeric values" src="../assets/03_real_sam_selected_vector_similarity.svg" /></p>
+<p><em>Real experiment, Figure 03.</em> The selected feature-grid cell is <strong>(row 24, column 32)</strong>. The left panel locates the descriptor, the center measures cosine similarity with other locations, and the right plots its 256 numerical components.</p>
+<p>For nonzero vectors <span class="arithmatex">\(\mathbf a,\mathbf b\)</span>,</p>
+<div class="arithmatex">\[
+\operatorname{cosim}(\mathbf a,\mathbf b)=
+\frac{\mathbf a^\top\mathbf b}{\|\mathbf a\|_2\|\mathbf b\|_2}.
+\]</div>
+<p>Look at the middle panel: much of the scene has positive similarity. <strong>This is not a binary desk or chair mask.</strong> A feature-similarity score measures related directions in descriptor space; even a high value does not prove two locations are the same object. We have also not verified that this selected cell lies on the chair.</p>
+<h3 id="104-explore-the-real-teacher-tensor-interactively">10.4 Explore the <em>real</em> teacher tensor interactively</h3>
+<p>Choose locations and channels in the explorer below. It reads an export of the real tensor; browser values are reconstructed from 8-bit per-channel quantization, while the original <code>.pt</code> tensor contains the precise values.</p>
+<iframe src="../assets/real_sam_tensor_explorer.html" title="Interactive explorer of the real 256-channel SAM tensor" width="100%" height="1030" loading="lazy" style="border:1px solid #cbd5e1;border-radius:10px;max-width:100%"></iframe>
+
+<p><a href="../assets/real_sam_tensor_explorer.html">Open the real SAM tensor explorer full-screen</a></p>
+<h3 id="105-inspect-the-actual-learned-3d-gaussian-features">10.5 Inspect the actual learned 3D Gaussian features</h3>
+<p><img alt="Gaussian centers in 2D spatial PCA coordinates, colored by opacity and feature PCA" src="../assets/04_real_gaussian_pca_point_centers.svg" /></p>
+<p><em>Real experiment, Figure 04.</em> A random sample of <strong>20,000 Gaussian centers</strong> is projected into two plot coordinates using <strong>spatial PCA</strong>. The left panel uses activated opacity for color; the right uses a separate <strong>feature PCA</strong> to turn 256-D Gaussian descriptors into display colors.</p>
+<p><strong>This is not a rendered camera image.</strong> A scatter plot draws only Gaussian centers; it does not show anisotropic splat footprints, tile visibility, or alpha-composited pixels. Moreover, Figure 01 and Figure 04 use <strong>independent PCA fits</strong>, so their colors are not directly comparable.</p>
+<h3 id="106-inspect-actual-gaussian-descriptor-values-and-opacity">10.6 Inspect actual Gaussian descriptor values and opacity</h3>
+<p><img alt="Three trained Gaussian feature vectors and the opacity histogram from the sampled scene" src="../assets/05_real_gaussian_feature_profiles.svg" /></p>
+<p><em>Real experiment, Figure 05.</em> The left graph plots 256 feature components for three saved Gaussians. The horizontal axis is <strong>feature index</strong>, not training time. The right graph shows <strong>activated opacity</strong> for sampled Gaussians, with peaks near zero and one.</p>
+<p>This figure confirms that learned feature attributes are stored as numerical vectors and shows a distribution of opacity in the sampled scene. It does <strong>not</strong> identify which Gaussian is a chair part, establish accuracy of segmentation, or measure feature quality.</p>
+<div class="admonition warning">
+<p class="admonition-title">Two important distinctions</p>
+<p><strong>Teacher side:</strong> Figures 01–03 come from a saved <strong>2D SAM image-encoder tensor</strong>. <strong>Student side:</strong> Figures 04–05 come from the <strong>trained 3D Gaussian attributes</strong>. And <strong>neither</strong> the PCA colors nor the similarity map is a semantic segmentation mask.</p>
+</div>
+<hr />
+<h2 id="11-reproduce-and-inspect-the-real-data-in-jupyterlab">11. Reproduce and inspect the real data in JupyterLab</h2>
+<p>Our example uses <strong>103 captured photographs</strong>, <strong>99 COLMAP-registered images</strong>, and <strong>38,558 initial COLMAP points</strong>. We trained Feature 3DGS with SAM ViT-B targets, <strong>full 256-D features</strong>, without the optional speed-up decoder, for <strong>30,000 iterations</strong>. The selected example photograph is <code>20261004_133414.jpg</code>.</p>
+<p>The visualization script that generated the images on this page does not train or alter the model. It reads a saved teacher tensor and samples the trained PLY.</p>
+<p>Your Windows paths are:</p>
+<pre><code class="language-python">from pathlib import Path
+
+DATASET = Path(r&quot;C:\Users\adnan\ResearchData\my_first_3dgs&quot;)
+PLY = Path(
+    r&quot;C:\Users\adnan\ResearchData\3DGS_outputs&quot;
+    r&quot;\my_first_3dgs_sam_30000_debug_off_GPU1_20261022_095222_761993&quot;
+    r&quot;\model\point_cloud\iteration_30000\point_cloud.ply&quot;
+)
+OUT = Path(r&quot;C:\Users\adnan\ResearchData\3DGS_outputs\feature3dgs_real_figures&quot;)
+
+print(&quot;PLY exists:&quot;, PLY.is_file())
+print(&quot;SAM tensors:&quot;, len(list((DATASET / &quot;sam_embeddings&quot;).glob(&quot;*_fmap_CxHxW.pt&quot;))))
+</code></pre>
+<p>To examine one exact SAM tensor without quantization, load the original saved file in your trusted Python environment:</p>
+<pre><code class="language-python">import torch
+
+path = DATASET / &quot;sam_embeddings&quot; / &quot;20261004_133414_fmap_CxHxW.pt&quot;
+F = torch.load(path, map_location=&quot;cpu&quot;, weights_only=True).float()
+print(&quot;Teacher tensor:&quot;, tuple(F.shape))  # (256, 48, 64)
+
+row, col = 24, 32
+v = F[:, row, col]
+print(&quot;Vector shape:&quot;, tuple(v.shape))   # (256,)
+print(&quot;First eight components:&quot;, v[:8].tolist())
+print(&quot;One channel image:&quot;, tuple(F[0].shape))  # (48, 64)
+</code></pre>
+<p>To inspect the trained PLY without reloading all 256-D features into memory, use the <strong>memory-mapped</strong> reader in the visualization script:</p>
+<pre><code class="language-python">from make_real_feature_figures import read_feature_ply_vertices
+import numpy as np
+
+vertices = read_feature_ply_vertices(PLY)
+channels = sorted(
+    (name for name in vertices.dtype.names if name.startswith(&quot;semantic_&quot;)),
+    key=lambda name: int(name.split(&quot;_&quot;)[-1])
+)
+print(&quot;Number of trained Gaussians:&quot;, len(vertices))
+print(&quot;Learned feature dimensions:&quot;, len(channels))
+
+# Read one complete 256-dimensional Gaussian descriptor.
+i = 0
+f_i = np.array([vertices[name][i] for name in channels], dtype=np.float32)
+print(&quot;One Gaussian feature:&quot;, f_i.shape, f_i[:8])
+</code></pre>
+<p>These commands assume <code>make_real_feature_figures.py</code> is importable from the current notebook directory, which is how we ran the visualization kit.</p>
+<div class="admonition warning">
+<p class="admonition-title">Do not oversell a PCA picture</p>
+<p>PCA is a diagnostic <em>projection</em>, not a segmentation algorithm. Even if a wall and a chair are displayed in different PCA colors, that does not prove the scene contains a correctly trained chair mask. A real object-selection evaluation needs a task-specific mask, ground truth, or consistent multi-view selection procedure.</p>
+</div>
+<hr />
+<h2 id="12-final-understanding-explain-the-whole-loop-from-memory">12. Final understanding — explain the whole loop from memory</h2>
+<p>Imagine the monitor or chair in our room. Its appearance changes across input photographs. SAM extracts a fixed <strong>256-D descriptor at each 2D feature-grid location</strong>. Feature 3DGS maintains trainable <strong>256-D descriptors on persistent 3D Gaussians</strong>. For each training camera, it projects and composites visible Gaussians into a rendered 2D feature map, compares that map with SAM's fixed target, and updates the 3D representation.</p>
+<p>The process is <strong>not direct feature copy-paste</strong>. It is <strong>differentiable multi-view feature distillation</strong>. The <em>last</em> thing we inspect is the output, after we know what produced it.</p>
+<table>
+<thead>
+<tr>
+<th>Easy-to-confuse pair</th>
+<th>Correct distinction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teacher vector vs. Gaussian vector</td>
+<td>The first is fixed in a 2D image; the second is learned and stored in a 3D primitive.</td>
+</tr>
+<tr>
+<td>Feature channel vs. feature vector</td>
+<td>A channel is one scalar over every location; a vector is all channels at one location.</td>
+</tr>
+<tr>
+<td>RGB image vs. feature map</td>
+<td>RGB has three color channels; SAM features have 256 learned channels in our setup.</td>
+</tr>
+<tr>
+<td>Feature similarity vs. segmentation</td>
+<td>Similarity is a numerical relation; segmentation requires a selection/prediction rule.</td>
+</tr>
+<tr>
+<td>PCA color vs. semantic label</td>
+<td>PCA colors encode three projection coordinates; they are not named categories.</td>
+</tr>
+<tr>
+<td>Gaussian-center scatter vs. Gaussian rendering</td>
+<td>The scatter draws centers; the renderer integrates projected splat footprints with visibility.</td>
+</tr>
+<tr>
+<td>One camera vs. multiple cameras</td>
+<td>Distinct images and feature targets supervise the same scene-level Gaussian variables.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="five-self-check-questions">Five self-check questions</h3>
+<ol>
+<li>What is the difference between <code>F[17,:,:]</code> and <code>F[:,24,32]</code>?</li>
+<li>Why can the rendered feature at one pixel be a blend of several Gaussians rather than the vector of a single Gaussian?</li>
+<li>If Camera A and Camera B view the same Gaussian, does the model store two feature vectors or one?</li>
+<li>Does the mostly positive cosine map in Figure 03 provide a binary desk mask? Why not?</li>
+<li>Why are the PCA colors in Figure 04 not directly comparable to the PCA colors in Figure 01?</li>
+</ol>
+<p><strong>Suggested next lesson:</strong> use rendered Gaussian features together with a 2D prompt to understand exactly how a prompt mask is produced—and which additional reasoning is needed to connect that mask to the same chair across other camera views.</p>
+<hr />
+<h2 id="references-and-reproducibility">References and reproducibility</h2>
+<ul>
+<li>Zhou et al., <strong><a href="https://feature-3dgs.github.io/">Feature 3DGS: Supercharging 3D Gaussian Splatting to Enable Distilled Feature Fields</a></strong>, CVPR 2024. <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Zhou_Feature_3DGS_Supercharging_3D_Gaussian_Splatting_to_Enable_Distilled_Feature_CVPR_2024_paper.pdf">Paper</a> · <a href="https://github.com/ShijieZhou-UCLA/feature-3dgs">Official code</a>.</li>
+<li><a href="https://github.com/ShijieZhou-UCLA/feature-3dgs/blob/main/train.py">Original <code>train.py</code></a>: SAM teacher target, rendered-map interpolation, RGB + feature losses, and optimizer/backpropagation.</li>
+<li><strong>Local research artifacts:</strong> the five real-data figures generated from the saved <code>20261004_133414</code> image embedding and the trained <code>iteration_30000/point_cloud.ply</code>; generator <code>make_real_feature_figures.py</code>, plus <code>experiment_figure_metadata.json</code> for sampling and PCA provenance.</li>
+</ul>
+<p><strong>Figure provenance:</strong> Figures 01–03 are computed from a real <em>2D SAM teacher tensor</em>; Figures 04–05 use real <em>learned Gaussian attributes</em> from a random 20,000-Gaussian sample. Academic process diagrams and the two optimization labs explain the method using <strong>illustrative or synthetic examples</strong>, explicitly distinct from real measurement.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

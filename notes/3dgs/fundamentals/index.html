@@ -1,0 +1,1722 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Research, publications, and technical research notes by Adnan Ali">
+      
+      
+        <meta name="author" content="Adnan Ali">
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../vanilla-3dgs/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Fundamentals - Adnan Ali</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3d-gaussian-splatting-fundamentals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Adnan Ali" class="md-header__button md-logo" aria-label="Adnan Ali" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Adnan Ali
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../research/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Research
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../publications/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Publications
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Research Notes & Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Adnan Ali" class="md-nav__button md-logo" aria-label="Adnan Ali" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Adnan Ali
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../publications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes & Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research Notes & Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cv-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Vision Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3D Gaussian Splatting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3D Gaussian Splatting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-big-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The big picture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-exactly-is-a-3d-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. What exactly is a 3D Gaussian?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What exactly is a 3D Gaussian?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isotropic-and-anisotropic-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isotropic and anisotropic shapes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-gaussian-shape-and-opacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Gaussian shape and opacity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-information-does-one-gaussian-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What information does one Gaussian store?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. What information does one Gaussian store?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#color-is-not-necessarily-one-fixed-rgb-triplet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Color is not necessarily one fixed RGB triplet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-from-3d-space-to-a-2d-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. From 3D space to a 2D image
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. From 3D space to a 2D image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-gaussian-can-contribute-to-many-pixels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One Gaussian can contribute to many pixels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-camera-depth-and-footprint-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: camera depth and footprint size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-many-gaussians-make-one-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How many Gaussians make one image?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-does-training-actually-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What does training actually change?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. What does training actually change?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-does-the-number-of-gaussians-grow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why does the number of Gaussians grow?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-remains-after-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. What remains after training?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-interactive-walkthrough-from-photographs-to-a-trained-scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Interactive walkthrough: from photographs to a trained scene
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Interactive walkthrough: from photographs to a trained scene">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-checks-before-proceeding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five checks before proceeding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue learning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Continue learning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary references
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vanilla-3dgs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature-3dgs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comparison.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vanilla vs. Feature 3DGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../research-computing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Computing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chinese-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chinese Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-big-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The big picture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-exactly-is-a-3d-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. What exactly is a 3D Gaussian?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What exactly is a 3D Gaussian?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isotropic-and-anisotropic-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isotropic and anisotropic shapes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-gaussian-shape-and-opacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: Gaussian shape and opacity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-information-does-one-gaussian-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What information does one Gaussian store?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. What information does one Gaussian store?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#color-is-not-necessarily-one-fixed-rgb-triplet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Color is not necessarily one fixed RGB triplet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-from-3d-space-to-a-2d-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. From 3D space to a 2D image
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. From 3D space to a 2D image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-gaussian-can-contribute-to-many-pixels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One Gaussian can contribute to many pixels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#try-it-camera-depth-and-footprint-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it: camera depth and footprint size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-how-many-gaussians-make-one-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How many Gaussians make one image?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-what-does-training-actually-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What does training actually change?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. What does training actually change?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-does-the-number-of-gaussians-grow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why does the number of Gaussians grow?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-remains-after-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. What remains after training?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-interactive-walkthrough-from-photographs-to-a-trained-scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Interactive walkthrough: from photographs to a trained scene
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Interactive walkthrough: from photographs to a trained scene">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-checks-before-proceeding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five checks before proceeding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue learning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Continue learning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary references
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="3d-gaussian-splatting-fundamentals">3D Gaussian Splatting Fundamentals</h1>
+<p><em>From one Gaussian to a scene that can be rendered from different camera viewpoints.</em></p>
+<div class="admonition info">
+<p class="admonition-title">Who should read this page?</p>
+<p>This introduction is intended for readers familiar with machine learning but relatively new to 3D scene representations. It explains the <strong>ideas shared by Vanilla 3DGS and extensions such as Feature 3DGS</strong>. For the prerequisites—image coordinates, camera intrinsics/extrinsics, COLMAP, NeRF, and general rendering terminology—see <a href="../../cv-fundamentals/">Computer Vision Fundamentals</a>.</p>
+<p>This page emphasizes <strong>mental pictures and terminology</strong>. The forthcoming <code>vanilla-3dgs.md</code> will develop the original algorithm in detail, including its loss function, rasterizer, density-control decisions, and code-oriented experiments.</p>
+</div>
+<p><strong>Learning path:</strong> <a href="#1-the-big-picture">The big picture</a> · <a href="#2-what-exactly-is-a-3d-gaussian">One Gaussian</a> · <a href="#3-what-information-does-one-gaussian-store">Gaussian attributes</a> · <a href="#4-from-3d-space-to-a-2d-image">Projection</a> · <a href="#5-how-many-gaussians-make-one-image">Making an image</a> · <a href="#6-what-does-training-actually-change">Learning</a> · <a href="#7-what-remains-after-training">Trained scene</a> · <a href="#8-interactive-walkthrough-from-photographs-to-a-trained-scene">Interactive walkthrough</a></p>
+<hr />
+<h2 id="1-the-big-picture">1. The big picture</h2>
+<p><strong>3D Gaussian Splatting (3DGS)</strong> represents a scene as a collection of spatially extended, trainable <strong>3D Gaussian primitives</strong>. Given a camera viewpoint, a renderer projects these Gaussians into the camera image and combines their contributions to produce pixels.</p>
+<p><img alt="Overview: photographs, camera reconstruction, initialized Gaussians, training, and rendering" src="../assets/full-pipeline.svg" /></p>
+<p>At a conceptual level:</p>
+<ol>
+<li><strong>Photographs</strong> provide examples of what the real scene looked like from particular cameras.</li>
+<li><strong>Camera reconstruction</strong> provides estimated camera poses and sparse 3D points, commonly using COLMAP.</li>
+<li><strong>Gaussian initialization</strong> turns the sparse points into an initial set of primitives with position, shape, opacity, and appearance values.</li>
+<li><strong>Training</strong> changes those Gaussian attributes so that rendered images better reproduce the photographs.</li>
+<li><strong>Rendering</strong> uses the optimized Gaussians and a selected camera to generate an RGB image, including from a new viewpoint.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Representation versus task</p>
+<p><strong>3DGS</strong> is a way to represent and render a scene. <strong>Novel-view synthesis</strong> is one task enabled by such a representation. A Gaussian collection is not itself a photograph, a mesh, or a set of semantic object labels.</p>
+</div>
+<p>This page concentrates on the Gaussian representation and how it participates in those steps, rather than repeating the camera-geometry and COLMAP material from the <a href="../../cv-fundamentals/">CV reference</a>.</p>
+<hr />
+<h2 id="2-what-exactly-is-a-3d-gaussian">2. What exactly is a 3D Gaussian?</h2>
+<p>A <strong>3D point</strong> identifies a location. A <strong>3D Gaussian</strong> identifies a location <strong>and a smooth spatial influence around it</strong>.</p>
+<p><img alt="Difference between a zero-extent point and a spatial Gaussian" src="../assets/point-vs-gaussian.svg" /></p>
+<p>A convenient unnormalized Gaussian function is</p>
+<div class="arithmatex">\[
+G(\mathbf{x})=
+\exp\!\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol\mu)^\top
+\boldsymbol\Sigma^{-1}(\mathbf{x}-\boldsymbol\mu)\right).
+\]</div>
+<p>Here, <span class="arithmatex">\(\boldsymbol\mu\)</span> is its 3D <strong>center</strong>, <span class="arithmatex">\(\boldsymbol\Sigma\)</span> is its <span class="arithmatex">\(3\times3\)</span> <strong>covariance matrix</strong>, and <span class="arithmatex">\(\mathbf{x}\)</span> is a location where we evaluate the Gaussian. At the center, <span class="arithmatex">\(G(\boldsymbol\mu)=1\)</span>; influence decreases smoothly away from it.</p>
+<p>The ellipsoids shown in 3DGS illustrations are <strong>equal-value surfaces of that function</strong>, not hard boundaries. The function does not suddenly become zero at an ellipsoid's edge.</p>
+<h3 id="isotropic-and-anisotropic-shapes">Isotropic and anisotropic shapes</h3>
+<p><img alt="Isotropic, anisotropic, and rotated Gaussian shapes" src="../assets/isotropic-anisotropic.svg" /></p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Mental picture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Isotropic</strong></td>
+<td>Equal spread in every direction: a sphere-shaped level surface.</td>
+</tr>
+<tr>
+<td><strong>Anisotropic</strong></td>
+<td>Unequal directional spread: an elongated or flattened ellipsoid.</td>
+</tr>
+<tr>
+<td><strong>Rotation</strong></td>
+<td>Turns the ellipsoid in 3D without moving its center.</td>
+</tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>Determines how broadly the Gaussian extends along each of its local axes.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> A Gaussian representing part of a flat chair seat may be wide in two directions and very thin in the third. Another near a narrow chair leg may have a different elongated shape. These are learned spatial approximations; the ellipsoids are not solid pieces of furniture.</p>
+<h3 id="try-it-gaussian-shape-and-opacity">Try it: Gaussian shape and opacity</h3>
+<p>Move the scale, rotation, and opacity controls below. In particular, observe that <strong>changing opacity does not change the ellipsoid's shape</strong>.</p>
+<iframe src="../assets/gaussian-explorer.html" title="Interactive Gaussian shape, rotation, and opacity explorer" loading="lazy" style="width:100%;height:570px;border:1px solid #d8dee8;border-radius:10px;"></iframe>
+
+<p><a href="../assets/gaussian-explorer.html">Open the Gaussian explorer separately</a></p>
+<p><em>Teaching-model limitation:</em> this interactive demonstration shows a <strong>2D cross-section</strong> of the Gaussian. The actual primitive and its covariance exist in <strong>3D</strong>.</p>
+<hr />
+<h2 id="3-what-information-does-one-gaussian-store">3. What information does one Gaussian store?</h2>
+<p>Each Gaussian has its own learnable attributes. It helps to separate <strong>stored parameters</strong> from quantities <strong>computed from those parameters</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Meaning</th>
+<th>What it changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Position</strong> <span class="arithmatex">\(\boldsymbol\mu=(x,y,z)\)</span></td>
+<td>The center in world coordinates</td>
+<td>Where the Gaussian is located</td>
+</tr>
+<tr>
+<td><strong>Three scales</strong> <span class="arithmatex">\((s_x,s_y,s_z)\)</span></td>
+<td>Spread along local axes</td>
+<td>Its 3D size and thickness</td>
+</tr>
+<tr>
+<td><strong>Rotation</strong> <span class="arithmatex">\(q\)</span></td>
+<td>Orientation, usually represented as a quaternion</td>
+<td>The direction of its elongated/flat shape</td>
+</tr>
+<tr>
+<td><strong>Opacity</strong> <span class="arithmatex">\(o\)</span></td>
+<td>Base visibility/opacity control</td>
+<td>How strongly it contributes where projected</td>
+</tr>
+<tr>
+<td><strong>Appearance</strong></td>
+<td>Usually spherical-harmonic (SH) color coefficients in Vanilla 3DGS</td>
+<td>Its RGB color as a function of viewing direction</td>
+</tr>
+</tbody>
+</table>
+<p>The covariance is <strong>derived</strong> from scale and rotation:</p>
+<div class="arithmatex">\[
+\boxed{\boldsymbol\Sigma
+=R(q)\,\operatorname{diag}(s_x^2,s_y^2,s_z^2)\,R(q)^\top.}
+\]</div>
+<p>This says: start with three directional spreads, then rotate those directions into the scene's coordinate system. You do <strong>not</strong> need to memorize a full covariance matrix for each Gaussian when thinking about it visually.</p>
+<div class="admonition warning">
+<p class="admonition-title">Three different things</p>
+<ul>
+<li><strong>3D Gaussian:</strong> the scene primitive and its learnable attributes.</li>
+<li><strong>Projected 2D Gaussian:</strong> the primitive's camera-dependent footprint in an image.</li>
+<li><strong>Rendered pixel:</strong> the result of combining contributions from Gaussians at one image position.</li>
+</ul>
+</div>
+<h3 id="color-is-not-necessarily-one-fixed-rgb-triplet">Color is not necessarily one fixed RGB triplet</h3>
+<p><img alt="Different viewing directions can produce different SH-evaluated colors" src="../assets/sh-directions.svg" /></p>
+<p>Spherical harmonics are <strong>angular basis functions</strong>. Their coefficients allow a Gaussian to produce different colors from different viewing directions, for example when approximating a shiny surface. The <strong>coefficients stay the same</strong> for a trained Gaussian; the <strong>evaluated color can change</strong> when the camera moves.</p>
+<p>This is distinct from opacity: SH determines the Gaussian's color for a direction; opacity and its projected footprint help determine <strong>how much</strong> that color affects a pixel. The full SH basis equations belong in the Vanilla 3DGS tutorial.</p>
+<hr />
+<h2 id="4-from-3d-space-to-a-2d-image">4. From 3D space to a 2D image</h2>
+<p>A camera does not observe the 3D Gaussian directly. For a chosen camera, the renderer <strong>projects its center and spatial extent onto an image plane</strong>.</p>
+<p><img alt="A 3D Gaussian becomes an elliptical 2D image footprint" src="../assets/gaussian-projection.svg" /></p>
+<p>The same Gaussian may therefore appear:</p>
+<ul>
+<li><strong>large</strong> from a nearby camera and <strong>small</strong> from a distant one;</li>
+<li><strong>wide</strong> from one viewing direction and <strong>narrow</strong> from another;</li>
+<li>at <strong>different pixel positions</strong> in two photographs of the same scene.</li>
+</ul>
+<p>The Gaussian itself has not moved. Only its relationship to the camera has changed.</p>
+<h3 id="one-gaussian-can-contribute-to-many-pixels">One Gaussian can contribute to many pixels</h3>
+<p><img alt="Spatial footprint contribution varies across nearby image pixels" src="../assets/pixel-footprint-contribution.svg" /></p>
+<p>A projected Gaussian has a continuous, typically elliptical footprint. Nearby pixels receive different <strong>footprint weights</strong>, which are combined with the Gaussian's opacity to produce <strong>effective alpha</strong> at each pixel.</p>
+<p>For intuition, suppose its base opacity is <span class="arithmatex">\(0.8\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th>Pixel location</th>
+<th style="text-align: right;">Illustrative footprint weight</th>
+<th style="text-align: right;">Effective alpha</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>At the projected center</td>
+<td style="text-align: right;"><span class="arithmatex">\(1.00\)</span></td>
+<td style="text-align: right;"><span class="arithmatex">\(0.80\)</span></td>
+</tr>
+<tr>
+<td>Away from the center</td>
+<td style="text-align: right;"><span class="arithmatex">\(0.50\)</span></td>
+<td style="text-align: right;"><span class="arithmatex">\(0.40\)</span></td>
+</tr>
+<tr>
+<td>Near the footprint edge</td>
+<td style="text-align: right;"><span class="arithmatex">\(0.10\)</span></td>
+<td style="text-align: right;"><span class="arithmatex">\(0.08\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The Gaussian is <strong>not assigned a separate learned color for each of these pixels</strong>. Its color for that camera direction is evaluated, while its contribution strength changes across the footprint.</p>
+<h3 id="try-it-camera-depth-and-footprint-size">Try it: camera depth and footprint size</h3>
+<iframe src="../assets/projection-explorer.html" title="Interactive conceptual Gaussian projection into an image" loading="lazy" style="width:100%;height:490px;border:1px solid #d8dee8;border-radius:10px;"></iframe>
+
+<p><a href="../assets/projection-explorer.html">Open the projection explorer separately</a></p>
+<p><em>Teaching-model limitation:</em> the explorer simplifies Gaussian projection to make the geometry visible. The actual renderer computes a projected <strong>2D covariance</strong> accounting for 3D shape, rotation, and camera perspective.</p>
+<hr />
+<h2 id="5-how-many-gaussians-make-one-image">5. How many Gaussians make one image?</h2>
+<p><strong>One Gaussian can influence many pixels, and one pixel can receive contributions from many Gaussians.</strong> Neither relationship is one-to-one.</p>
+<p><img alt="Front-to-back contributions from overlapping splats" src="../assets/alpha-layers.svg" /></p>
+<p>Consider a pixel where two Gaussians overlap:</p>
+<ul>
+<li>The <strong>front</strong> Gaussian contributes part of its color.</li>
+<li>The <strong>rear</strong> Gaussian is visible only through the transparency left by the front one.</li>
+<li>Any remaining transparency reveals the background.</li>
+</ul>
+<p>This combination is called <strong>alpha compositing</strong>. In a small illustrative example, a front Gaussian with effective alpha <span class="arithmatex">\(0.6\)</span> contributes with weight <span class="arithmatex">\(0.6\)</span>. A rear Gaussian with effective alpha <span class="arithmatex">\(0.5\)</span> contributes with weight <span class="arithmatex">\((1-0.6)\times0.5=0.2\)</span>. The remaining background weight is <span class="arithmatex">\(0.2\)</span>.</p>
+<p><img alt="Changing the camera can reverse which Gaussian is in front" src="../assets/camera-dependent-visibility.svg" /></p>
+<p><strong>Depth order depends on the camera</strong>. There is no permanent “front Gaussian” label stored in the model. Real 3DGS also uses image tiles and visibility-aware rasterization to process these contributions efficiently; the exact tile assignment, sorting, and compositing algorithm belongs in <code>vanilla-3dgs.md</code>.</p>
+<hr />
+<h2 id="6-what-does-training-actually-change">6. What does training actually change?</h2>
+<p>At initialization, Gaussians already have numerical parameter values. <strong>Training does not fill an empty Gaussian with pixels.</strong> It adjusts the parameters so their rendered image better matches an observed image.</p>
+<p><img alt="From photographs and initial points through repeated Gaussian optimization" src="../assets/training-cycle.svg" /></p>
+<p>For a training viewpoint, the basic cycle is:</p>
+<ol>
+<li><strong>Choose one registered camera and its reference photograph.</strong></li>
+<li><strong>Render</strong> the current Gaussians through that camera to predict an RGB image.</li>
+<li><strong>Compare</strong> the prediction with the reference photograph using an image loss.</li>
+<li><strong>Backpropagate</strong> the loss through the differentiable renderer.</li>
+<li><strong>Update</strong> the Gaussian parameters with an optimizer, then repeat with training views.</li>
+</ol>
+<p><img alt="Different photographs supervise the same underlying 3D representation" src="../assets/multi-view.svg" /></p>
+<p><strong>The key multi-view idea:</strong> the camera images change between training iterations, but the <strong>same persistent collection of 3D Gaussians</strong> is being optimized. A Gaussian that contributes to a chair in several photographs does not become a different Gaussian in every image.</p>
+<h3 id="why-does-the-number-of-gaussians-grow">Why does the number of Gaussians grow?</h3>
+<p>Some scene regions need more primitives to reconstruct image details. <strong>Adaptive density control</strong> can add Gaussians by cloning or splitting, and remove unhelpful Gaussians by pruning.</p>
+<p><img alt="Illustration of cloning, splitting, and pruning" src="../assets/densification.svg" /></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Basic meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Clone</strong></td>
+<td>Add another Gaussian derived from an existing one.</td>
+</tr>
+<tr>
+<td><strong>Split</strong></td>
+<td>Replace a relatively large Gaussian with smaller Gaussians.</td>
+</tr>
+<tr>
+<td><strong>Prune</strong></td>
+<td>Remove a Gaussian that meets removal criteria, including very low opacity.</td>
+</tr>
+</tbody>
+</table>
+<p>In the original Vanilla 3DGS, the decisions use <strong>programmed rules and accumulated training statistics</strong>; there is no separate network that learns semantic decisions such as “split the chair.” The exact gradient thresholds, size tests, timing, and parameter changes will be treated in the Vanilla 3DGS page.</p>
+<div class="admonition tip">
+<p class="admonition-title">Separate rendering from learning</p>
+<p><strong>Rendering</strong> calculates an image from the current parameters. <strong>Loss, backpropagation, and optimization</strong> change those parameters. <strong>Density control</strong> may also change how many Gaussians exist. None of these operations requires assigning semantic object labels.</p>
+</div>
+<hr />
+<h2 id="7-what-remains-after-training">7. What remains after training?</h2>
+<p><img alt="Trained Gaussians stored in a PLY and used to generate camera images" src="../assets/ply-render-view.svg" /></p>
+<p>The trained scene is still a <strong>collection of Gaussians</strong>, not a stack of saved rendered images. A common official output is <code>point_cloud.ply</code>, containing per-Gaussian parameters such as positions, SH color coefficients, opacity parameters, scales, and rotations.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What it represents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>COLMAP sparse point</strong></td>
+<td>A reconstructed 3D location used to help initialize the scene</td>
+</tr>
+<tr>
+<td><strong>Trained Gaussian</strong></td>
+<td>A persistent optimized primitive with spatial and appearance attributes</td>
+</tr>
+<tr>
+<td><strong><code>point_cloud.ply</code></strong></td>
+<td>Saved Gaussian attributes, not a regular RGB photograph</td>
+</tr>
+<tr>
+<td><strong>Rendered image</strong></td>
+<td>Pixels produced for a particular camera from the trained scene</td>
+</tr>
+<tr>
+<td><strong>Novel view</strong></td>
+<td>An image rendered from a camera viewpoint not necessarily present in the training photos</td>
+</tr>
+</tbody>
+</table>
+<p>A PLY viewer must understand the particular <strong>Gaussian attribute conventions</strong> to render these models correctly. For example, in standard Vanilla 3DGS exports, scale and opacity are stored in parameterized forms (log scale and opacity logit), rather than directly as their activated values. Inspection of individual PLY fields belongs in the practical Vanilla tutorial.</p>
+<p><strong>Example from my indoor-scene training:</strong> a 30,000-iteration Vanilla 3DGS model contains <strong>637,141 trained Gaussians</strong>. That number is a count of scene primitives—not a pixel count, not an image count, and not a number of object instances.</p>
+<hr />
+<h2 id="8-interactive-walkthrough-from-photographs-to-a-trained-scene">8. Interactive walkthrough: from photographs to a trained scene</h2>
+<p>This guided demonstration connects all the pieces of the mental model: <strong>images → initial points → Gaussian parameters → rendering → image loss → parameter updates</strong>. It is the best place to experiment if the overall process still feels abstract.</p>
+<p><a href="../assets/3dgs_pipeline_explorer.html">Open the full interactive 3DGS pipeline tutorial</a></p>
+<iframe src="../assets/3dgs_pipeline_explorer.html" title="Interactive 3DGS learning pipeline" loading="lazy" style="width:100%;height:850px;border:1px solid #d8dee8;border-radius:10px;" allowfullscreen></iframe>
+
+<p><em>This guided simulation is not a complete 3DGS implementation: it does not run COLMAP or the CUDA rasterizer, and its optimization is deliberately simplified.</em></p>
+<h3 id="five-checks-before-proceeding">Five checks before proceeding</h3>
+<ol>
+<li>A Gaussian is <strong>a 3D primitive</strong>, not an individual pixel.</li>
+<li>Its <strong>3D geometry</strong> is stored; its <strong>2D footprint</strong> depends on the camera.</li>
+<li>SH gives <strong>view-dependent color</strong>; opacity and footprint determine <strong>pixel contribution</strong>.</li>
+<li><strong>Rendering produces pixels</strong>, while <strong>optimization updates Gaussians</strong>.</li>
+<li>Multiple photographed views supervise <strong>one shared 3D scene</strong>, which can later be rendered from new viewpoints.</li>
+</ol>
+<p>If those distinctions are clear, you have the conceptual foundation needed to study the complete Vanilla 3DGS algorithm.</p>
+<hr />
+<h2 id="continue-learning">Continue learning</h2>
+<ul>
+<li><strong>Previous:</strong> <a href="../../cv-fundamentals/">Computer Vision Fundamentals</a> — camera geometry, SfM/COLMAP, NeRF, and general rendering terms.</li>
+<li><strong>Next:</strong> <a href="../vanilla-3dgs/">Vanilla 3DGS</a> — complete Gaussian initialization, covariance projection, spherical harmonics, tile-based rasterization, alpha compositing, <strong>RGB reconstruction loss</strong>, backpropagation, densification, and experiments with a trained PLY.</li>
+<li><strong>Later:</strong> <a href="../feature-3dgs/">Vanilla 3DGS</a> — how feature-bearing Gaussians are supervised using pretrained 2D teacher features.</li>
+<li><strong>Finally:</strong> <code>comparison.md</code> — a direct Vanilla/Feature 3DGS comparison once both tutorials are complete.</li>
+</ul>
+<h3 id="primary-references">Primary references</h3>
+<ul>
+<li><a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/">Kerbl et al., <em>3D Gaussian Splatting for Real-Time Radiance Field Rendering</em> (2023)</a></li>
+<li><a href="https://github.com/graphdeco-inria/gaussian-splatting">Official Vanilla 3DGS implementation</a></li>
+<li><a href="https://github.com/graphdeco-inria/diff-gaussian-rasterization">Official Gaussian rasterizer</a></li>
+<li><a href="https://colmap.github.io/">COLMAP documentation</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
