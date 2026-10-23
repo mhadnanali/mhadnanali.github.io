@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Scene, Many Images — Interactive 3DGS Pipeline</title>
+<style>
+:root{--ink:#243143;--muted:#64758b;--paper:#fff;--bg:#f3f6fa;--line:#dae2ea;--accent:#3469d4;--accent-quiet:#eaf1ff;--orange:#c27a20;--green:#287958}
+*{box-sizing:border-box}body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.48}
+.wrapper{max-width:1140px;margin:auto;padding:24px 20px 50px}h1{font-size:clamp(23px,3vw,32px);line-height:1.12;letter-spacing:-.5px;margin:0 0 9px}h2{font-size:17px;margin:0 0 11px}h3{font-size:13px;margin:0 0 8px}p{margin:8px 0 0}.lede{color:var(--muted);max-width:800px;margin-bottom:18px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:18px 0}.step{border:1px solid var(--line);border-radius:10px;padding:11px 7px;background:white;color:var(--ink);font:inherit;font-size:13px;cursor:pointer;text-align:center;transition:all .13s}.step span{display:block;font-weight:700;font-size:11px;color:var(--muted)}.step.active{border-color:var(--accent);background:var(--accent-quiet);box-shadow:inset 0 0 0 1px var(--accent)}.step.active span{color:var(--accent)}
+.instruction{padding:13px 17px;background:#eaf1ff;border-left:3px solid #3469d4;border-radius:7px;margin-bottom:16px;min-height:72px}.instruction strong{display:block;margin-bottom:3px}.instruction p{margin:0;color:#354962}
+.grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,1.5fr);gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:17px;box-shadow:0 1px 3px rgba(34,59,89,.025)}.sub{font-size:12px;color:var(--muted)}.pill{font-size:11px;padding:4px 7px;border-radius:5px;background:var(--accent-quiet);color:#2b55ad;font-weight:700;white-space:nowrap}
+.scene{width:100%;height:auto;display:block;background:linear-gradient(#fff,#f9fbfe);border:1px solid var(--line);border-radius:9px;max-height:270px}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:9px 0}.dot{width:9px;height:9px;display:inline-block;border-radius:50%;margin-right:5px}.view-tabs{display:flex;gap:6px;margin-bottom:11px}.tab{border:1px solid var(--line);background:white;color:var(--muted);padding:6px 13px;border-radius:7px;cursor:pointer;font:inherit;font-size:12px}.tab[aria-pressed=true]{background:var(--accent);color:white;border-color:var(--accent)}
+.images{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.frame{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#edf1f6}.frame header{font-weight:650;font-size:12px;padding:9px 9px;background:white;min-height:52px}.frame header small{display:block;color:var(--muted);font-weight:400}.frame canvas{display:block;width:100%;aspect-ratio:4/3;image-rendering:auto;background:#f8fafc}.frame footer{font-size:11px;background:#f8fafc;padding:7px;color:var(--muted);text-align:center;min-height:31px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row .meta{font-size:12px;color:var(--muted)}.field{margin-top:14px}.field label{display:flex;justify-content:space-between;font-size:12px;font-weight:600}.field input[type=range]{width:100%;accent-color:var(--accent);margin-top:8px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}.btn{font:inherit;font-size:12px;font-weight:650;padding:9px 12px;border-radius:8px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:white}.btn.secondary{background:white;color:var(--accent)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.metric{display:flex;align-items:flex-end;justify-content:space-between;gap:7px}.metric strong{font-size:24px;letter-spacing:-.5px}.chart{width:100%;height:78px;background:#fafcff;border-radius:7px;border:1px solid var(--line);display:block;margin:10px 0}.fine{font-size:12px;color:var(--muted)}.note{border:1px solid #f3dab5;background:#fffaf1;border-radius:9px;font-size:12px;color:#694b28;padding:13px 16px;margin-top:14px}.footer{font-size:12px;color:var(--muted);margin-top:15px}.hidden{display:none!important}
+.select{padding:6px 10px;border:1px solid var(--line);font-size:13px;border-radius:6px;background:white;color:var(--ink);width:100%}
+@media(max-width:820px){.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.steps{grid-template-columns:repeat(5,1fr)}.step{font-size:11px;padding:10px 4px}.step span{font-size:10px}.wrapper{padding:14px 11px 30px}}
+@media(max-width:500px){.images{gap:4px}.frame header{font-size:10px;padding:6px 4px;min-height:54px}.frame footer{font-size:9px;padding:4px;min-height:35px}.steps{grid-template-columns:repeat(3,1fr)}.frame canvas{image-rendering:auto}}
+
+/* Guided tutorial additions: the existing rendering and optimization logic remains unchanged. */
+.quick-guide{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 19px;margin:17px 0 18px}
+.quick-guide h2{margin:0 0 4px;font-size:18px}.quick-guide>.fine{margin-bottom:10px}
+.quick-guide ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 24px;margin:11px 0 0;padding-left:23px}
+.quick-guide li{padding-left:2px;font-size:13px}.quick-guide li::marker{font-weight:700;color:var(--accent)}
+.quick-guide a,.learn-more,.lesson a,.toplink{color:#275ebd;text-decoration:underline;text-underline-offset:3px}
+.quick-guide a:hover,.learn-more:hover,.lesson a:hover,.toplink:hover{color:#163f85}
+.instruction{min-height:94px}.instruction p{margin:0 0 6px}
+.learn-more{font-size:12px;font-weight:700;display:inline-flex;gap:5px;align-items:center}
+.explain-wrapper{margin-top:33px;scroll-margin-top:14px}
+.explain-intro{background:#eff4fb;border:1px solid #d9e4f3;border-radius:11px;padding:17px 19px;margin:14px 0 18px;font-size:13px}
+.lesson{background:white;border:1px solid var(--line);border-radius:13px;padding:22px 25px;margin:14px 0;scroll-margin-top:12px}
+.lesson h3{font-size:21px;line-height:1.25;letter-spacing:-.25px;margin:0 0 6px}
+.lesson .lesson-kicker{text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:700;color:var(--accent);margin:0 0 5px}
+.lesson h4{font-size:14px;margin:19px 0 5px;color:#213754}
+.lesson p{margin:0 0 9px;font-size:14px;line-height:1.65}
+.lesson ul,.lesson ol{padding-left:22px;margin:6px 0 12px;font-size:14px;line-height:1.65}
+.lesson li{margin:4px 0}
+.lesson code{background:#f2f5f9;padding:1px 4px;border-radius:4px}
+.takeaway{border-left:3px solid #287958;background:#edf8f2;border-radius:6px;margin:18px 0 14px;padding:11px 13px;font-size:14px}
+.lesson-nav{border-top:1px solid var(--line);margin-top:18px;padding-top:12px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:12px}
+.definition-table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+.definition-table th,.definition-table td{border-bottom:1px solid var(--line);text-align:left;padding:8px 9px;vertical-align:top}
+.definition-table th{background:#f4f7fb}
+.important{font-weight:700}
+@media(max-width:650px){.quick-guide ol{grid-template-columns:1fr}.lesson{padding:18px 16px}.lesson h3{font-size:18px}.wrapper{padding-bottom:25px}}
+</style>
+</head>
+<body><main class="wrapper">
+<h1>One 3D Scene, Many 2D Images</h1>
+<p class="lede">Follow five interactive stages to see how overlapping 2D images become a trainable 3D Gaussian scene, and how rendered predictions improve through image-based supervision.</p>
+<section class="quick-guide" aria-labelledby="quick-guide-heading">
+<h2 id="quick-guide-heading">How to use this interactive tutorial</h2>
+<p class="fine">Follow the five stages in order. Click the stage names below or use the numbered buttons, then explore the camera views and training controls. Select <b>Learn more ↓</b> for a detailed explanation at the end.</p>
+<ol>
+<li><a href="#interactive-pipeline" data-jump="0">Photographs:</a> Compare the same synthetic scene from cameras A, B, and C.</li>
+<li><a href="#interactive-pipeline" data-jump="1">COLMAP points:</a> Observe the illustrated sparse 3D points and camera poses.</li>
+<li><a href="#interactive-pipeline" data-jump="2">Gaussians:</a> Adjust a selected Gaussian's scale and opacity.</li>
+<li><a href="#interactive-pipeline" data-jump="3">Render and loss:</a> Compare the fixed image, prediction, and per-pixel difference.</li>
+<li><a href="#interactive-pipeline" data-jump="4">Training:</a> Run <b>Train 15 steps (A → B → C)</b> and watch the errors and predictions change.</li>
+</ol>
+</section>
+<nav class="steps" id="interactive-pipeline" aria-label="Pipeline steps">
+<button class="step active" data-stage="0"><span>STEP 1</span>Photographs</button>
+<button class="step" data-stage="1"><span>STEP 2</span>COLMAP points</button>
+<button class="step" data-stage="2"><span>STEP 3</span>Gaussians</button>
+<button class="step" data-stage="3"><span>STEP 4</span>Render & loss</button>
+<button class="step" data-stage="4"><span>STEP 5</span>Train & update</button>
+</nav>
+<div class="instruction"><strong id="stageTitle"></strong><p id="stageText"></p><a class="learn-more" id="learnMore" href="#detail-1">Learn more about this step ↓</a></div>
+<div class="grid">
+<section class="card"><div class="row"><h2>Shared 3D scene</h2><span class="pill" id="sceneState">Points</span></div>
+<svg class="scene" viewBox="0 0 350 275" role="img" aria-label="Schematic 3D scene with cameras and Gaussian centers" id="sceneSvg">
+<defs><radialGradient id="gFill"><stop stop-color="#dca45b" stop-opacity=".63"/><stop offset="1" stop-color="#dca45b" stop-opacity=".05"/></radialGradient></defs>
+<path d="M46 212 L172 243 L318 186 L192 157 Z" fill="#f6f9fc" stroke="#cbd8e8" stroke-width="1.2"/>
+<g stroke="#d6e2f0" stroke-width=".8"><path d="M82 221 L226 166 M114 230 L257 179 M145 237 L289 190 M74 205 L194 235 M108 190 L230 220 M142 177 L267 208 M178 162 L305 195"/></g>
+<g id="scenePoints"></g><g id="cameraSvg"></g><g id="sceneLabels"></g></svg>
+<div class="legend"><span><i class="dot" style="background:#d18a35"></i>3D centers / Gaussians</span><span><i class="dot" style="background:#427bd1"></i>Cameras A, B, C</span></div>
+<p id="sceneExplain" class="fine"></p>
+<div class="field"><label for="gSelect">Inspect / edit a Gaussian <span id="paramTip">stored parameters</span></label><select class="select" id="gSelect"></select></div>
+<div class="field"><label for="scale">Scale <span id="scaleValue"></span></label><input id="scale" type="range" min="0.09" max="0.49" step="0.01" aria-label="Gaussian scale"></div>
+<div class="field"><label for="opacity">Opacity <span id="opacityValue"></span></label><input id="opacity" type="range" min="0.15" max="0.99" step="0.01" aria-label="Gaussian opacity"></div>
+<p class="fine">These sliders edit the <b>model's stored parameters</b>. The reference photographs never change.</p>
+</section>
+<section class="card"><div class="row"><h2>What the camera sees</h2><span class="pill">2D pixel grids</span></div>
+<div class="view-tabs" role="group" aria-label="Choose a camera"><button class="tab" data-cam="0" aria-pressed="true">Camera A</button><button class="tab" data-cam="1" aria-pressed="false">Camera B</button><button class="tab" data-cam="2" aria-pressed="false">Camera C</button></div>
+<div class="images">
+<div class="frame"><header>Original image<small>Fixed supervision target</small></header><canvas id="truth" width="96" height="72"></canvas><footer>Reference photograph*</footer></div>
+<div class="frame"><header>Rendered image<small>Prediction from Gaussians</small></header><canvas id="pred" width="96" height="72"></canvas><footer>Changes with parameters</footer></div>
+<div class="frame"><header>Difference<small>Per-pixel RGB error</small></header><canvas id="diff" width="96" height="72"></canvas><footer>Bright = larger error</footer></div>
+</div>
+<div class="row" style="margin-top:13px"><span class="fine">Loss on current camera (mean RGB absolute error)</span><strong id="lossValue">—</strong></div>
+<p class="fine" id="renderExplain"></p>
+</section>
+</div>
+<div class="controls">
+<section class="card"><h2>Train the shared 3D parameters</h2>
+<p class="fine">One training step renders the selected camera, calculates loss, estimates gradients, and changes the Gaussian parameters. Cycling cameras uses different images but updates <b>the same Gaussian collection</b>.</p>
+<div class="actions"><button class="btn" id="trainOne">Train 1 step (current camera)</button><button class="btn secondary" id="trainMulti">Train 15 steps (A → B → C)</button><button class="btn secondary" id="reset">Reset model</button></div>
+<p class="fine" id="trainStatus" aria-live="polite">Select Step 5 to begin. First try moving the scale slider.</p>
+</section>
+<section class="card"><div class="metric"><div><h2>Overall reconstruction error</h2><div class="fine">Mean across all three cameras</div></div><strong id="overallLoss">—</strong></div><canvas id="plot" width="450" height="90" class="chart" aria-label="Loss history chart"></canvas><div class="row"><span class="fine" id="iterLabel">0 optimization steps</span><span class="fine">Lower is better</span></div></section>
+</div>
+<div class="note"><b>What is simplified?</b> The three “photographs” are synthetic images generated from a hidden reference scene so that the target is known. The 3D locations shown as COLMAP points are illustrative sparse correspondences, not the output of a real SfM run. The toy renderer uses spherical Gaussian footprints, front-to-back alpha compositing, fixed RGB colors, and finite-difference gradients. Real 3DGS uses anisotropic 3D Gaussians, projected covariance, spherical harmonics, differentiable GPU rasterization, and adaptive densification/pruning. Nevertheless, the core learning loop and the separation between <i>stored parameters</i>, <i>predicted image</i>, and <i>target image</i> are the same.</div>
+<section class="explain-wrapper" id="detailed-explanations">
+<h2 style="font-size:24px;margin-bottom:8px">Detailed explanations: follow the full pipeline</h2>
+<p class="fine">The simulation above shows what you can click. The sections below explain <b>what we start with</b>, <b>why each step is needed</b>, <b>what the figure shows</b>, and <b>what you should remember</b>. Each stage connects to the previous and next one.</p>
+<div class="explain-intro"><strong>How to read this tutorial:</strong> You already know ML concepts such as loss, gradients, and optimization. Treat the reference image as a supervised learning <em>target</em>; the rendered image as a <em>prediction</em>; and the Gaussians as the <em>stored trainable representation</em> that gets updated. The toy has five Gaussians, unlike a real 3DGS scene with many more primitives.</div>
+<section class="lesson" id="detail-1" aria-labelledby="detail-1-title">
+<p class="lesson-kicker">Pipeline stage 1 of 5</p>
+<h3 id="detail-1-title">1. Input photographs</h3>
+<h4>What are we starting with?</h4>
+<div>We begin with several photographs of <strong>one physical scene</strong> taken from different camera positions and viewing angles. Imagine walking around a chair and photographing it from the front, side, and back. The chair is the same object in every image, but its 2D appearance and pixel coordinates change with the viewpoint.</div>
+<h4>Why is this step needed?</h4>
+<div>A photograph is a 2D projection: by itself, it generally cannot determine the entire 3D shape or the distance to every visible surface. When an object or distinctive feature appears in overlapping images, its changing position across those views provides constraints on 3D geometry. <strong>This is the information the next step (Structure from Motion / COLMAP) uses</strong> to estimate camera poses and sparse points. These original images will also be used much later as fixed training targets.</div>
+<h4>What is happening in the figure?</h4>
+<div><ul><li><strong>Camera A</strong> observes the scene from one viewpoint.</li><li><strong>Camera B</strong> observes the same scene from a different viewpoint.</li><li><strong>Camera C</strong> provides a third overlapping observation.</li></ul><p>The three panels labeled <em>Original image</em> are fixed RGB targets. In this demonstration they are <strong>synthetic images</strong> created from a hidden reference scene. In a real 3DGS experiment, they would be your captured photographs. Click cameras A, B, and C and notice that the reference view changes, but the underlying scene is shared.</p></div>
+<div class="takeaway"><strong>Key takeaway:</strong> Multiple 2D images are <strong>observations of the same 3D world</strong>; their overlap supports reconstruction, and their RGB values later supervise rendering. The original photos do not change during training.</div>
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="#interactive-pipeline" class="toplink" data-return-stage="0">↑ Back to interactive Step 1</a><a href="#detail-2">Next: Step 2 →</a></nav>
+</section>
+<section class="lesson" id="detail-2" aria-labelledby="detail-2-title">
+<p class="lesson-kicker">Pipeline stage 2 of 5</p>
+<h3 id="detail-2-title">2. COLMAP: sparse 3D reconstruction</h3>
+<h4>What are we starting with?</h4>
+<div>We have overlapping photographs, but we do not yet know reliable 3D coordinates for the visible scene points or the cameras' positions and orientations in a shared coordinate system.</div>
+<h4>Why is this step needed?</h4>
+<div>3DGS needs camera parameters to render each training view, and standard vanilla 3DGS needs initial 3D points to place its first Gaussians. <strong>COLMAP provides both.</strong> Once these sparse geometric estimates are available, the next step can initialize one Gaussian center at each reconstructed point.</div>
+<h4>What is happening in the figure?</h4>
+<div>A typical Structure-from-Motion reconstruction detects local image features, matches those features across overlapping photographs, estimates camera geometry, triangulates corresponding observations into 3D points, and refines the estimates (typically using bundle adjustment). COLMAP outputs <strong>registered camera poses, camera calibration information, and a sparse point cloud</strong>. Sparse means it reconstructs selected reliable points, not necessarily every visible pixel. <p>In the left-hand drawing, small point markers schematically represent the reconstructed 3D points, while A/B/C represent camera viewpoints. <strong>This tutorial does not actually execute COLMAP</strong>; the points and cameras are a conceptual illustration of its output.</p></div>
+<div class="takeaway"><strong>Key takeaway:</strong> COLMAP does not simply turn every 2D pixel into a 3D point. It <strong>estimates 3D locations from cross-view correspondences</strong>. Those sparse positions are geometric seeds, not trained Gaussian primitives yet.</div>
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="#interactive-pipeline" class="toplink" data-return-stage="1">↑ Back to interactive Step 2</a><a href="#detail-3">Next: Step 3 →</a></nav>
+</section>
+<section class="lesson" id="detail-3" aria-labelledby="detail-3-title">
+<p class="lesson-kicker">Pipeline stage 3 of 5</p>
+<h3 id="detail-3-title">3. Initialize 3D Gaussians</h3>
+<h4>What are we starting with?</h4>
+<div>We now have a sparse 3D point cloud and estimated camera parameters. A reconstructed point gives a 3D location (and often an RGB estimate), but a point by itself has no spatial extent or orientation.</div>
+<h4>Why is this step needed?</h4>
+<div>The Gaussian Splatting renderer operates on <strong>spatial primitives</strong>, not on unextended geometric points. Each initial point seeds a Gaussian with a center, spatial spread, orientation, opacity, and appearance parameters. This turns the rough COLMAP reconstruction into a trainable scene representation that can be rendered and improved in Steps 4 and 5.</div>
+<h4>What is happening in the figure?</h4>
+<div>Choose a Gaussian using the selector. Its <strong>stored scale</strong> controls the extent of its rendered influence, and its <strong>stored opacity</strong> controls how strongly it contributes; try changing both sliders. The illustrated center stays at its 3D position when only these sliders change.<p>In the <strong>official vanilla 3DGS</strong> initialization, positions come from COLMAP; initial color comes from the point RGB; scale is estimated from nearby points; rotation starts at identity; opacity is given an initial value; higher-order spherical-harmonic coefficients begin at zero. <strong>In this simplified demo</strong>, each Gaussian has a position, a single spherical scale, opacity, and a fixed RGB color. It does <em>not</em> model rotation or train spherical-harmonic coefficients.</p></div>
+<div class="takeaway"><strong>Key takeaway:</strong> The initial Gaussian is <strong>not an empty shell waiting to be painted</strong>. It already has numerical parameters that can generate an image. However, those parameters are only rough starting estimates and are not yet optimized for the reference photographs.</div>
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="#interactive-pipeline" class="toplink" data-return-stage="2">↑ Back to interactive Step 3</a><a href="#detail-4">Next: Step 4 →</a></nav>
+</section>
+<section class="lesson" id="detail-4" aria-labelledby="detail-4-title">
+<p class="lesson-kicker">Pipeline stage 4 of 5</p>
+<h3 id="detail-4-title">4. Rendering and reconstruction loss</h3>
+<h4>What are we starting with?</h4>
+<div>We have a collection of initialized 3D Gaussians and calibrated camera views, but no guarantee that the current representation reproduces the original photographs.</div>
+<h4>Why is this step needed?</h4>
+<div>To improve the Gaussians, training first needs a <strong>prediction</strong> and a measure of how wrong it is. Rendering supplies the predicted 2D image for a chosen camera; comparison with that camera's unchanged photograph supplies the reconstruction loss that drives Step 5.</div>
+<h4>What is happening in the figure?</h4>
+<div>Select Camera A, B, or C and compare the three panels: <ul><li><strong>Original image:</strong> the fixed 2D reference (training target).</li><li><strong>Rendered image:</strong> the current model's prediction, computed from the Gaussian parameters at the selected camera pose.</li><li><strong>Difference:</strong> a display of pixel-wise disagreement; brighter regions indicate larger errors.</li></ul><p>To render, the system projects Gaussians into the image plane, determines which projected footprints contribute to pixels, and combines their RGB contributions using opacity and visibility ordering. The numeric loss shown here is <strong>mean absolute RGB error, normalized by 255</strong>. The official 3DGS loss also includes a structural similarity term; this toy deliberately uses only L1-type error.</p></div>
+<div class="takeaway"><strong>Key takeaway:</strong> <strong>Rendering is a forward computation:</strong> current 3D parameters plus camera viewpoint produce pixel predictions. It does <em>not</em> paint new information onto the Gaussian or update the model. The loss compares those predicted pixels to observed ones.</div>
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="#interactive-pipeline" class="toplink" data-return-stage="3">↑ Back to interactive Step 4</a><a href="#detail-5">Next: Step 5 →</a></nav>
+</section>
+<section class="lesson" id="detail-5" aria-labelledby="detail-5-title">
+<p class="lesson-kicker">Pipeline stage 5 of 5</p>
+<h3 id="detail-5-title">5. Training and parameter updates</h3>
+<h4>What are we starting with?</h4>
+<div>We have the same shared Gaussian model, reference images, camera poses, and an image reconstruction loss. The model starts imperfectly and should improve through repeated optimization.</div>
+<h4>Why is this step needed?</h4>
+<div>The initial Gaussian positions, scales, and opacities do not yet explain all camera observations. After Step 4 measures the image error, training updates the Gaussian parameters so that subsequent rendered images fit the photographs better. <strong>All cameras supervise one shared 3D representation</strong>, rather than separate models for A, B, and C.</div>
+<h4>What is happening in the figure?</h4>
+<div>Press <strong>Train 1 step (current camera)</strong> to update the model using only the selected viewpoint, or <strong>Train 15 steps (A → B → C)</strong> to use all three views across consecutive steps. Each training step follows this loop:<ol><li>Select a camera and its <em>fixed</em> reference image.</li><li>Render the current Gaussians into a predicted image.</li><li>Compute the image reconstruction loss.</li><li>Estimate gradients of loss with respect to the Gaussian parameters.</li><li>Apply an optimizer update, then repeat.</li></ol><p>Watch the rendered image, the current-view loss, and the overall loss history. After training from Camera A, switch to B: Camera B's prediction may also change, because the Gaussians are shared. In this demo, the optimizer adjusts <strong>3D positions, scalar scale, and opacity</strong> via finite-difference gradients and an Adam-style update. It does not optimize RGB, rotations, SH, or Gaussian count.</p><p>In real vanilla 3DGS, backpropagation through a differentiable rasterizer updates geometric and appearance parameters; <em>densification and pruning</em> can also add or remove Gaussians during training. Loss need not decrease on every individual step for every camera.</p></div>
+<div class="takeaway"><strong>Key takeaway:</strong> <strong>Learnable parameters change; training photographs do not.</strong> Rendering computes predictions, the loss quantifies disagreement, gradients determine update directions, and the optimizer modifies the shared 3D model. Over many steps and views, the learned representation becomes more faithful.</div>
+<nav class="lesson-nav" aria-label="Lesson navigation"><a href="#interactive-pipeline" class="toplink" data-return-stage="4">↑ Back to interactive Step 5</a><a href="#key-distinctions">Review key distinctions ↓</a></nav>
+</section>
+<section class="lesson" id="key-distinctions">
+<p class="lesson-kicker">Final recap</p><h3>Three things you must never confuse</h3>
+<table class="definition-table"><thead><tr><th>Element</th><th>What it is</th><th>Does training change it?</th></tr></thead><tbody>
+<tr><td><strong>Ground-truth image</strong></td><td>The original camera observation used as the supervision target</td><td><strong>No</strong></td></tr>
+<tr><td><strong>3D Gaussian model</strong></td><td>The shared collection of trainable 3D scene parameters</td><td><strong>Yes</strong></td></tr>
+<tr><td><strong>Rendered image</strong></td><td>The temporary 2D prediction obtained from current model parameters and a camera</td><td><strong>Recomputed</strong> after parameters change</td></tr>
+</tbody></table>
+<p><strong>Overall sequence:</strong> Overlapping photographs → sparse SfM reconstruction → initialized Gaussians → render a predicted image → compute image loss → update Gaussians → repeat across camera views.</p>
+<p><strong>Next topic:</strong> Feature 3DGS uses a similar shared-view supervision idea, but adds learned feature vectors and feature reconstruction targets. First make sure the distinction between a <em>stored Gaussian attribute</em> and a <em>rendered pixel value</em> is clear.</p>
+<nav class="lesson-nav"><a href="#interactive-pipeline" data-return-stage="0">↑ Restart at Step 1</a><a href="#quick-guide-heading">↑ Return to the user guide</a></nav>
+</section>
+</section>
+<p class="footer">Offline, self-contained HTML. No libraries, Python server, internet access, or CUDA required. Use your browser's zoom if the figure looks small.</p>
+</main>
+<script>
+'use strict';
+const W=96,H=72,fx=118,background=[246,249,253];
+const truth=[
+ {name:'Orange surface',p:[-.55,.0,1.06],s:.31,a:.91,c:[223,149,81]},
+ {name:'Blue surface',p:[.41,.18,1.18],s:.27,a:.90,c:[80,139,216]},
+ {name:'Upper surface',p:[-.03,.50,1.61],s:.26,a:.86,c:[112,178,134]},
+ {name:'Lower surface',p:[-.01,-.29,.60],s:.25,a:.90,c:[200,127,165]},
+ {name:'Near surface',p:[.02,-.38,1.04],s:.17,a:.72,c:[225,182,92]}
+];
+const initial=truth.map((g,i)=>({...g,p:[g.p[0]+[.17,-.12,.11,-.16,.12][i],g.p[1]+[-.05,.07,-.10,.06,-.06][i],g.p[2]+[-.13,.10,-.08,.12,-.06][i]],s:[.19,.35,.17,.35,.26][i],a:[.68,.67,.72,.75,.66][i]}));
+const cloneModel=()=>initial.map(g=>({...g,p:g.p.slice(),c:g.c.slice()}));
+let model=cloneModel(), stage=0,camera=0,selected=0,iter=0,history=[],adam={},busy=false;
+const views=[[-.05,-3.8,1.55],[2.35,-3.2,1.65],[-2.5,-3.4,1.9]];
+const target=[0,0,1.15];
+const sub=(a,b)=>a.map((v,i)=>v-b[i]),dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],unit=v=>{const n=Math.hypot(...v);return v.map(x=>x/n)};
+const cams=views.map(eye=>{const f=unit(sub(target,eye)),r=unit(cross(f,[0,0,1])),u=cross(r,f);return{eye,f,r,u}});
+function project(p,cam){const v=sub(p,cam.eye),d=dot(v,cam.f);if(d<.15)return null;return{u:W/2+fx*dot(v,cam.r)/d,v:H/2-fx*dot(v,cam.u)/d,d};}
+function render(params,idx){const cam=cams[idx],arr=new Float64Array(W*H*3),pack=[];
+for(const g of params){const p=project(g.p,cam);if(p)pack.push({g,p,s:Math.max(1,fx*g.s/p.d)});}
+pack.sort((a,b)=>a.p.d-b.p.d);
+for(let y=0;y<H;y++){for(let x=0;x<W;x++){let trans=1,r=0,gr=0,b=0;
+for(let q of pack){let dx=x+.5-q.p.u,dy=y+.5-q.p.v;if(Math.abs(dx)>4*q.s||Math.abs(dy)>4*q.s)continue;const a=q.g.a*Math.exp(-.5*(dx*dx+dy*dy)/(q.s*q.s));if(a<.0005)continue;const w=trans*a;r+=w*q.g.c[0];gr+=w*q.g.c[1];b+=w*q.g.c[2];trans*=1-a;if(trans<.00001)break;}
+const k=(y*W+x)*3;arr[k]=r+trans*background[0];arr[k+1]=gr+trans*background[1];arr[k+2]=b+trans*background[2];}}
+return arr;}
+const observed=cams.map((_,i)=>render(truth,i));
+function loss(pred,targ){let d=0;for(let i=0;i<pred.length;i++)d+=Math.abs(pred[i]-targ[i]);return d/(pred.length*255);}
+function lossForCam(idx){return loss(render(model,idx),observed[idx]);}
+function lossAll(){return (lossForCam(0)+lossForCam(1)+lossForCam(2))/3;}
+function paramRef(gi,kind){const g=model[gi];if(kind==='x')return{get:()=>g.p[0],set:v=>g.p[0]=v};if(kind==='y')return{get:()=>g.p[1],set:v=>g.p[1]=v};if(kind==='z')return{get:()=>g.p[2],set:v=>g.p[2]=v};if(kind==='s')return{get:()=>g.s,set:v=>g.s=v};return{get:()=>g.a,set:v=>g.a=v};}
+function trainStep(ci){iter++;
+for(let gi=0;gi<model.length;gi++){
+for(const kind of ['x','y','z','s','a']){
+const ref=paramRef(gi,kind),v=ref.get(),eps=kind==='s'||kind==='a'?.004:.006;
+ref.set(v+eps);const lp=lossForCam(ci);ref.set(v-eps);const lm=lossForCam(ci);ref.set(v);
+const grad=(lp-lm)/(2*eps),id=gi+'-'+kind,st=adam[id]||(adam[id]={m:0,v:0,n:0});st.n++;st.m=.9*st.m+.1*grad;st.v=.999*st.v+.001*grad*grad;
+const correctedM=st.m/(1-Math.pow(.9,st.n)),correctedV=st.v/(1-Math.pow(.999,st.n));
+const lr=kind==='s'?.013:kind==='a'?.021:.020;let n=v-lr*correctedM/(Math.sqrt(correctedV)+1e-8);
+if(kind==='s')n=Math.min(.53,Math.max(.08,n));if(kind==='a')n=Math.min(.995,Math.max(.12,n));if(kind==='z')n=Math.min(2.1,Math.max(.3,n));ref.set(n);
+}}
+history.push(lossAll());if(history.length>160)history.shift();}
+function canvasDraw(id,arr,heat=false){const c=document.getElementById(id),ctx=c.getContext('2d'),im=ctx.createImageData(W,H);
+for(let i=0;i<W*H;i++){const k=3*i,l=4*i;if(!heat){im.data[l]=arr[k];im.data[l+1]=arr[k+1];im.data[l+2]=arr[k+2];}else{const d=Math.min(1,arr[k]/110);im.data[l]=Math.min(255,246*d+12);im.data[l+1]=Math.round(65*d+17);im.data[l+2]=Math.round(40*d+28);}im.data[l+3]=255;}
+ctx.putImageData(im,0,0);}
+function drawPlot(){const c=document.getElementById('plot'),ctx=c.getContext('2d');const w=c.width,h=c.height;ctx.clearRect(0,0,w,h);ctx.strokeStyle='#dce4ec';ctx.beginPath();ctx.moveTo(10,h-10);ctx.lineTo(w-8,h-10);ctx.stroke();const yMax=Math.max(.005,...history)*1.13;
+if(history.length===1){ctx.fillStyle='#356ad2';ctx.beginPath();ctx.arc(10,h-13-history[0]/yMax*(h-22),3.5,0,2*Math.PI);ctx.fill();}
+if(history.length>1){ctx.beginPath();history.forEach((val,i)=>{let x=9+i/(history.length-1)*(w-20),y=h-13-val/yMax*(h-22);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.lineWidth=2.4;ctx.strokeStyle='#356ad2';ctx.stroke();}}
+function updateScene(){const points=document.getElementById('scenePoints'),cameraSvg=document.getElementById('cameraSvg'),labs=document.getElementById('sceneLabels');points.innerHTML='';cameraSvg.innerHTML='';labs.innerHTML='';
+function ax(p){return [179+80*p[0]+28*p[1],194-66*p[2]-20*p[1]];}
+views.forEach((e,i)=>{const [x,y]=[i===0?55:i===1?295:58,i===0?185:i===1?160:89],selected=i===camera;cameraSvg.innerHTML+=`<path d="M${x} ${y} L${ax([0,0,1.07]).join(' ')}" stroke="#4b83ce" stroke-width="${selected?2:1}" opacity="${selected?.54:.15}" stroke-dasharray="4 3"/><rect x="${x-11}" y="${y-8}" width="23" height="17" rx="4" fill="${selected?'#3469d4':'#a5b9d2'}"/><circle cx="${x+1}" cy="${y}" r="4" fill="white"/><text x="${x}" y="${y+26}" text-anchor="middle" font-size="12" fill="${selected?'#2c59b0':'#8494aa'}">${'ABC'[i]}</text>`});
+const gs=stage===1?initial:model;
+for(let i=0;i<gs.length;i++){const g=gs[i],[x,y]=ax(g.p),rgb=`rgb(${g.c.join(',')})`;if(stage>=2){const r=Math.max(11,g.s*60);points.innerHTML+=`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*.56}" transform="rotate(-26 ${x} ${y})" fill="${rgb}" fill-opacity=".20" stroke="${rgb}" stroke-width="${i===selected?2.3:1.1}" stroke-opacity="${i===selected?1:.6}"/>`;}points.innerHTML+=`<circle cx="${x}" cy="${y}" r="${i===selected?4.8:3.3}" fill="${rgb}" stroke="white" stroke-width="1.1"/>`;}
+}
+const stages=[
+ ['1. Multiple overlapping input photographs','These are 2D views of the same synthetic scene captured from cameras A, B, and C; they will become the fixed observations for reconstruction and training.'],
+ ['2. COLMAP: sparse 3D reconstruction','Matching observations across overlapping images lets SfM estimate camera poses and sparse 3D points; here we illustrate the result, not a real COLMAP run.'],
+ ['3. Initialize 3D Gaussians','Sparse 3D point locations seed Gaussians with initial spatial and appearance parameters, which will be refined during learning.'],
+ ['4. Rendering and reconstruction loss','The current Gaussians predict an image from the selected camera; compare that image to its fixed reference to measure reconstruction error.'],
+ ['5. Training and parameter updates','Train from one or multiple cameras to update the same shared Gaussians, then observe how rendered images and reconstruction error change.']
+];
+function update(){document.querySelectorAll('.step').forEach((b,i)=>b.classList.toggle('active',i===stage));document.querySelectorAll('.tab').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===camera)));document.getElementById('stageTitle').textContent=stages[stage][0];document.getElementById('stageText').textContent=stages[stage][1];document.getElementById('learnMore').href='#detail-'+(stage+1);
+document.getElementById('sceneState').textContent=stage===0?'Input views':stage===1?'Sparse points':'3D Gaussians';document.getElementById('sceneExplain').textContent=stage<=1?'COLMAP gives estimates of camera poses and sparse 3D point coordinates; here both are schematically illustrated.':'Every camera reads the same Gaussian parameters. Changing the selected camera changes the rendered prediction—not the stored Gaussians.';
+const g=model[selected];document.getElementById('scale').value=g.s;document.getElementById('opacity').value=g.a;document.getElementById('scaleValue').textContent=g.s.toFixed(2);document.getElementById('opacityValue').textContent=g.a.toFixed(2);
+document.getElementById('scale').disabled=stage<2;document.getElementById('opacity').disabled=stage<2;document.getElementById('gSelect').disabled=stage<2;document.getElementById('trainOne').disabled=stage<4||busy;document.getElementById('trainMulti').disabled=stage<4||busy;
+const pred=render(model,camera),real=observed[camera],d=new Float64Array(pred.length);for(let i=0;i<pred.length;i+=3){const e=(Math.abs(pred[i]-real[i])+Math.abs(pred[i+1]-real[i+1])+Math.abs(pred[i+2]-real[i+2]))/3;d[i]=e;}
+canvasDraw('truth',real);canvasDraw('pred',pred);canvasDraw('diff',d,true);document.getElementById('lossValue').textContent=loss(pred,real).toFixed(4);document.getElementById('overallLoss').textContent=lossAll().toFixed(4);document.getElementById('iterLabel').textContent=`${iter} optimization ${iter===1?'step':'steps'}`;
+document.getElementById('renderExplain').textContent=stage<3?'Look at the camera images, then switch to Step 4 to understand the comparison.':'The target is fixed, whereas the prediction and difference depend on the shared 3D Gaussian parameters.';
+updateScene();drawPlot();}
+function reset(){model=cloneModel();history=[];iter=0;adam={};busy=false;document.getElementById('trainStatus').textContent='Model reset to initial Gaussian values.';update();}
+document.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{stage=Number(b.dataset.stage);update()}));document.querySelectorAll('[data-jump]').forEach(a=>a.addEventListener('click',()=>{stage=Number(a.dataset.jump);update()}));document.querySelectorAll('[data-cam]').forEach(b=>b.addEventListener('click',()=>{camera=Number(b.dataset.cam);update()}));
+const sel=document.getElementById('gSelect');truth.forEach((g,i)=>{const o=document.createElement('option');o.textContent=`G${i+1}: ${g.name}`;o.value=i;sel.append(o)});sel.addEventListener('change',()=>{selected=Number(sel.value);update()});
+for(const id of ['scale','opacity'])document.getElementById(id).addEventListener('input',e=>{model[selected][id==='scale'?'s':'a']=Number(e.target.value);history=[];update();});
+document.getElementById('reset').addEventListener('click',reset);
+document.querySelectorAll('[data-return-stage]').forEach(a=>a.addEventListener('click',()=>{stage=Number(a.dataset.returnStage);update()}));
+document.getElementById('trainOne').addEventListener('click',()=>{if(busy)return;trainStep(camera);document.getElementById('trainStatus').textContent=`Step ${iter}: trained from Camera ${'ABC'[camera]}. Switch camera to inspect the updated scene.`;update()});
+document.getElementById('trainMulti').addEventListener('click',async()=>{if(busy)return;busy=true;update();for(let i=0;i<15;i++){let ci=(iter)%3;trainStep(ci);if(i%3===2||i===14){camera=ci;document.getElementById('trainStatus').textContent=`Training… ${i+1}/15 steps; most recent view: Camera ${'ABC'[ci]}`;update();await new Promise(r=>setTimeout(r,0));}}busy=false;document.getElementById('trainStatus').textContent=`Completed 15 steps across Cameras A, B and C. All updated the same 3D Gaussians.`;update()});
+reset();
+</script>
+</body></html>

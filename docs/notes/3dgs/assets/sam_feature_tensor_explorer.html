@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Explore a 256 × 48 × 64 Feature Tensor</title>
+<style>
+:root{color-scheme:light;--ink:#192f4e;--sub:#536680;--line:#ccd8e7;--blue:#355db6;--teal:#087e86;--bg:#f5f8fd;--panel:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.55 system-ui,Segoe UI,Arial,sans-serif;color:var(--ink)}
+main{margin:0 auto;max-width:1150px;padding:22px 22px 30px}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:17px;margin-bottom:20px}
+h1{font-size:clamp(24px,3vw,32px);line-height:1.16;margin:6px 0 8px;letter-spacing:-.025em}p{margin:0;color:var(--sub)}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--teal)}
+.tag{border:1px solid #dec6a0;background:#fff4e4;color:#8f5720;font-size:12px;line-height:1.5;border-radius:99px;padding:6px 11px;font-weight:750;white-space:nowrap}
+.grid{display:grid;grid-template-columns:1.06fr .94fr;gap:17px}.panel{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 6px 22px rgba(32,52,81,.03)}
+h2{font-size:17px;margin:0 0 3px;line-height:1.4}.note{font-size:13px;color:var(--sub);margin-bottom:14px}
+.canvasWrap{border:1px solid var(--line);border-radius:9px;padding:8px;background:#fcfdff;overflow:hidden}
+canvas{display:block;width:100%;height:auto;touch-action:manipulation}#featuremap{cursor:crosshair}#vectorbars{cursor:crosshair}
+.controls{margin:12px 0 3px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+label{font-weight:650;font-size:13px}input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;margin:6px 0 0}
+.num{font-weight:750;font-variant-numeric:tabular-nums;color:var(--blue);border:1px solid #d4e2f8;background:#eff5ff;padding:7px 10px;border-radius:7px;white-space:nowrap}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.metric{background:#f4f7fc;border-radius:9px;padding:10px 12px;min-width:0}.metric strong{display:block;font-size:18px;font-variant-numeric:tabular-nums}.metric small{color:var(--sub)}
+.key{font:14px ui-monospace,Consolas,monospace;background:#eef3fd;border-radius:6px;padding:3px 6px;color:#3155a3}
+.explain{margin-top:16px;border:1px solid #cededc;background:#f1faf7;border-radius:11px;padding:13px 15px}.explain strong{font-weight:800}.explain p{font-size:13px;line-height:1.6;margin-top:5px}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 0}.step{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 15px;font-size:13px;color:var(--sub)}.step b{color:var(--ink)}
+footer{font-size:12px;color:var(--sub);margin-top:17px}.sep{border:0;border-top:1px solid var(--line);margin:15px 0}
+@media(max-width:790px){main{padding:12px}.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.panel{padding:12px}.tag{white-space:normal}}
+</style>
+</head>
+<body><main>
+<header><div><div class="eyebrow">Interactive teaching laboratory · Feature 3DGS</div><h1>Inside a 256 × 48 × 64 feature tensor</h1><p>Change a feature channel or click a spatial position to explore two different slices of the <strong>same</strong> tensor.</p></div><div class="tag">Illustrative synthetic features — not SAM output</div></header>
+<div class="grid">
+<section class="panel" aria-label="Single channel spatial map">
+  <h2>A. One channel across space</h2>
+  <p class="note">This map displays <strong>F[channel, :, :]</strong>: one 48-row × 64-column slice.</p>
+  <div class="canvasWrap"><canvas id="featuremap" width="640" height="480" aria-label="Click a cell to select its row and column">Feature channel heatmap, 64 columns by 48 rows.</canvas></div>
+  <div class="controls"><label for="channel">Select feature channel <input type="range" id="channel" min="0" max="255" value="42" /></label><output class="num" id="channelValue" for="channel">channel 42</output></div>
+  <div class="metrics"><div class="metric"><small>Selected feature-grid location</small><strong id="coords">row 20 · col 30</strong></div><div class="metric"><small>Value at this cell and channel</small><strong id="cellValue">—</strong></div></div>
+</section>
+<section class="panel" aria-label="Single spatial location feature vector">
+  <h2>B. All channels at one position</h2><p class="note">These 256 bars display <strong>F[:, row, column]</strong>: a full feature vector at the selected cell.</p>
+  <div class="canvasWrap"><canvas id="vectorbars" width="640" height="360" aria-label="256 bars of feature values; click a bar to inspect that channel">A bar chart of the 256 feature components.</canvas></div>
+  <div class="metrics"><div class="metric"><small>Vector dimension</small><strong>256</strong></div><div class="metric"><small>Selected component</small><strong id="component">f[42] = —</strong></div></div>
+  <hr class="sep" />
+  <p class="note">A 256-D vector is a list of learned numerical descriptors. A single component is <strong>not</strong> an object name, RGB channel, or segmentation label.</p>
+  <div class="explain"><strong id="mathLabel">Tensor index: F[42, 20, 30]</strong><p id="mathExplanation">Read this as: channel 42, row 20, column 30. This indexing selects one scalar value.</p></div>
+</section>
+</div>
+<div class="steps"><div class="step"><b>Experiment 1 — Change the channel slider.</b><br />The left heatmap changes, but the selected feature vector on the right stays at the same spatial position. The highlighted bar moves.</div><div class="step"><b>Experiment 2 — Click a different heatmap cell.</b><br />You move to another row and column. The 256 bars change because the vector is sampled at a new location.</div></div>
+<footer>Important: These features are generated by a deterministic mathematical function solely for teaching the indexing and shape. They are not features predicted by SAM, not semantic labels, and not results from your indoor-scene model. Grid indices are zero-based.</footer>
+</main>
+<script>
+'use strict';
+const C=256,H=48,W=64;
+const map=document.querySelector('#featuremap'), mc=map.getContext('2d');
+const bars=document.querySelector('#vectorbars'),bc=bars.getContext('2d');
+const slider=document.querySelector('#channel');
+let channel=42,row=20,col=30;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function val(k,r,c){
+ const g1=Math.exp(-.5*((c-23)/12)**2-.5*((r-23)/11)**2);
+ const g2=Math.exp(-.5*((c-49)/9)**2-.5*((r-13)/8)**2);
+ return clamp(0.21*Math.sin(.12*k+.14*c)+0.19*Math.cos(.056*k+.13*r)+0.52*g1*Math.sin(.092*k+1.4)-0.44*g2*Math.cos(.073*k+.7),-.99,.99);
+}
+function color(v){
+ const a=Math.min(1,Math.abs(v));
+ const rgb=v>=0?[16,124,137]:[187,107,45];
+ const t=.18+.82*a;
+ return `rgb(${Math.round(244+(rgb[0]-244)*t)},${Math.round(247+(rgb[1]-247)*t)},${Math.round(251+(rgb[2]-251)*t)})`;
+}
+function drawMap(){
+ const cw=map.width/W,ch=map.height/H;
+ for(let r=0;r<H;r++)for(let c=0;c<W;c++){
+   mc.fillStyle=color(val(channel,r,c));mc.fillRect(c*cw,r*ch,cw+.15,ch+.15);
+ }
+ mc.strokeStyle='#153F79';mc.lineWidth=3;
+ mc.strokeRect(col*cw+1.5,row*ch+1.5,cw-3,ch-3);
+ mc.fillStyle='white';mc.strokeStyle='#193D6B';mc.lineWidth=2;
+ mc.beginPath();mc.arc((col+.5)*cw,(row+.5)*ch,4.4,0,Math.PI*2);mc.fill();mc.stroke();
+}
+function drawBars(){
+ bc.fillStyle='#fff';bc.fillRect(0,0,bars.width,bars.height);
+ const zero=bars.height/2;
+ bc.strokeStyle='#a6b5c8';bc.lineWidth=1;bc.beginPath();bc.moveTo(0,zero+.5);bc.lineTo(bars.width,zero+.5);bc.stroke();
+ for(let k=0;k<C;k++){
+  const v=val(k,row,col),x=k*bars.width/C;
+  bc.fillStyle=k===channel?'#315bb5':color(v);
+  const bh=Math.abs(v)*zero*.88;
+  bc.fillRect(x,v>=0?zero-bh:zero,bars.width/C+.06,bh);
+ }
+ bc.strokeStyle='#173C7E';bc.lineWidth=2;
+ const selectedX=(channel+.5)*bars.width/C;
+ bc.beginPath();bc.moveTo(selectedX,8);bc.lineTo(selectedX,bars.height-8);bc.stroke();
+ bc.fillStyle='#4d5e75';bc.font='15px system-ui, sans-serif';bc.fillText('+1',7,17);bc.fillText('0',7,zero-6);bc.fillText('−1',7,bars.height-9);
+}
+function render(){
+ drawMap();drawBars();
+ const v=val(channel,row,col);
+ document.querySelector('#channelValue').textContent=`channel ${channel}`;
+ document.querySelector('#coords').textContent=`row ${row} · col ${col}`;
+ document.querySelector('#cellValue').textContent=(v>=0?'+':'')+v.toFixed(3);
+ document.querySelector('#component').textContent=`f[${channel}] = ${(v>=0?'+':'')+v.toFixed(3)}`;
+ document.querySelector('#mathLabel').textContent=`Tensor index: F[${channel}, ${row}, ${col}]`;
+ document.querySelector('#mathExplanation').textContent=`Selecting channel ${channel}, row ${row}, column ${col} returns one scalar. Holding row and column fixed while varying all 256 channels gives the full vector.`;
+}
+slider.addEventListener('input',()=>{channel=Number(slider.value);render()});
+map.addEventListener('pointerdown',e=>{const rect=map.getBoundingClientRect();col=clamp(Math.floor((e.clientX-rect.left)/rect.width*W),0,W-1);row=clamp(Math.floor((e.clientY-rect.top)/rect.height*H),0,H-1);render()});
+bars.addEventListener('pointerdown',e=>{const rect=bars.getBoundingClientRect();channel=clamp(Math.floor((e.clientX-rect.left)/rect.width*C),0,C-1);slider.value=String(channel);render()});
+render();
+</script></body></html>

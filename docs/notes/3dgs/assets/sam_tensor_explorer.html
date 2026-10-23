@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>256 × 48 × 64 Tensor Explorer</title>
+<style>
+:root{--bg:#f7f9fc;--card:#fff;--ink:#18273f;--muted:#627287;--line:#d5deeb;--blue:#2f6fed;--purple:#8f59d9}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)} .wrap{max-width:1450px;margin:0 auto;padding:22px} h1{margin:0 0 8px;font-size:34px}.lead{margin:0 0 20px;color:var(--muted);font-size:18px}.grid{display:grid;grid-template-columns:320px 1fr;gap:18px}.right{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)} .small{font-size:13px;color:var(--muted);line-height:1.55} label{display:block;font-weight:700;margin:10px 0 6px}.mono{font-family:Consolas,monospace}.info{display:grid;grid-template-columns:150px 1fr;gap:8px;font-size:14px}.canvasWrap{display:flex;justify-content:center}.canvasWrap canvas{border:1px solid #d8dfeb;border-radius:10px;image-rendering:pixelated;cursor:crosshair}.subtitle{font-weight:700;font-size:22px;margin-bottom:10px} .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#edf3ff;color:#2f6fed;margin-right:6px;margin-bottom:6px}
+@media (max-width:1120px){.grid,.right{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>What does <span class="mono">256 × 48 × 64</span> mean?</h1>
+  <p class="lead">A hands-on tensor explorer. Move the channel slider, click a spatial cell, and see how one location contains a full 256-dimensional feature vector.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="subtitle">Controls</div>
+      <label>Feature channel: <span id="chVal">32</span></label>
+      <input id="channelSlider" type="range" min="0" max="255" value="32" style="width:100%" />
+      <label>Selected cell</label>
+      <div id="selText" class="mono">row = 24, col = 32</div>
+      <label>Interpretation</label>
+      <div class="small">
+        <ul>
+          <li><b>256</b> = number of channels / feature dimensions.</li>
+          <li><b>48 × 64</b> = spatial grid of the feature map.</li>
+          <li><span class="mono">F[c, :, :]</span> = one channel map.</li>
+          <li><span class="mono">F[:, r, c]</span> = one full 256-D vector at one spatial location.</li>
+        </ul>
+      </div>
+      <div style="margin-top:12px">
+        <span class="badge">interactive</span>
+        <span class="badge">synthetic teaching tensor</span>
+      </div>
+      <div class="small" style="margin-top:10px">This explorer uses a deterministic synthetic tensor so the structure is easy to see. The interaction pattern is the same as for your real SAM tensor.</div>
+      <hr style="border:none;border-top:1px solid #e4eaf4;margin:14px 0">
+      <div class="subtitle">Current tensor slice</div>
+      <div class="info">
+        <b>Slice shown</b><div class="mono" id="sliceText">F[32, :, :]</div>
+        <b>Vector shown</b><div class="mono" id="vectorText">F[:, 24, 32]</div>
+        <b>Selected value</b><div class="mono" id="valueText">0.000</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="card">
+        <div class="subtitle">One channel map: <span class="mono" id="mapLabel">F[32, :, :]</span></div>
+        <div class="canvasWrap"><canvas id="mapCanvas" width="640" height="480"></canvas></div>
+        <div class="small" style="margin-top:8px">Click any cell in the grid. Each pixel here corresponds to one spatial position in the 48 × 64 feature map.</div>
+      </div>
+      <div class="card">
+        <div class="subtitle">Similarity to selected vector</div>
+        <div class="canvasWrap"><canvas id="simCanvas" width="640" height="480"></canvas></div>
+        <div class="small" style="margin-top:8px">This heatmap shows cosine similarity between the selected vector <span class="mono" id="simLabel">F[:, 24, 32]</span> and all other spatial locations.</div>
+      </div>
+      <div class="card" style="grid-column:1 / -1">
+        <div class="subtitle">Full 256-D vector at the selected cell</div>
+        <svg id="linePlot" viewBox="0 0 900 280" style="width:100%;height:auto;border:1px solid #d8dfeb;border-radius:10px;background:#fff"></svg>
+        <div class="small" style="margin-top:8px">Notice the distinction: the channel map uses one fixed channel across all cells, while this line plot uses one fixed cell across all channels.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const C=256,H=48,W=64; let selectedRow=24, selectedCol=32, currentChannel=32;
+const mapCanvas=document.getElementById('mapCanvas'), simCanvas=document.getElementById('simCanvas');
+const mctx=mapCanvas.getContext('2d'), sctx=simCanvas.getContext('2d');
+const cellW=mapCanvas.width/W, cellH=mapCanvas.height/H;
+function feat(c,r,co){
+  const xr=co/(W-1), yr=r/(H-1), cc=c/C;
+  const a=Math.sin((co+1)*0.17 + cc*7.1);
+  const b=Math.cos((r+2)*0.21 - cc*5.3);
+  const desk=(yr>0.48 && yr<0.95 && xr>0.18 && xr<0.78)?0.35:0;
+  const chair=((xr-0.78)**2/0.015 + (yr-0.46)**2/0.07 < 1)?0.32:0;
+  const window=(xr>0.58 && xr<0.88 && yr<0.42)?0.28:0;
+  const edge=((Math.abs(xr-0.22)<0.03+0.02*Math.sin(cc*20) || Math.abs(xr-0.55)<0.02) && yr>0.2 && yr<0.75)?0.22:0;
+  return 0.17*a + 0.16*b + desk*Math.sin(cc*9.5) + chair*Math.cos(cc*8.1) + window*Math.sin(cc*11.4) + edge + 0.08*Math.sin((r+co)*0.13+cc*13);
+}
+function vectorAt(r,c){const arr=new Float32Array(C); for(let ch=0; ch<C; ch++) arr[ch]=feat(ch,r,c); return arr;}
+function cosine(v1,v2){let dot=0,n1=0,n2=0; for(let i=0;i<v1.length;i++){dot+=v1[i]*v2[i]; n1+=v1[i]*v1[i]; n2+=v2[i]*v2[i];} return dot/(Math.sqrt(n1*n2)+1e-8);}
+function plasma(t){const x=Math.max(0,Math.min(1,t)); const c=[[13,8,135],[84,3,160],[139,10,165],[185,50,137],[219,92,104],[244,136,73],[254,188,43],[240,249,33]]; const i=Math.min(c.length-2, Math.floor(x*(c.length-1))); const f=x*(c.length-1)-i; const a=c[i], b=c[i+1]; return `rgb(${Math.round(a[0]+(b[0]-a[0])*f)},${Math.round(a[1]+(b[1]-a[1])*f)},${Math.round(a[2]+(b[2]-a[2])*f)})`;}
+function coolwarm(v){const t=(v+1)/2; const r=Math.round(59 + (180-59)*t + 50*Math.max(0,t-.5)); const g=Math.round(76 + (60-76)*Math.abs(t-.5)*2); const b=Math.round(192 + (66-192)*t); return `rgb(${Math.max(0,Math.min(255,r))},${Math.max(0,Math.min(255,g))},${Math.max(0,Math.min(255,b))})`;}
+function drawMap(){let vals=[]; for(let r=0;r<H;r++) for(let c=0;c<W;c++) vals.push(feat(currentChannel,r,c)); const mn=Math.min(...vals), mx=Math.max(...vals);
+  for(let r=0;r<H;r++) for(let c=0;c<W;c++){ const v=feat(currentChannel,r,c); const t=(v-mn)/(mx-mn+1e-8); mctx.fillStyle=plasma(t); mctx.fillRect(c*cellW,r*cellH,cellW+1,cellH+1);} 
+  mctx.strokeStyle='#ffffff'; mctx.lineWidth=2; mctx.strokeRect(selectedCol*cellW+1,selectedRow*cellH+1,cellW-2,cellH-2);
+}
+function drawSimilarity(){const ref=vectorAt(selectedRow,selectedCol); for(let r=0;r<H;r++) for(let c=0;c<W;c++){ const sim=cosine(ref,vectorAt(r,c)); sctx.fillStyle=coolwarm(sim); sctx.fillRect(c*cellW,r*cellH,cellW+1,cellH+1);} sctx.strokeStyle='#000'; sctx.lineWidth=2; sctx.strokeRect(selectedCol*cellW+1,selectedRow*cellH+1,cellW-2,cellH-2);}
+function drawLine(){const svg=document.getElementById('linePlot'); svg.innerHTML=''; const vec=vectorAt(selectedRow,selectedCol); const Wv=900,Hv=280, pad={l:45,r:20,t:18,b:34}; let mn=Math.min(...vec), mx=Math.max(...vec); if(mx-mn<1e-6){mx=mn+1;}
+ const NS='http://www.w3.org/2000/svg'; function add(tag,attrs){const e=document.createElementNS(NS,tag); for(const k in attrs)e.setAttribute(k,attrs[k]); svg.appendChild(e); return e;}
+ add('line',{x1:pad.l,y1:Hv-pad.b,x2:Wv-pad.r,y2:Hv-pad.b,stroke:'#9fb0c7'}); add('line',{x1:pad.l,y1:pad.t,x2:pad.l,y2:Hv-pad.b,stroke:'#9fb0c7'});
+ for(let i=0;i<=4;i++){ const y=pad.t + (Hv-pad.t-pad.b)*i/4; add('line',{x1:pad.l,y1:y,x2:Wv-pad.r,y2:y,stroke:'#edf1f7'}); }
+ let d=''; for(let i=0;i<C;i++){ const x=pad.l + (Wv-pad.l-pad.r)*i/(C-1); const y=Hv-pad.b - ((vec[i]-mn)/(mx-mn))*(Hv-pad.t-pad.b); d += (i===0?'M':'L') + x + ' ' + y + ' '; }
+ add('path',{d,fill:'none',stroke:'#2f6fed','stroke-width':2});
+ add('text',{x:Wv/2,y:Hv-8,'text-anchor':'middle','font-size':16,fill:'#5b6f87'}).textContent='feature channel index';
+ add('text',{x:22,y:Hv/2,transform:`rotate(-90 22 ${Hv/2})`,'text-anchor':'middle','font-size':16,fill:'#5b6f87'}).textContent='feature value';
+}
+function updateLabels(){document.getElementById('chVal').textContent=currentChannel; document.getElementById('selText').textContent=`row = ${selectedRow}, col = ${selectedCol}`; document.getElementById('sliceText').textContent=`F[${currentChannel}, :, :]`; document.getElementById('vectorText').textContent=`F[:, ${selectedRow}, ${selectedCol}]`; document.getElementById('mapLabel').textContent=`F[${currentChannel}, :, :]`; document.getElementById('simLabel').textContent=`F[:, ${selectedRow}, ${selectedCol}]`; document.getElementById('valueText').textContent=feat(currentChannel,selectedRow,selectedCol).toFixed(3);}
+function redraw(){updateLabels(); drawMap(); drawSimilarity(); drawLine();}
+document.getElementById('channelSlider').oninput=(e)=>{currentChannel=+e.target.value; redraw();};
+mapCanvas.addEventListener('click',e=>{const rect=mapCanvas.getBoundingClientRect(); const x=e.clientX-rect.left, y=e.clientY-rect.top; selectedCol=Math.max(0,Math.min(W-1,Math.floor(x/rect.width*W))); selectedRow=Math.max(0,Math.min(H-1,Math.floor(y/rect.height*H))); redraw();});
+simCanvas.addEventListener('click',e=>{const rect=simCanvas.getBoundingClientRect(); const x=e.clientX-rect.left, y=e.clientY-rect.top; selectedCol=Math.max(0,Math.min(W-1,Math.floor(x/rect.width*W))); selectedRow=Math.max(0,Math.min(H-1,Math.floor(y/rect.height*H))); redraw();});
+redraw();
+</script>
+</body>
+</html>

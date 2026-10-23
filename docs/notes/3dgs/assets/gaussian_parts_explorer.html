@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gaussian Parts Explorer</title>
+<style>
+  :root{--bg:#f7f9fc;--card:#fff;--ink:#13233a;--muted:#5d6b82;--line:#d7dfeb;--blue:#2f6fed;--green:#12a57a;--orange:#e59a2a;--purple:#8f59d9;--red:#d64545;}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:1300px;margin:0 auto;padding:22px}
+  h1{margin:0 0 8px 0;font-size:34px}
+  p.lead{margin:0 0 20px 0;color:var(--muted);font-size:18px}
+  .grid{display:grid;grid-template-columns:330px 1fr 360px;gap:18px;align-items:start}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  .controls label{display:block;margin:12px 0 6px;font-weight:700}
+  .radioRow,.buttonRow{display:flex;flex-wrap:wrap;gap:10px}
+  button,.pill{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px}
+  button.active,.pill.active{background:#eef4ff;border-color:#a6c2ff;color:#123a8f}
+  input[type="range"]{width:100%}
+  .small{font-size:13px;color:var(--muted)}
+  .viz{width:100%;height:auto}
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .legend div{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:50%}
+  .expl{line-height:1.55}
+  .expl h2{margin:0 0 8px 0;font-size:22px}
+  .kv{display:grid;grid-template-columns:120px 1fr;gap:8px;font-size:14px;margin-top:10px}
+  .kv b{color:var(--ink)}
+  .code{font-family:Consolas,monospace;background:#f1f5fb;padding:1px 6px;border-radius:6px}
+  .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#edf3ff;color:#2f6fed;margin-right:6px}
+  .hot{cursor:pointer;transition:.15s}
+  .hot:hover{filter:brightness(1.08)}
+  .bar{height:10px;background:#edf2fb;border-radius:99px;overflow:hidden}
+  .fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple))}
+  @media (max-width:1100px){.grid{grid-template-columns:1fr}.card{order:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>What is new inside one Gaussian?</h1>
+  <p class="lead">Interactive comparison of <b>Vanilla 3DGS</b> and <b>Feature 3DGS</b>. Click a part of the Gaussian or use the controls to see what it means.</p>
+  <div class="grid">
+    <div class="card controls">
+      <label>1) Choose model type</label>
+      <div class="radioRow">
+        <button id="btnVanilla" class="active">Vanilla 3DGS</button>
+        <button id="btnFeature">Feature 3DGS</button>
+      </div>
+
+      <label>2) Select or click a stored parameter</label>
+      <div class="buttonRow">
+        <button data-part="position" class="partBtn active">Position</button>
+        <button data-part="scale" class="partBtn">Scale</button>
+        <button data-part="rotation" class="partBtn">Rotation</button>
+        <button data-part="opacity" class="partBtn">Opacity</button>
+        <button data-part="color" class="partBtn">Color / SH</button>
+        <button data-part="feature" class="partBtn">Feature vector</button>
+      </div>
+
+      <label>3) Play with some values</label>
+      <div class="small">Opacity: <span id="opacityVal">0.72</span></div>
+      <input id="opacitySlider" type="range" min="0.05" max="1" step="0.01" value="0.72" />
+      <div class="small">Scale: <span id="scaleVal">1.00</span></div>
+      <input id="scaleSlider" type="range" min="0.55" max="1.7" step="0.01" value="1.00" />
+      <div class="small">Rotation: <span id="rotVal">24°</span></div>
+      <input id="rotSlider" type="range" min="-60" max="60" step="1" value="24" />
+
+      <label>4) What to notice</label>
+      <ul class="small">
+        <li>A Gaussian is <b>not</b> just a point. It is a spatial blob with extent and orientation.</li>
+        <li>Vanilla 3DGS stores RGB appearance information.</li>
+        <li>Feature 3DGS stores the same geometric and RGB properties <b>plus</b> a trainable <span class="code">256-D</span> feature vector.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <svg class="viz" viewBox="0 0 860 620" aria-label="Gaussian diagram">
+        <defs>
+          <linearGradient id="ellFill" x1="0" x2="1">
+            <stop offset="0%" stop-color="#8bc6ff" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#2f6fed" stop-opacity="0.65"/>
+          </linearGradient>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#d64545" />
+          </marker>
+        </defs>
+        <rect x="0" y="0" width="860" height="620" rx="18" fill="#ffffff"/>
+        <text x="40" y="44" font-size="30" font-weight="700" fill="#13233a">One 3D Gaussian</text>
+        <text x="40" y="75" font-size="18" fill="#5d6b82">The same basic primitive is used in both Vanilla and Feature 3DGS.</text>
+
+        <line x1="80" y1="335" x2="760" y2="335" stroke="#d5ddeb" stroke-width="2"/>
+        <line x1="420" y1="120" x2="420" y2="540" stroke="#d5ddeb" stroke-width="2"/>
+        <text x="705" y="565" font-size="16" fill="#5d6b82">x-axis</text>
+        <text x="78" y="130" font-size="16" fill="#5d6b82" transform="rotate(-90 78 130)">y-axis</text>
+
+        <g id="gaussGroup" transform="translate(420,335)">
+          <ellipse id="ellipseMain" class="hot" data-part="scale" cx="0" cy="0" rx="170" ry="95" transform="rotate(24)" fill="url(#ellFill)" stroke="#2457c7" stroke-width="3" />
+          <line id="majorAxis" class="hot" data-part="scale" x1="-170" y1="0" x2="170" y2="0" transform="rotate(24)" stroke="#12a57a" stroke-width="4"/>
+          <line id="minorAxis" class="hot" data-part="scale" x1="0" y1="-95" x2="0" y2="95" transform="rotate(24)" stroke="#12a57a" stroke-width="4"/>
+          <circle id="centerDot" class="hot" data-part="position" cx="0" cy="0" r="9" fill="#111"/>
+          <path id="rotArc" class="hot" data-part="rotation" d="M135,-8 A135,135 0 0 1 110,-64" fill="none" stroke="#d64545" stroke-width="5" marker-end="url(#arrow)"/>
+          <circle cx="135" cy="0" r="4" fill="#d64545"/>
+        </g>
+
+        <g id="callouts">
+          <line x1="420" y1="335" x2="290" y2="265" stroke="#111" stroke-width="1.8"/>
+          <rect id="boxPosition" class="hot" data-part="position" x="70" y="226" rx="12" width="190" height="72" fill="#fff" stroke="#cbd5e4" stroke-width="2"/>
+          <text x="88" y="253" font-size="22" font-weight="700">Position μ</text>
+          <text x="88" y="278" font-size="15" fill="#5d6b82">Where the Gaussian center sits in 3D.</text>
+
+          <line x1="542" y1="246" x2="705" y2="202" stroke="#111" stroke-width="1.8"/>
+          <rect id="boxScale" class="hot" data-part="scale" x="705" y="160" rx="12" width="120" height="86" fill="#fff" stroke="#cbd5e4" stroke-width="2"/>
+          <text x="721" y="188" font-size="22" font-weight="700">Scale</text>
+          <text x="721" y="212" font-size="14" fill="#5d6b82">How wide</text>
+          <text x="721" y="230" font-size="14" fill="#5d6b82">or narrow it is.</text>
+
+          <line x1="544" y1="270" x2="726" y2="298" stroke="#111" stroke-width="1.8"/>
+          <rect id="boxRot" class="hot" data-part="rotation" x="705" y="286" rx="12" width="126" height="84" fill="#fff" stroke="#cbd5e4" stroke-width="2"/>
+          <text x="720" y="314" font-size="22" font-weight="700">Rotation</text>
+          <text x="720" y="338" font-size="14" fill="#5d6b82">Which way the</text>
+          <text x="720" y="356" font-size="14" fill="#5d6b82">ellipsoid is oriented.</text>
+
+          <line x1="508" y1="403" x2="700" y2="454" stroke="#111" stroke-width="1.8"/>
+          <rect id="boxOpacity" class="hot" data-part="opacity" x="666" y="435" rx="12" width="166" height="84" fill="#fff" stroke="#cbd5e4" stroke-width="2"/>
+          <text x="682" y="464" font-size="22" font-weight="700">Opacity α</text>
+          <text x="682" y="488" font-size="14" fill="#5d6b82">How strongly it</text>
+          <text x="682" y="506" font-size="14" fill="#5d6b82">contributes when rendered.</text>
+
+          <line x1="330" y1="430" x2="144" y2="470" stroke="#111" stroke-width="1.8"/>
+          <rect id="boxColor" class="hot" data-part="color" x="58" y="440" rx="12" width="220" height="106" fill="#fff" stroke="#cbd5e4" stroke-width="2"/>
+          <text x="76" y="468" font-size="22" font-weight="700">Color / SH</text>
+          <text x="76" y="492" font-size="14" fill="#5d6b82">RGB appearance, usually with</text>
+          <text x="76" y="510" font-size="14" fill="#5d6b82">spherical harmonics for view dependence.</text>
+          <rect x="76" y="520" width="24" height="14" rx="3" fill="#66a6ff"/>
+          <rect x="106" y="520" width="24" height="14" rx="3" fill="#8866ff"/>
+          <rect x="136" y="520" width="24" height="14" rx="3" fill="#e45daa"/>
+        </g>
+
+        <g id="featureBlock" opacity="0">
+          <line x1="420" y1="132" x2="420" y2="102" stroke="#111" stroke-width="1.8"/>
+          <rect id="boxFeature" class="hot" data-part="feature" x="280" y="82" rx="12" width="280" height="92" fill="#f7f4ff" stroke="#d3c2ff" stroke-width="2"/>
+          <text x="300" y="111" font-size="24" font-weight="700" fill="#4d2c91">+ 256-D feature vector</text>
+          <text x="300" y="136" font-size="14" fill="#5d6b82">New in Feature 3DGS. These values are learned</text>
+          <text x="300" y="154" font-size="14" fill="#5d6b82">from 2D teacher features such as SAM.</text>
+          <g id="featMiniBars"></g>
+        </g>
+      </svg>
+      <div class="legend">
+        <div><span class="dot" style="background:#12a57a"></span> scale axes</div>
+        <div><span class="dot" style="background:#d64545"></span> rotation indicator</div>
+        <div><span class="dot" style="background:#2f6fed"></span> ellipsoid extent</div>
+        <div><span class="dot" style="background:#8f59d9"></span> extra semantic feature vector</div>
+      </div>
+    </div>
+
+    <div class="card expl">
+      <div id="tags"></div>
+      <h2 id="explTitle">Position</h2>
+      <div id="explText">The Gaussian has a center in 3D space. This is where the primitive lives geometrically.</div>
+      <div class="kv">
+        <b>Stored parameter</b><div id="storedParam">3 numbers: x, y, z</div>
+        <b>Why it matters</b><div id="whyMatters">Without a 3D position, the renderer would not know where the Gaussian projects into the image.</div>
+        <b>Updated during training?</b><div id="updated">Yes</div>
+        <b>New in Feature 3DGS?</b><div id="newFeature">No — Vanilla also has this.</div>
+      </div>
+      <h3 style="margin:16px 0 8px">Current example value</h3>
+      <div id="currentValue" class="small"></div>
+      <div style="margin:12px 0 6px;font-weight:700">Contribution strength</div>
+      <div class="bar"><div id="strengthFill" class="fill" style="width:72%"></div></div>
+      <div id="footnote" class="small" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+<script>
+const parts = {
+ position:{title:'Position',text:'The Gaussian center \u03bc tells us where this primitive is located in 3D. When a camera is chosen, this 3D location is projected into the 2D image.',stored:'3 numbers: x, y, z',why:'Position determines where the Gaussian appears in the rendered image.',updated:'Yes',newf:'No — Vanilla also has this.',value:()=>`Example center: (x, y, z) = (1.24, -0.36, 2.91)`,tag:['geometry','3D location'],foot:'This is a stored parameter, not a rendered pixel value.'},
+ scale:{title:'Scale',text:'Scale controls the size of the Gaussian along its principal axes. A Gaussian is not just a point; it has spatial extent.',stored:'3 scale values',why:'A larger Gaussian can influence more pixels after projection.',updated:'Yes',newf:'No — Vanilla also has this.',value:()=>`Current relative scale: ${(+scaleSlider.value).toFixed(2)}×`,tag:['geometry','extent'],foot:'Scale affects the 2D footprint size after projection.'},
+ rotation:{title:'Rotation',text:'Rotation defines how the anisotropic Gaussian is oriented in 3D. This is why different Gaussians can stretch in different directions.',stored:'Quaternion / 4 rotation values',why:'Orientation changes the projected ellipse and the set of pixels influenced.',updated:'Yes',newf:'No — Vanilla also has this.',value:()=>`Current rotation: ${rotSlider.value}° around the local normal`,tag:['geometry','orientation'],foot:'Rotation changes the shape seen by the camera even if scale stays fixed.'},
+ opacity:{title:'Opacity',text:'Opacity \u03b1 controls how strongly this Gaussian contributes when many Gaussians are composited together.',stored:'1 opacity value',why:'A more opaque Gaussian has a stronger effect on the rendered image and rendered feature map.',updated:'Yes',newf:'No — Vanilla also has this.',value:()=>`Current opacity: ${(+opacitySlider.value).toFixed(2)}`,tag:['rendering','compositing'],foot:'Opacity does not mean the Gaussian is a solid object. It means stronger or weaker contribution during rendering.'},
+ color:{title:'Color / Spherical Harmonics',text:'Vanilla 3DGS stores appearance so the renderer can predict RGB. Many implementations use spherical harmonics so color can depend on view direction.',stored:'RGB / SH coefficients',why:'These parameters are what Vanilla 3DGS learns to match photographs.',updated:'Yes',newf:'No — Vanilla already learns RGB appearance.',value:()=>`Example appearance channels: [0.66, 0.42, 0.81, ...]`,tag:['appearance','RGB'],foot:'These are the parameters used to render RGB images.'},
+ feature:{title:'Feature vector (new in Feature 3DGS)',text:'Feature 3DGS keeps all Vanilla 3DGS properties and adds a trainable 256-dimensional vector to each Gaussian. This vector is learned so that rendered features match teacher features such as SAM.',stored:'256 learned feature values',why:'This is the bridge that lets 3D Gaussians store semantic or descriptor-like information, not just RGB.',updated:'Yes',newf:'Yes — this is the main addition in Feature 3DGS.',value:()=>`Example first values: [0.18, -0.05, 0.22, 0.11, ...]`,tag:['new in feature 3DGS','semantic descriptor'],foot:'This vector is a stored parameter. It is not a segmentation mask and not an object label by itself.'}
+};
+const btnVanilla=document.getElementById('btnVanilla');
+const btnFeature=document.getElementById('btnFeature');
+const partBtns=[...document.querySelectorAll('.partBtn')];
+const hots=[...document.querySelectorAll('.hot')];
+const featureBlock=document.getElementById('featureBlock');
+const featMiniBars=document.getElementById('featMiniBars');
+const opacitySlider=document.getElementById('opacitySlider');
+const scaleSlider=document.getElementById('scaleSlider');
+const rotSlider=document.getElementById('rotSlider');
+let mode='vanilla', selected='position';
+
+for(let i=0;i<10;i++){
+  const val=[0.18,-0.05,0.22,0.11,-0.14,0.32,-0.02,0.27,-0.09,0.15][i];
+  const h=Math.abs(val)*40+10;
+  const x=308+i*22;
+  const y=165-h;
+  const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  r.setAttribute('x',x);r.setAttribute('y',y);r.setAttribute('width',14);r.setAttribute('height',h);r.setAttribute('rx',3);r.setAttribute('fill', val>=0 ? '#8f59d9' : '#cbb7ff');
+  featMiniBars.appendChild(r);
+}
+function setMode(m){
+  mode=m;
+  btnVanilla.classList.toggle('active',m==='vanilla');
+  btnFeature.classList.toggle('active',m==='feature');
+  featureBlock.setAttribute('opacity',m==='feature' ? '1' : '0');
+  const featureBtn = document.querySelector('[data-part="feature"]');
+  featureBtn.disabled = m==='vanilla';
+  featureBtn.style.opacity = m==='vanilla' ? .45 : 1;
+  if(m==='vanilla' && selected==='feature') selected='position';
+  render();
+}
+function render(){
+  document.getElementById('opacityVal').textContent=(+opacitySlider.value).toFixed(2);
+  document.getElementById('scaleVal').textContent=(+scaleSlider.value).toFixed(2);
+  document.getElementById('rotVal').textContent=rotSlider.value+'°';
+  document.getElementById('ellipseMain').setAttribute('rx',(170*+scaleSlider.value).toFixed(1));
+  document.getElementById('ellipseMain').setAttribute('ry',(95*+scaleSlider.value).toFixed(1));
+  document.getElementById('ellipseMain').setAttribute('transform',`rotate(${rotSlider.value})`);
+  document.getElementById('majorAxis').setAttribute('x1',(-170*+scaleSlider.value).toFixed(1));
+  document.getElementById('majorAxis').setAttribute('x2',(170*+scaleSlider.value).toFixed(1));
+  document.getElementById('majorAxis').setAttribute('transform',`rotate(${rotSlider.value})`);
+  document.getElementById('minorAxis').setAttribute('y1',(-95*+scaleSlider.value).toFixed(1));
+  document.getElementById('minorAxis').setAttribute('y2',(95*+scaleSlider.value).toFixed(1));
+  document.getElementById('minorAxis').setAttribute('transform',`rotate(${rotSlider.value})`);
+  document.getElementById('ellipseMain').style.opacity=opacitySlider.value;
+  partBtns.forEach(b=>b.classList.toggle('active',b.dataset.part===selected));
+  hots.forEach(el=>{
+    const on=el.dataset.part===selected;
+    if(el.tagName==='rect' || el.tagName==='ellipse'){
+      el.setAttribute('stroke-width', on ? '4' : '2');
+      if(el.id==='ellipseMain') el.setAttribute('stroke', on ? '#ef8b00' : '#2457c7');
+    }
+  });
+  const p=parts[selected];
+  document.getElementById('explTitle').textContent=p.title;
+  document.getElementById('explText').textContent=p.text;
+  document.getElementById('storedParam').textContent=p.stored;
+  document.getElementById('whyMatters').textContent=p.why;
+  document.getElementById('updated').textContent=p.updated;
+  document.getElementById('newFeature').textContent=p.newf;
+  document.getElementById('currentValue').textContent=p.value();
+  document.getElementById('footnote').textContent=p.foot;
+  document.getElementById('tags').innerHTML=p.tag.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('strengthFill').style.width=`${Math.round(+opacitySlider.value*100)}%`;
+}
+btnVanilla.onclick=()=>setMode('vanilla');
+btnFeature.onclick=()=>setMode('feature');
+partBtns.forEach(b=>b.onclick=()=>{if(!(mode==='vanilla'&&b.dataset.part==='feature')){selected=b.dataset.part;render();}});
+hots.forEach(el=>el.onclick=()=>{if(!(mode==='vanilla'&&el.dataset.part==='feature')){selected=el.dataset.part;render();}});
+[opacitySlider,scaleSlider,rotSlider].forEach(el=>el.oninput=render);
+setMode('vanilla');
+</script>
+</body>
+</html>
